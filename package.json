@@ -20,6 +20,10 @@
     "language",
     "service"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikeee/dot-language-support.git"
+  },
   "dependencies": {
     "vscode-languageserver-types": "^3.7.2"
   },
