@@ -1,5 +1,5 @@
 # dot-language-support
-> [![Build Status](https://travis-ci.com/nikeee/dot-language-support.svg?branch=master)](https://travis-ci.com/nikeee/dot-language-support) ![Dependency Status](https://david-dm.org/nikeee/dot-language-support.svg)
+> [![Build Status](https://travis-ci.com/nikeee/dot-language-support.svg?branch=master)](https://travis-ci.com/nikeee/dot-language-support) ![Dependency Status](https://david-dm.org/nikeee/dot-language-support.svg) [![npm version](https://badge.fury.io/js/dot-language-support.svg)](https://www.npmjs.com/package/dot-language-support)
 
 A language service library, written in TypeScript. Used by [dot-language-server](https://github.com/nikeee/dot-language-server) and [edotor.net](https://edotor.net).
 
