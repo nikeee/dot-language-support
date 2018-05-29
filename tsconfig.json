@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+
+    "strict": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+
+    "noUnusedLocals": false, // TODO: Fix
+    "noImplicitReturns": true,
+    "noUnusedParameters": false, // TODO: Fix
+    "noFallthroughCasesInSwitch": true,
+
+    "outDir": "lib",
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "tests/**/*.spec.ts"
+  ]
+}

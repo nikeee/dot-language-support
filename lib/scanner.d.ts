@@ -1,0 +1,53 @@
+import { SyntaxKind, TokenFlags, DiagnosticCategory, ScanError } from "./types";
+export interface Scanner {
+    readonly end: number;
+    readonly pos: number;
+    readonly startPos: number;
+    readonly tokenPos: number;
+    readonly token: SyntaxKind;
+    readonly tokenValue: string | undefined;
+    readonly isUnterminated: boolean;
+    readonly text: string;
+    readonly onError: ErrorCallback | null;
+    setText(newText?: string, start?: number, length?: number): void;
+    setErrorCallback(cb: ErrorCallback): void;
+    scan(skipTrivia: boolean): SyntaxKind;
+    lookAhead(callback: () => SyntaxKind | boolean): SyntaxKind | boolean;
+    tryScan(callback: () => SyntaxKind | boolean): SyntaxKind | boolean;
+}
+export declare function getTokenAsText(token: SyntaxKind): string | undefined;
+export declare function getTextAsToken(token: string): SyntaxKind | undefined;
+export declare type ErrorCallback = (message: string, category: DiagnosticCategory, sub: ScanError, length: number) => void;
+export declare class DefaultScanner implements Scanner {
+    end: number;
+    pos: number;
+    startPos: number;
+    tokenPos: number;
+    token: SyntaxKind;
+    tokenValue: string | undefined;
+    tokenFlags: TokenFlags;
+    isUnterminated: boolean;
+    text: string;
+    onError: ErrorCallback | null;
+    setText(newText?: string, start?: number, length?: number): void;
+    setErrorCallback(cb: ErrorCallback | null): void;
+    private setTextPos(textPos);
+    scan(skipTrivia?: boolean): SyntaxKind;
+    private error(message, sub, category?);
+    private error(message, sub, errPos, length, category?);
+    private isWhiteSpaceSingleLine(ch);
+    private isAtMultiLineCommentEnd(pos);
+    private scanHashCommentTrivia(skip);
+    private scanSingleLineCommentTrivia(skip);
+    private scanMultiLineCommentTrivia(skip);
+    private scanHtml();
+    private scanString(allowEscapes?);
+    private scanNumber();
+    private getIdentifierToken(tokenValue);
+    lookAhead<T extends SyntaxKind>(callback: () => T): T;
+    tryScan<T extends SyntaxKind>(callback: () => T): T;
+    private speculationHelper<T>(callback, isLookahead);
+}
+export declare function isIdentifierStart(ch: number): boolean;
+export declare function skipTrivia(text: string, pos: number): number;
+export declare function isLineBreak(ch: number): boolean;
