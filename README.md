@@ -1,4 +1,5 @@
-# dot-language-support [![Build Status](https://travis-ci.com/nikeee/gv-ls.svg?token=4EmEjSohQak8cB3EMcq5&branch=master)](https://travis-ci.com/nikeee/dot-language-support)
+# dot-language-support
+> [![Build Status](https://travis-ci.com/nikeee/dot-language-support.svg?branch=master)](https://travis-ci.com/nikeee/dot-language-support) ![Dependency Status](https://david-dm.org/nikeee/dot-language-support.svg)
 
 A language service library, written in TypeScript. Used by [dot-language-server](https://github.com/nikeee/dot-language-server) and [edotor.net](https://edotor.net).
 
