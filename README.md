@@ -5,11 +5,12 @@ A language service library, written in TypeScript. Used by [dot-language-server]
 ## Features
 - Hightlight semantic and syntactic errors
 - Auto completion for colors and shapes
-- Refactoring Graphs to Digraphs and vice-versa
-- Fix wrong graph edges
-- Refactor Edges to sub graphs
+- Code Actions:
+    - Refactoring Graphs to Digraphs and vice-versa
+    - Fix wrong graph edges
+    - Refactor edges to sub graphs
 
 ## Installation
 ```Shell
-npm i dot-language-support
+npm -S i dot-language-support
 ```
