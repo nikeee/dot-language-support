@@ -10,7 +10,7 @@ import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons";
 
 import { EdgeOpStr, getGraphKeywordStr, getEdgeStr, ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common";
 
-export function getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context: lst.CodeActionContext): lst.Command[] | undefined {
+export function getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context?: lst.CodeActionContext): lst.Command[] | undefined {
 	let actions = getActionsFromDiagnostics(doc, sourceFile, range);
 	const general = getGeneralRefactorings(doc, sourceFile, range);
 	if (general) {
