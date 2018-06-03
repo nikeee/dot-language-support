@@ -7,7 +7,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts",
+    "test": "mocha -r ts-node/register tests/**/*.spec.ts tests/*.spec.ts",
     "clean": "rm -rv -- lib/* || true",
     "compile": "tsc",
     "prepare": "npm run compile"
