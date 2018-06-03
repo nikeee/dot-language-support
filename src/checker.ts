@@ -1,4 +1,4 @@
-import { SyntaxNode, Identifier, SyntaxKind, Graph, EdgeStatement, SyntaxNodeArray, EdgeRhs, EdgeOp, SourceFile, DiagnosticMessage, SyntaxNodeFlags, CheckError, DiagnosticCategory, ErrorSource, ErrorCode, CheckErrorCode, SubGraphStatement, NodeId, AttributeStatement } from "./types";
+import { SyntaxNode, Identifier, SyntaxKind, Graph, EdgeStatement, SyntaxNodeArray, EdgeRhs, EdgeOp, SourceFile, DiagnosticMessage, SyntaxNodeFlags, CheckError, DiagnosticCategory, ErrorSource, ErrorCode, CheckErrorCode, SubGraphStatement, NodeId, AttributeStatement, Statement, NodeStatement, IdEqualsIdStatement, StatementOf, Token } from "./types";
 import { assertNever, getStart } from "./service/util";
 import { forEachChild } from "./visitor";
 
@@ -67,7 +67,10 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 		: createEdgeViolationDiagnostics(file, expectedEdgeOp, invalidEdgeRhses);
 }
 
-
+/**
+ * TOOD: Refactor to use findAllSatements internally
+ * @param node
+ */
 export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 	const allEdges: EdgeRhs[] = [];
 	forEachChild(node, child => {
@@ -83,6 +86,38 @@ export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 	});
 
 	return allEdges;
+}
+
+export function findOptionalSemicolons(node: SyntaxNode): Token<SyntaxKind.SemicolonToken>[] {
+	const statements = findAllStatements(node);
+	const terminators = statements.map(p => p.terminator);
+	return terminators.filter(t => !!t) as Token<SyntaxKind.SemicolonToken>[];
+}
+
+function isStatement(node: SyntaxNode): node is Statement {
+	return node.kind === SyntaxKind.SubGraphStatement
+		|| node.kind === SyntaxKind.EdgeStatement
+		|| node.kind === SyntaxKind.NodeStatement
+		|| node.kind === SyntaxKind.IdEqualsIdStatement
+		|| node.kind === SyntaxKind.AttributeStatement;
+}
+
+export function findAllStatements<T extends Statement["kind"]>(node: SyntaxNode, kind?: T): StatementOf<T>[] {
+	const allStatements: StatementOf<T>[] = [];
+
+	forEachChild(node, child => {
+		// If no kind is provided and the child is a statement
+		// ...or the child.kind is the requested kind
+		if ((kind === undefined && isStatement(child)) || (child.kind === kind)) {
+			allStatements.push(child as StatementOf<T>);
+		}
+
+		const childStatements = findAllStatements(child, kind);
+		if (childStatements && childStatements.length > 0)
+			allStatements.push.apply(allStatements, childStatements);
+	});
+
+	return allStatements;
 }
 
 /*

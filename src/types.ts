@@ -497,3 +497,9 @@ export interface TypeSymbol {
 
 export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
 export type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+
+export type StatementOf<T extends Statement["kind"]> = T extends SyntaxKind.SubGraphStatement ? SubGraphStatement
+	: T extends SyntaxKind.AttributeStatement ? AttributeStatement
+	: T extends SyntaxKind.EdgeStatement ? EdgeStatement
+	: T extends SyntaxKind.IdEqualsIdStatement ? IdEqualsIdStatement
+	: T extends SyntaxKind.NodeStatement ? NodeStatement : never;

@@ -6,6 +6,7 @@ import { getAllowedEdgeOperation, findAllEdges, findNodeAtOffset, isEdgeStatemen
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand";
 import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand";
+import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons";
 
 import { EdgeOpStr, getGraphKeywordStr, getEdgeStr, ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common";
 
@@ -73,6 +74,10 @@ function getGeneralRefactorings(doc: DocumentLike, file: SourceFile, range: lst.
 
 		let clickedNode = findNodeAtOffset(g, rangeStartOffset);
 		if (clickedNode && !!clickedNode.parent) {
+			if(clickedNode.kind === SyntaxKind.SemicolonToken) {
+				res.push(RemoveSemicolonsCommand.create());
+			}
+
 			if (isIdentifierNode(clickedNode)) {
 				clickedNode = clickedNode.parent as SyntaxNode;
 			}
@@ -229,6 +234,7 @@ export const enum CommandIds {
 	ChangeEdgeOp = "DOT.changeEdgeOp",
 	ConvertGraphType = "DOT.convertGraphType",
 	ConsolidateDescendants = "DOT.consolidateDescendants",
+	RemoveSemicolons = "DOT.removeSemicolons",
 }
 
 type CommandHandler = (doc: DocumentLike, sourceFile: SourceFile, cmd: ExecutableCommand) => CommandApplication | undefined;
@@ -241,6 +247,7 @@ const commandHandlers: CommandHandlers = {
 	[CommandIds.ChangeEdgeOp]: ChangeEdgeOpCommand.execute,
 	[CommandIds.ConvertGraphType]: ChangeAllOtherEdgeOpsAndFixGraphCommand.execute,
 	[CommandIds.ConsolidateDescendants]: ConsolidateDescendantsCommand.execute,
+	[CommandIds.RemoveSemicolons]: RemoveSemicolonsCommand.execute,
 };
 
 export function getAvailableCommands() {
