@@ -1,6 +1,7 @@
 import { DefaultScanner, Parser } from "../src"
 import { SourceFile, Graph } from "../src/types";
 import { expect } from "chai";
+import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
 
 export function createParserWithText(text: string) {
 	const p = new Parser();
@@ -15,4 +16,11 @@ export function ensureGraph(sourceFile: SourceFile): Graph {
 	if (g === undefined)
 		throw "Graph was undefined";
 	return g;
+}
+
+export function ensureDocAndSourceFile(text: string): [TextDocument, SourceFile]{
+	const doc = TextDocument.create("inmemory://model.json", "DOT", 0, text);
+	const p = createParserWithText(doc.getText());
+
+	return [doc, p];
 }
