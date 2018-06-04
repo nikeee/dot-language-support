@@ -48,5 +48,10 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 }
 
 function isRemoveSemicolonsCommand(cmd: ExecutableCommand): cmd is RemoveSemicolonsCommand {
-	return cmd.command === CommandIds.RemoveSemicolons && (!cmd.arguments || cmd.arguments.length === 0);
+	return cmd.command === CommandIds.RemoveSemicolons
+		&& (
+			!cmd.arguments
+			|| cmd.arguments.length === 0
+			|| cmd.arguments.every(e => e === undefined)
+		);
 }
