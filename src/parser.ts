@@ -923,6 +923,7 @@ export class Parser {
 	private isIdentifier(): boolean {
 		switch (this.token()) {
 			case SyntaxKind.TextIdentifier:
+			case SyntaxKind.NumericIdentifier:
 			case SyntaxKind.StringLiteral:
 			case SyntaxKind.HtmlIdentifier:
 				return true;
