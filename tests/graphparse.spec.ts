@@ -1,5 +1,5 @@
 import { createParserWithText, ensureGraph } from "./testutils";
-import { SyntaxKind } from "../src/types";
+import { SyntaxKind, EdgeStatement, NodeId } from "../src/types";
 import { Parser } from "../src/parser";
 import { expect } from "chai";
 import "mocha";
@@ -21,6 +21,32 @@ describe("Graph Parsing", () => {
 
 		// expect(pg.openBrace).to.exist;
 		// expect(pg.closeBrace).to.exist;
+	});
+
+	it("should parse numbers as IDs", () => {
+		const p = createParserWithText(`digraph { 1 -> 2}`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).to.have.lengthOf(0);
+
+		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
+		expect(pg.id).not.to.exist;
+
+		expect(pg.statements).to.exist;
+		expect(pg.statements.length).to.equal(1);
+
+		const fs = pg.statements[0];
+
+		expect(fs).to.exist;
+		expect(fs.kind).to.equal(SyntaxKind.EdgeStatement);
+		const es = fs as EdgeStatement;
+		expect(es).to.exist;
+		expect(es.source).to.exist;
+		expect(es.source.kind).to.equal(SyntaxKind.NodeId);
+		const ess = es.source as NodeId;
+		expect(ess).to.exist;
+		if(ess === undefined) throw "Just for type checker";
+		expect(ess.id.kind).to.equal(SyntaxKind.NumericIdentifier);
 	});
 
 	it("should parse attributes", () => {
