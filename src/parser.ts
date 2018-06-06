@@ -998,6 +998,7 @@ function isNodeKind(kind: SyntaxKind) {
 
 export function isIdentifier(kind: SyntaxKind) {
 	return kind === SyntaxKind.HtmlIdentifier
+		|| kind === SyntaxKind.NumericIdentifier
 		|| kind === SyntaxKind.TextIdentifier
 		|| kind === SyntaxKind.QuotedTextIdentifier;
 	// || kind === SyntaxKind.StringLiteral // TODO: Is this needed?
