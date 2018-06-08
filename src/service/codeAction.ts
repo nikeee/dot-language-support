@@ -1,7 +1,33 @@
 import * as lst from "vscode-languageserver-types";
-import { DocumentLike, SourceFile, DiagnosticMessage, ErrorSource, CheckErrorCode, ParseError, ParseErrorCode, ScanErrorCode, CheckError, SyntaxKind, CommandApplication, Graph, forEachChild, isIdentifierNode, SyntaxNode, EdgeStatement, SyntaxNodeFlags } from "../";
+import {
+	DocumentLike,
+	SourceFile,
+	DiagnosticMessage,
+	ErrorSource,
+	CheckErrorCode,
+	ParseErrorCode,
+	ScanErrorCode,
+	CheckError,
+	SyntaxKind,
+	CommandApplication,
+	Graph,
+	forEachChild,
+	isIdentifierNode,
+	SyntaxNode,
+	EdgeStatement,
+	SyntaxNodeFlags,
+} from "../";
 import { assertNever, getStart } from "./util";
-import { getAllowedEdgeOperation, findAllEdges, findNodeAtOffset, isEdgeStatement, isNodeId, getIdentifierText, isAttrStatement, edgeStatementHasAttributes } from "../checker";
+import {
+	getAllowedEdgeOperation,
+	findAllEdges,
+	findNodeAtOffset,
+	isEdgeStatement,
+	isNodeId,
+	getIdentifierText,
+	isAttrStatement,
+	edgeStatementHasAttributes,
+} from "../checker";
 
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand";
@@ -74,7 +100,7 @@ function getGeneralRefactorings(doc: DocumentLike, file: SourceFile, range: lst.
 
 		let clickedNode = findNodeAtOffset(g, rangeStartOffset);
 		if (clickedNode && !!clickedNode.parent) {
-			if(clickedNode.kind === SyntaxKind.SemicolonToken) {
+			if (clickedNode.kind === SyntaxKind.SemicolonToken) {
 				res.push(RemoveSemicolonsCommand.create());
 			}
 

@@ -1,5 +1,5 @@
 import { createMapFromTemplate } from "./core";
-import { SyntaxKind, CharacterCodes, TokenFlags, DiagnosticMessage, DiagnosticCategory, ScanError } from "./types";
+import { SyntaxKind, CharacterCodes, TokenFlags, DiagnosticCategory, ScanError } from "./types";
 
 export interface Scanner {
 	readonly end: number;
