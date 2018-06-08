@@ -14,7 +14,6 @@ describe("Color completion", () => {
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
@@ -31,7 +30,6 @@ describe("Color completion", () => {
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
@@ -39,7 +37,6 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		console.log(completions);
 	});
 
 	it("should provide completion for colors (center attribute)", () => {
@@ -49,7 +46,6 @@ describe("Color completion", () => {
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
@@ -57,6 +53,54 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		console.log(completions);
+	});
+
+	it("should provide completion for colors (center attribute with spaces)", () => {
+		const content = `graph {
+			a -- b [label="hi!" , color=,  shape=box];
+		}`;
+		const requestOffset = content.indexOf("color=") + "color=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		expect(completions).to.exist;
+		if (!completions) throw "Just for the type checker";
+
+		expect(completions).to.have.length.greaterThan(0);
+	});
+
+	it("should provide completion for colors (center attribute with spaces and semicolons)", () => {
+		const content = `graph {
+			a -- b [label="hi!" ; color=;  shape=box];
+		}`;
+		const requestOffset = content.indexOf("color=") + "color=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		expect(completions).to.exist;
+		if (!completions) throw "Just for the type checker";
+
+		expect(completions).to.have.length.greaterThan(0);
+	});
+
+	it("should provide completion for colors (center attribute mixed spaces and separators)", () => {
+		const content = `graph {
+			a -- b [label="hi!" ,color=;
+			 shape=box];
+		}`;
+		const requestOffset = content.indexOf("color=") + "color=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		expect(completions).to.exist;
+		if (!completions) throw "Just for the type checker";
+
+		expect(completions).to.have.length.greaterThan(0);
 	});
 });

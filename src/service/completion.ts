@@ -4,6 +4,7 @@ import { findNodeAtOffset, getIdentifierText } from "../checker";
 import { getStart, escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";
 
+// TODO: Rewrite pattern matching
 export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.CompletionItem[] {
 	const symbols = sourceFile.symbols;
 	if (!symbols) throw "sourceFile is not bound";
@@ -24,32 +25,39 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 	if (isIdentifierNode(prevNode)) {
 		const p = prevNode.parent;
-		if (p && p.kind === SyntaxKind.NodeId) {
-			// Someone is typing an identifier, send the list of identifiers
-			const parentIdText = getIdentifierText((p as NodeId).id);
+		if (p) {
+			switch (p.kind) {
+				case SyntaxKind.NodeId: {
+					// Someone is typing an identifier, send the list of identifiers
+					const parentIdText = getIdentifierText((p as NodeId).id);
 
-			const res = new Array<lst.CompletionItem>();
-			symbols.forEach((value, key) => {
-				if (key !== parentIdText) {
-					let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
-					const a = value.firstMention.parent;
-					if (a) {
-						switch (a.kind) {
-							case SyntaxKind.DirectedGraph:
-							case SyntaxKind.UndirectedGraph:
-								kind = lst.CompletionItemKind.Class;
-								break;
+					const res = new Array<lst.CompletionItem>();
+					symbols.forEach((value, key) => {
+						if (key !== parentIdText) {
+							let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
+							const a = value.firstMention.parent;
+							if (a) {
+								switch (a.kind) {
+									case SyntaxKind.DirectedGraph:
+									case SyntaxKind.UndirectedGraph:
+										kind = lst.CompletionItemKind.Class;
+										break;
+								}
+							}
+
+							res.push({
+								label: escapeIdentifierText(key),
+								kind: kind as lst.CompletionItemKind,
+							});
 						}
-					}
-
-					res.push({
-						label: escapeIdentifierText(key),
-						kind: kind as lst.CompletionItemKind,
 					});
-				}
-			});
 
-			return res;
+					return res;
+				}
+				case SyntaxKind.Assignment: {
+					return getAssignmentCompletion(p as Assignment);
+				}
+			}
 		}
 	}
 
@@ -61,29 +69,30 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 		if (!attribute.parent) throw "sourceFile is not bound";
 
 		const parent = attribute.parent;
-		switch (parent.kind) {
-			case SyntaxKind.Assignment: {
-				const p = (parent as Assignment)
-				const property = getIdentifierText(p.leftId);
-				if (!property)
-					return [];
-
-				const completion = staticCompletions[property];
-				if (!completion)
-					return []; // TODO: Maybe add existing strings, or something else, depending on stuff
-
-				const kind = completion.kind;
-				return completion.values.map(label => {
-					return {
-						label: escapeIdentifierText(label),
-						kind,
-					};
-				});
-			}
+		if (parent.kind === SyntaxKind.Assignment) {
+			return getAssignmentCompletion(parent as Assignment);
 		}
 	}
 
 	return [];
+}
+
+function getAssignmentCompletion(assignment: Assignment) {
+	const property = getIdentifierText(assignment.leftId);
+	if (!property)
+		return [];
+
+	const completion = staticCompletions[property];
+	if (!completion)
+		return []; // TODO: Maybe add existing strings, or something else, depending on stuff
+
+	const kind = completion.kind;
+	return completion.values.map(label => {
+		return {
+			label: escapeIdentifierText(label),
+			kind,
+		};
+	});
 }
 
 /*
