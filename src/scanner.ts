@@ -1,5 +1,6 @@
 import { createMapFromTemplate } from "./core";
 import { SyntaxKind, CharacterCodes, TokenFlags, DiagnosticCategory, ScanError } from "./types";
+import { assertNever } from "./service/util";
 
 export interface Scanner {
 	readonly end: number;
@@ -594,7 +595,7 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 			return ch === CharacterCodes.minus
 				|| ch === CharacterCodes.dot
 				|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9;
-		default: throw "Invalid id type: " + idType;
+		default: return assertNever(idType);
 	}
 }
 
