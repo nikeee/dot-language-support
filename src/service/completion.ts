@@ -83,7 +83,6 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 		}
 	}
 
-	console.error("Sending fallback");
 	return [];
 }
 
