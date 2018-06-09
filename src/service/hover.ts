@@ -45,13 +45,13 @@ function getHoverContents(n: SyntaxNode): string {
 				case SyntaxKind.DirectedGraph: {
 					const graphId = (parent as Graph).id;
 					if (graphId)
-						return `Directed graph "${graphId}"`;
+						return `Directed graph "${getIdentifierText(graphId)}"`;
 					return `Unnamed directed graph`;
 				}
 				case SyntaxKind.UndirectedGraph: {
 					const graphId = (parent as Graph).id;
 					if (graphId)
-						return `Undirected graph "${graphId}"`;
+						return `Undirected graph "${getIdentifierText(graphId)}"`;
 					return `Unnamed undirected graph`;
 				}
 				case SyntaxKind.SubGraphStatement: {
