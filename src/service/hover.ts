@@ -22,7 +22,7 @@ export function hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.P
 function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hover | undefined {
 	const contents = getHoverContents(n);
 
-	if(contents) {
+	if (contents) {
 		const range = {
 			start: doc.positionAt(getStart(sf, n)),
 			end: doc.positionAt(n.end),
@@ -57,15 +57,15 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 				case SyntaxKind.SubGraphStatement: {
 					const sgs = (parent as SubGraphStatement);
 					const sg = sgs.subgraph;
-					if (sg.id)
-						return `(sub graph) ${getIdentifierText(sg.id)}`;
-					return `(sub graph)`;
+					return !!sg.id
+						? `(sub graph) ${getIdentifierText(sg.id)}`
+						: `(sub graph)`;
 				}
 				case SyntaxKind.SubGraph: {
 					const sg = (parent as SubGraph);
-					if (sg.id)
-						return `(sub graph) ${getIdentifierText(sg.id)}`;
-					return `(sub graph)`;
+					return !!sg.id
+						? `(sub graph) ${getIdentifierText(sg.id)}`
+						: `(sub graph)`;
 				}
 				case SyntaxKind.IdEqualsIdStatement: {
 					const idEqId = parent as IdEqualsIdStatement;
@@ -86,7 +86,7 @@ function getGraphHover(n: SyntaxNode, parent: Graph): string {
 	const direction = g.kind === SyntaxKind.DirectedGraph ? "directed" : "undirected";
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
-	return graphId
+	return !!graphId
 		? `(${strict}${direction} graph) ${graphId}`
 		: `(${strict}${direction} graph)`;
 }
