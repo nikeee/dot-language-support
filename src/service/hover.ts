@@ -50,22 +50,10 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					const right = getIdentifierText(assignment.rightId);
 					return `(assignment) \`${left}\` = \`${right}\``;
 				}
-				case SyntaxKind.DirectedGraph: {
-					const g = parent as Graph;
-					const graphId = g.id;
-					const strict = g.strict ? "strict " : "";
-					if (graphId)
-						return `(${strict}directed graph) ${graphId}`;
-					return `(${strict}directed graph)`;
-				}
-				case SyntaxKind.UndirectedGraph: {
-					const g = parent as Graph;
-					const graphId = g.id;
-					const strict = g.strict ? "strict " : "";
-					if (graphId)
-						return `(${strict}undirected graph) ${graphId}`;
-					return `(${strict}undirected graph)`;
-				}
+				case SyntaxKind.DirectedGraph:
+					return getGraphHover(n, parent as Graph);
+				case SyntaxKind.UndirectedGraph:
+					return getGraphHover(n, parent as Graph);
 				case SyntaxKind.SubGraphStatement: {
 					const sgs = (parent as SubGraphStatement);
 					const sg = sgs.subgraph;
@@ -91,4 +79,14 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		return SyntaxKind[n.kind];
 	}
 	return undefined;
+}
+
+function getGraphHover(n: SyntaxNode, parent: Graph): string {
+	const g = parent as Graph;
+	const direction = g.kind === SyntaxKind.DirectedGraph ? "directed" : "undirected";
+	const graphId = g.id;
+	const strict = g.strict ? "strict " : "";
+	return graphId
+		? `(${strict}${direction} graph) ${graphId}`
+		: `(${strict}${direction} graph)`;
 }
