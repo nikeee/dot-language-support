@@ -37,6 +37,7 @@ function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hov
 
 // TODO: Maybe improve this to use something like
 // type HoverHandler = (node: SyntaxNode, parent?: SyntaxNode) => undefined | string;
+// TODO: Handle all leaves of the syntax tree
 function getHoverContents(n: SyntaxNode): string | undefined {
 	if (isIdentifierNode(n)) {
 		const parent = n.parent;
@@ -87,6 +88,6 @@ function getGraphHover(n: SyntaxNode, parent: Graph): string {
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
 	return !!graphId
-		? `(${strict}${direction} graph) ${graphId}`
+		? `(${strict}${direction} graph) ${(getIdentifierText(graphId))}`
 		: `(${strict}${direction} graph)`;
 }
