@@ -8,7 +8,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.spec.ts tests/*.spec.ts",
-    "clean": "rm -rv -- lib/* || true",
+    "clean": "rimraf lib",
     "compile": "tsc",
     "prepare": "npm run compile"
   },
@@ -32,6 +32,7 @@
     "@types/mocha": "^5.2.0",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "rimraf": "^2.6.2",
     "ts-node": "^6.0.5",
     "typescript": "^2.9.1",
     "vscode-languageserver": "^4.1.3"
