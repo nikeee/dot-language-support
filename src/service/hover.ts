@@ -77,7 +77,10 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 			}
 			return SyntaxKind[parent.kind];
 		}
-		return SyntaxKind[n.kind];
+		const fallback = SyntaxKind[n.kind];
+		return fallback
+			? "(" + fallback.toLowerCase() + ")"
+			: undefined;
 	}
 	return undefined;
 }
