@@ -1,4 +1,27 @@
-import { SourceFile, SyntaxNode, SyntaxKind, Graph, AttributeStatement, EdgeStatement, NodeStatement, SubGraphStatement, SyntaxNodeArray, IdEqualsIdStatement, QuotedTextIdentifier, EdgeRhs, AttributeContainer, Assignment, NormalPointDeclaration, CompassPointDeclaration, NodeId, TextIdentifier, SymbolTable, TypeSymbol, Statement, Identifier, GraphContext, SubGraph } from "./types";
+import {
+	SourceFile,
+	SyntaxNode,
+	SyntaxKind,
+	Graph,
+	AttributeStatement,
+	EdgeStatement,
+	NodeStatement,
+	SubGraphStatement,
+	SyntaxNodeArray,
+	IdEqualsIdStatement,
+	QuotedTextIdentifier,
+	EdgeRhs,
+	AttributeContainer,
+	Assignment, NormalPointDeclaration,
+	CompassPointDeclaration,
+	NodeId,
+	SymbolTable,
+	TypeSymbol,
+	Statement,
+	Identifier,
+	GraphContext,
+	SubGraph,
+} from "./types";
 import { getIdentifierText } from "./checker";
 import { isIdentifierNode } from "./parser";
 
@@ -48,10 +71,10 @@ function createBinder(): Binder {
 				return bindEdgeStatement(node as EdgeStatement);
 			case SyntaxKind.NodeStatement:
 				return bindNodeStatement(node as NodeStatement);
-				case SyntaxKind.SubGraph:
-					return bindSubGraph(node as SubGraph);
-					case SyntaxKind.SubGraphStatement:
-						return bindSubGraphStatement(node as SubGraphStatement);
+			case SyntaxKind.SubGraph:
+				return bindSubGraph(node as SubGraph);
+			case SyntaxKind.SubGraphStatement:
+				return bindSubGraphStatement(node as SubGraphStatement);
 			case SyntaxKind.IdEqualsIdStatement:
 				return bindIdEqualsIdStatement(node as IdEqualsIdStatement);
 			case SyntaxKind.QuotedTextIdentifier:

@@ -1,4 +1,22 @@
-import { SyntaxNode, SyntaxNodeArray, SyntaxKind, Graph, AttributeStatement, EdgeStatement, NodeStatement, SubGraphStatement, QuotedTextIdentifier, NodeId, IdEqualsIdStatement, EdgeRhs, AttributeContainer, Assignment, NormalPointDeclaration, CompassPointDeclaration, EdgeOp, SubGraph } from "./types";
+import {
+	SyntaxNode,
+	SyntaxNodeArray,
+	SyntaxKind,
+	Graph,
+	AttributeStatement,
+	EdgeStatement,
+	NodeStatement,
+	SubGraphStatement,
+	QuotedTextIdentifier,
+	NodeId,
+	IdEqualsIdStatement,
+	EdgeRhs,
+	AttributeContainer,
+	Assignment,
+	NormalPointDeclaration,
+	CompassPointDeclaration,
+	SubGraph
+} from "./types";
 
 function visitNode<T>(cbNode: (node: SyntaxNode) => T, node?: SyntaxNode): T | undefined {
 	return node && cbNode(node);
