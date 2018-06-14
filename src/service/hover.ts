@@ -77,12 +77,21 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 			}
 			return SyntaxKind[parent.kind];
 		}
+
 		const fallback = SyntaxKind[n.kind];
 		return fallback
 			? "(" + fallback.toLowerCase() + ")"
 			: undefined;
 	}
-	return undefined;
+
+	switch (n.kind) {
+		case SyntaxKind.GraphKeyword:
+		case SyntaxKind.DigraphKeyword:
+		case SyntaxKind.StrictKeyword:
+			return getGraphHover(n, n.parent as Graph);
+		default:
+			return undefined;
+	}
 }
 
 function getGraphHover(n: SyntaxNode, parent: Graph): string {

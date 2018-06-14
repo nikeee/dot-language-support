@@ -40,42 +40,42 @@ describe("Hover Handling", () => {
 			offset);
 	}
 
-	it("should correctly return graph info, offset 0", () => {
+	it("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, offset 3", () => {
+	it("should correctly return graph info (offset 3)", () => {
 		const h = hoverAtSampleAtOffset(3);
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, offset " + "digraph".length, () => {
+	it("should correctly return graph info (offset " + "digraph".length + ")", () => {
 		const h = hoverAtSampleAtOffset("digraph".length);
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, offset " + "digraph Gra".length, () => {
+	it("should correctly return graph info (offset " + "digraph Gra".length+ ")", () => {
 		const h = hoverAtSampleAtOffset("digraph Gra".length);
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, strict graph, offset 0", () => {
+	it("should correctly return graph info, strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(0);
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, strict graph, offset 12", () => {
+	it("should correctly return graph info, strict graph (offset 12)", () => {
 		const h = hoverAtStrictSampleAtOffset(12);
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, strict graph, offset 21", () => {
+	it("should correctly return graph info, strict graph (offset 21)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, unnamed strict graph, offset 0", () => {
+	it("should correctly return graph info, unnamed strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
 	});
