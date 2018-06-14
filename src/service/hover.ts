@@ -51,16 +51,20 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					return `(assignment) \`${left}\` = \`${right}\``;
 				}
 				case SyntaxKind.DirectedGraph: {
-					const graphId = (parent as Graph).id;
+					const g = parent as Graph;
+					const graphId = g.id;
+					const strict = g.strict ? "strict " : "";
 					if (graphId)
-						return `(directed graph) ${graphId}`;
-					return `(directed graph)`;
+						return `(${strict}directed graph) ${graphId}`;
+					return `(${strict}directed graph)`;
 				}
 				case SyntaxKind.UndirectedGraph: {
-					const graphId = (parent as Graph).id;
+					const g = parent as Graph;
+					const graphId = g.id;
+					const strict = g.strict ? "strict " : "";
 					if (graphId)
-						return `(undirected graph) ${graphId}`;
-					return `(undirected graph)`;
+						return `(${strict}undirected graph) ${graphId}`;
+					return `(${strict}undirected graph)`;
 				}
 				case SyntaxKind.SubGraphStatement: {
 					const sgs = (parent as SubGraphStatement);
