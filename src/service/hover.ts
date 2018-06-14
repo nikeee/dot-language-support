@@ -43,43 +43,43 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		if (parent) {
 			switch (parent.kind) {
 				case SyntaxKind.NodeId:
-					return `Node "${getIdentifierText(n)}"`;
+					return `(node) ${getIdentifierText(n)}`;
 				case SyntaxKind.Assignment: {
 					const assignment = parent as Assignment;
 					const left = getIdentifierText(assignment.leftId);
 					const right = getIdentifierText(assignment.rightId);
-					return `Assigmnent of \`${left}\` to \`${right}\``;
+					return `(assignment) \`${left}\` = \`${right}\``;
 				}
 				case SyntaxKind.DirectedGraph: {
 					const graphId = (parent as Graph).id;
 					if (graphId)
-						return `Directed graph "${graphId}"`;
-					return `Unnamed directed graph`;
+						return `(directed graph) ${graphId}`;
+					return `(directed graph)`;
 				}
 				case SyntaxKind.UndirectedGraph: {
 					const graphId = (parent as Graph).id;
 					if (graphId)
-						return `Undirected graph "${graphId}"`;
-					return `Unnamed undirected graph`;
+						return `(undirected graph) ${graphId}`;
+					return `(undirected graph)`;
 				}
 				case SyntaxKind.SubGraphStatement: {
 					const sgs = (parent as SubGraphStatement);
 					const sg = sgs.subgraph;
 					if (sg.id)
-						return `Sub graph "${getIdentifierText(sg.id)}"`;
-					return `Unnamed sub graph`;
+						return `(sub graph) ${getIdentifierText(sg.id)}`;
+					return `(sub graph)`;
 				}
 				case SyntaxKind.SubGraph: {
 					const sg = (parent as SubGraph);
 					if (sg.id)
-						return `Sub graph "${getIdentifierText(sg.id)}"`;
-					return `Unnamed sub graph`;
+						return `(sub graph) ${getIdentifierText(sg.id)}`;
+					return `(sub graph)`;
 				}
 				case SyntaxKind.IdEqualsIdStatement: {
 					const idEqId = parent as IdEqualsIdStatement;
 					const left = getIdentifierText(idEqId.leftId);
 					const right = getIdentifierText(idEqId.rightId);
-					return `Setting variable \`${left}\` to \`${right}\``;
+					return `(graph property) \`${left}\` = \`${right}\``;
 				}
 			}
 			return SyntaxKind[parent.kind];
