@@ -19,17 +19,25 @@ export function hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.P
 	return getNodeHover(doc, sourceFile, node);
 }
 
-function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hover {
-	const start = doc.positionAt(getStart(sf, n));
-	const end = doc.positionAt(n.end);
+function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hover | undefined {
+	const contents = getHoverContents(n);
 
-	return {
-		contents: getHoverContents(n),
-		range: { start, end },
-	};
+	if(contents) {
+		const range = {
+			start: doc.positionAt(getStart(sf, n)),
+			end: doc.positionAt(n.end),
+		};
+		return {
+			contents,
+			range,
+		};
+	}
+	return undefined;
 }
 
-function getHoverContents(n: SyntaxNode): string {
+// TODO: Maybe improve this to use something like
+// type HoverHandler = (node: SyntaxNode, parent?: SyntaxNode) => undefined | string;
+function getHoverContents(n: SyntaxNode): string | undefined {
 	if (isIdentifierNode(n)) {
 		const parent = n.parent;
 		if (parent) {
@@ -78,5 +86,5 @@ function getHoverContents(n: SyntaxNode): string {
 		}
 		return SyntaxKind[n.kind];
 	}
-	return "TODO";
+	return undefined;
 }
