@@ -1,7 +1,8 @@
 import * as lst from "vscode-languageserver-types";
 import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph } from "../types";
 import { getIdentifierText, findNodeAtOffset } from "../checker";
-import { isIdentifierNode, Parser, DocumentLike } from "../";
+import { DocumentLike } from "../";
+import { isIdentifierNode } from "../parser";
 import { getStart } from "./util";
 
 
@@ -37,7 +38,7 @@ function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hov
 
 // TODO: Maybe improve this to use something like
 // type HoverHandler = (node: SyntaxNode, parent?: SyntaxNode) => undefined | string;
-// TODO: Handle all leaves of the syntax tree
+// TODO: Handle all leafs of the syntax tree
 function getHoverContents(n: SyntaxNode): string | undefined {
 	if (isIdentifierNode(n)) {
 		const parent = n.parent;
@@ -52,9 +53,9 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					return `(assignment) \`${left}\` = \`${right}\``;
 				}
 				case SyntaxKind.DirectedGraph:
-					return getGraphHover(n, parent as Graph);
+					return getGraphHover(parent as Graph);
 				case SyntaxKind.UndirectedGraph:
-					return getGraphHover(n, parent as Graph);
+					return getGraphHover(parent as Graph);
 				case SyntaxKind.SubGraphStatement: {
 					const sgs = (parent as SubGraphStatement);
 					const sg = sgs.subgraph;
@@ -88,14 +89,20 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		case SyntaxKind.GraphKeyword:
 		case SyntaxKind.DigraphKeyword:
 		case SyntaxKind.StrictKeyword:
-			return getGraphHover(n, n.parent as Graph);
+			return getGraphHover(n.parent as Graph);
+
+		// TODO: Why does findNodeAtOffset() return a non-leaf node
+		// Did not expect to need to have this here.
+		case SyntaxKind.DirectedGraph:
+		case SyntaxKind.UndirectedGraph:
+			return getGraphHover(n as Graph);
+
 		default:
 			return undefined;
 	}
 }
 
-function getGraphHover(n: SyntaxNode, parent: Graph): string {
-	const g = parent as Graph;
+function getGraphHover(g: Graph): string {
 	const direction = g.kind === SyntaxKind.DirectedGraph ? "directed" : "undirected";
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
