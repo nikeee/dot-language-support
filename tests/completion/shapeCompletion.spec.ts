@@ -1,5 +1,4 @@
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils";
-import { SyntaxKind } from "../../src/types";
+import { ensureDocAndSourceFile } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
