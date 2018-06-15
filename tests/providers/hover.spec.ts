@@ -101,7 +101,7 @@ describe("Hover Handling", () => {
 		expect(h.contents).to.equal(expected);
 	});
 
-	it("should correctly return edge info (undirected graph)", () => {
+	it("should correctly return edge info (directed graph)", () => {
 		const expected = "(edge) a -> b"
 
 		let h = hoverAtEdgeSampleAtOffsetDirected(9);
@@ -112,8 +112,5 @@ describe("Hover Handling", () => {
 
 		h = hoverAtEdgeSampleAtOffsetDirected(11);
 		expect(h.contents).to.equal(expected);
-	});
-
-	it("should correctly return edge info (undirected graph)", () => {
 	});
 });
