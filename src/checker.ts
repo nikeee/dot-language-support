@@ -231,7 +231,7 @@ export function edgeStatementHasAttributes(es: EdgeStatement) {
 		&& es.attributes.some(a => a.assignments && a.assignments.length > 0);
 }
 
-export function getIdentifierText(n: Identifier) {
+export function getIdentifierText(n: Identifier): string {
 	switch (n.kind) {
 		case SyntaxKind.HtmlIdentifier:
 			return n.htmlContent;
@@ -240,7 +240,7 @@ export function getIdentifierText(n: Identifier) {
 		case SyntaxKind.NumericIdentifier:
 			return n.text;
 		case SyntaxKind.QuotedTextIdentifier:
-			return n.concatenation;
+			return n.concatenation as string; // Assertion because concatenation is filled in binding step
 		default:
 			return assertNever(n);
 	}

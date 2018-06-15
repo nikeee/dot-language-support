@@ -13,7 +13,7 @@ describe("Hover Handling", () => {
 		const h = hover(doc, sf, doc.positionAt(offset));
 
 		expect(h).to.exist;
-		if(!h) throw "Just for the type checker";
+		if (!h) throw "Just for the type checker";
 		expect(h.contents).to.exist;
 		expect(h.range).to.exist;
 
@@ -55,7 +55,7 @@ describe("Hover Handling", () => {
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info (offset " + "digraph Gra".length+ ")", () => {
+	it("should correctly return graph info (offset " + "digraph Gra".length + ")", () => {
 		const h = hoverAtSampleAtOffset("digraph Gra".length);
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
@@ -78,5 +78,42 @@ describe("Hover Handling", () => {
 	it("should correctly return graph info, unnamed strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
+	});
+
+	function hoverAtEdgeSampleAtOffsetUndirected(offset: number) {
+		return hoverSample(`graph { a -- b }`, offset);
+	}
+
+	function hoverAtEdgeSampleAtOffsetDirected(offset: number) {
+		return hoverSample(`graph { a -> b }`, offset);
+	}
+
+	it("should correctly return edge info (undirected graph)", () => {
+		const expected = "(edge) a -- b"
+
+		let h = hoverAtEdgeSampleAtOffsetUndirected(9);
+		expect(h.contents).to.equal("(node) a"); // Due to finding the specific syntax node, this has to be the hover of the node
+
+		h = hoverAtEdgeSampleAtOffsetUndirected(10);
+		expect(h.contents).to.equal(expected);
+
+		h = hoverAtEdgeSampleAtOffsetUndirected(11);
+		expect(h.contents).to.equal(expected);
+	});
+
+	it("should correctly return edge info (undirected graph)", () => {
+		const expected = "(edge) a -> b"
+
+		let h = hoverAtEdgeSampleAtOffsetDirected(9);
+		expect(h.contents).to.equal("(node) a"); // Due to finding the specific syntax node, this has to be the hover of the node
+
+		h = hoverAtEdgeSampleAtOffsetDirected(10);
+		expect(h.contents).to.equal(expected);
+
+		h = hoverAtEdgeSampleAtOffsetDirected(11);
+		expect(h.contents).to.equal(expected);
+	});
+
+	it("should correctly return edge info (undirected graph)", () => {
 	});
 });

@@ -1,9 +1,10 @@
 import * as lst from "vscode-languageserver-types";
-import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph } from "../types";
+import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph, EdgeRhs, EdgeStatement, EdgeSourceOrTarget } from "../types";
 import { getIdentifierText, findNodeAtOffset } from "../checker";
 import { DocumentLike } from "../";
 import { isIdentifierNode } from "../parser";
 import { getStart } from "./util";
+import { getEdgeStr } from "./command/common";
 
 
 export function hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Hover | undefined {
@@ -75,6 +76,8 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					const right = getIdentifierText(idEqId.rightId);
 					return `(graph property) \`${left}\` = \`${right}\``;
 				}
+				case SyntaxKind.EdgeRhs:
+					return getEdgeHover(parent as EdgeRhs);
 			}
 			return SyntaxKind[parent.kind];
 		}
@@ -97,6 +100,10 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		case SyntaxKind.UndirectedGraph:
 			return getGraphHover(n as Graph);
 
+		case SyntaxKind.DirectedEdgeOp:
+		case SyntaxKind.UndirectedEdgeOp:
+			return getEdgeHover(n.parent as EdgeRhs);
+
 		default:
 			return undefined;
 	}
@@ -109,4 +116,34 @@ function getGraphHover(g: Graph): string {
 	return !!graphId
 		? `(${strict}${direction} graph) ${(getIdentifierText(graphId))}`
 		: `(${strict}${direction} graph)`;
+}
+
+function getEdgeHover(n: EdgeRhs) {
+	const p = n.parent as EdgeStatement;
+	if (!p || p.rhs.length === 0)
+		return undefined;
+
+	let source: EdgeSourceOrTarget | undefined = undefined;
+	for (const curr of p.rhs) {
+		if (curr === n)
+			break;
+		source = curr.target;
+	}
+
+	if (source === undefined)
+		source = p.source;
+
+	const edgeOpStr = getEdgeStr(n.operation.kind);
+
+	return source === undefined
+		? undefined
+		: `(edge) ${getEdgeSourceOrTargetText(source)} ${edgeOpStr} ${getEdgeSourceOrTargetText(n.target)}`;
+}
+
+function getEdgeSourceOrTargetText(n: EdgeSourceOrTarget): string {
+	return n.kind === SyntaxKind.NodeId
+		? getIdentifierText(n.id)
+		: n.id !== undefined
+			? `${getIdentifierText(n.id)}`
+			: "sub graph";
 }

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+
+    "strict": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "outDir": "lib",
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+  }
+}
