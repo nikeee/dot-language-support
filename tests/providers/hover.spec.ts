@@ -105,4 +105,27 @@ describe("Hover Handling", () => {
 		h = hoverAtEdgeSampleAtOffsetDirected(11);
 		expect(h.contents).to.equal(expected);
 	});
+
+	const hoverSubGraph = (offset: number) => hoverSample("graph{subgraph{c--a;c--b}}", offset);
+
+	it("should correctly hover on sub graphs", () => {
+		let h = hoverSubGraph(15);
+		expect(h.contents).to.equal("(node) c");
+
+		h = hoverSubGraph(18);
+		expect(h.contents).to.equal("(node) a");
+
+		h = hoverSubGraph(20);
+		expect(h.contents).to.equal("(node) c");
+
+		h = hoverSubGraph(23);
+		expect(h.contents).to.equal("(node) b");
+
+		// This should also work, however. There seems to be something wrong in finding the node by offset
+		// h = hoverSubGraph(16);
+		// expect(h.contents).to.equal("(edge) c -- a");
+
+		h = hoverSubGraph(17);
+		expect(h.contents).to.equal("(edge) c -- a");
+	});
 });
