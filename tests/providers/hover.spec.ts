@@ -1,6 +1,4 @@
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils";
-import { SyntaxKind, SourceFile } from "../../src/types";
-import { Parser } from "../../src/parser";
+import { ensureDocAndSourceFile } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 import { hover } from "../../src/service/hover";
@@ -8,7 +6,6 @@ import { hover } from "../../src/service/hover";
 describe("Hover Handling", () => {
 
 	function hoverSample(content: string, offset: number) {
-
 		const [doc, sf] = ensureDocAndSourceFile(content);
 		const h = hover(doc, sf, doc.positionAt(offset));
 
@@ -80,13 +77,8 @@ describe("Hover Handling", () => {
 		expect(h.contents).to.equal("(strict directed graph) GraphName");
 	});
 
-	function hoverAtEdgeSampleAtOffsetUndirected(offset: number) {
-		return hoverSample(`graph { a -- b }`, offset);
-	}
-
-	function hoverAtEdgeSampleAtOffsetDirected(offset: number) {
-		return hoverSample(`graph { a -> b }`, offset);
-	}
+	const hoverAtEdgeSampleAtOffsetUndirected = (offset: number) => hoverSample(`graph { a -- b }`, offset);
+	const hoverAtEdgeSampleAtOffsetDirected = (offset: number) => hoverSample(`graph { a -> b }`, offset);
 
 	it("should correctly return edge info (undirected graph)", () => {
 		const expected = "(edge) a -- b"
