@@ -1,4 +1,5 @@
-import { SyntaxNode,
+import {
+	SyntaxNode,
 	Identifier,
 	SyntaxKind,
 	Graph,
@@ -19,7 +20,8 @@ import { SyntaxNode,
 	Statement,
 	StatementOf,
 	Token,
- } from "./types";
+	TextRange,
+} from "./types";
 import { assertNever, getStart } from "./service/util";
 import { forEachChild } from "./visitor";
 
@@ -47,12 +49,41 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 	return prev;
 }
 
+function rangeContainsOffset(range: TextRange, offset: number) {
+	return range.pos <= offset && offset <= range.end;
+}
+
+/*
+// TODO: This is a failed, buggy rewrite. Do not use.
+export function findNodeAtOffset2(root: SyntaxNode, offset: number): SyntaxNode | undefined {
+
+	// Check if the current checked contains the passed offset
+	if (rangeContainsOffset(root, offset)) {
+		const children: SyntaxNode[] = [];
+		forEachChild(root, child => void children.push(child));
+
+		const narrorerChildren = children
+			.map(c => findNodeAtOffset2(c, offset))
+			.filter(c => c !== undefined);
+
+		// TODO: Assert narrorerChild.length is 1 or 0?
+
+		return narrorerChildren.length === 1
+			? narrorerChildren[0]
+			: root;
+	}
+	return undefined;
+}
+*/
+
 export function findNodeAtOffset(root: SyntaxNode, offset: number): SyntaxNode | undefined {
 	// Wow, I don't think this actually works. But it seems to.
 
 	// TODO: Fix this, this methods throws sometimes
 
-	if (root.pos <= offset && offset <= root.end) {
+	// return findNodeAtOffset2(root, offset);
+
+	if (rangeContainsOffset(root, offset)) {
 		let candidate = root;
 
 		forEachChild(root, n => {
