@@ -4,7 +4,8 @@ import { findNodeAtOffset, getIdentifierText } from "../checker";
 import { getStart, escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";
 
-// TODO: Rewrite pattern matching
+// TODO: Rewrite pattern matching + completion
+// Currently, we use this hack with "inclusiveEnd"
 export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.CompletionItem[] {
 	const symbols = sourceFile.symbols;
 	if (!symbols) throw "sourceFile is not bound";
@@ -15,11 +16,11 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 	const offset = doc.offsetAt(position);
 
-	const node = findNodeAtOffset(g, offset);
+	const node = findNodeAtOffset(g, offset, true);
 	if (!node)
 		return [];
 
-	const prevNode = findNodeAtOffset(g, node.pos - 1);
+	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
 	if (!prevNode)
 		return [];
 

@@ -49,56 +49,26 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 	return prev;
 }
 
-function rangeContainsOffset(range: TextRange, offset: number) {
-	return range.pos <= offset && offset <= range.end;
+function rangeContainsOffset(range: TextRange, offset: number, inclusiveEnd: boolean) {
+	return inclusiveEnd
+	? range.pos <= offset && offset <= range.end
+	: range.pos <= offset && offset < range.end;
 }
 
-/*
-// TODO: This is a failed, buggy rewrite. Do not use.
-export function findNodeAtOffset2(root: SyntaxNode, offset: number): SyntaxNode | undefined {
-
-	// Check if the current checked contains the passed offset
-	if (rangeContainsOffset(root, offset)) {
-		const children: SyntaxNode[] = [];
-		forEachChild(root, child => void children.push(child));
-
-		const narrorerChildren = children
-			.map(c => findNodeAtOffset2(c, offset))
-			.filter(c => c !== undefined);
-
-		// TODO: Assert narrorerChild.length is 1 or 0?
-
-		return narrorerChildren.length === 1
-			? narrorerChildren[0]
-			: root;
-	}
-	return undefined;
-}
-*/
-
-export function findNodeAtOffset(root: SyntaxNode, offset: number): SyntaxNode | undefined {
+// TODO: inclusiveEnd seems a hack to me. We shoudl remove that later.
+export function findNodeAtOffset(root: SyntaxNode, offset: number, inclusiveEnd: boolean = false): SyntaxNode | undefined {
 	// Wow, I don't think this actually works. But it seems to.
 
 	// TODO: Fix this, this methods throws sometimes
 
-	// return findNodeAtOffset2(root, offset);
+	if (root.pos === offset && root.pos === root.end)
+		return root;
 
-	if (rangeContainsOffset(root, offset)) {
-		let candidate = root;
+	// Check if the current checked contains the passed offset
+	if (rangeContainsOffset(root, offset, inclusiveEnd)) {
+		const narrowerChild = forEachChild(root, child => findNodeAtOffset(child, offset, inclusiveEnd));
 
-		forEachChild(root, n => {
-			const r = findNodeAtOffset(n, offset);
-			if (r && (candidate.end - candidate.end) < (root.end - root.pos))
-				candidate = r;
-		}, ns => {
-			for (const n of ns) {
-				const r = findNodeAtOffset(n, offset);
-				if (r && (candidate.end - candidate.end) < (root.end - root.pos))
-					candidate = r;
-			}
-		});
-
-		return candidate;
+		return narrowerChild ? narrowerChild : root;
 	}
 	return undefined;
 }

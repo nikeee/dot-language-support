@@ -84,7 +84,7 @@ describe("Hover Handling", () => {
 		const expected = "(edge) a -- b"
 
 		let h = hoverAtEdgeSampleAtOffsetUndirected(9);
-		expect(h.contents).to.equal("(node) a"); // Due to finding the specific syntax node, this has to be the hover of the node
+		expect(h.contents).to.equal(expected);
 
 		h = hoverAtEdgeSampleAtOffsetUndirected(10);
 		expect(h.contents).to.equal(expected);
@@ -97,7 +97,7 @@ describe("Hover Handling", () => {
 		const expected = "(edge) a -> b"
 
 		let h = hoverAtEdgeSampleAtOffsetDirected(9);
-		expect(h.contents).to.equal("(node) a"); // Due to finding the specific syntax node, this has to be the hover of the node
+		expect(h.contents).to.equal(expected);
 
 		h = hoverAtEdgeSampleAtOffsetDirected(10);
 		expect(h.contents).to.equal(expected);
@@ -121,9 +121,8 @@ describe("Hover Handling", () => {
 		h = hoverSubGraph(23);
 		expect(h.contents).to.equal("(node) b");
 
-		// This should also work, however. There seems to be something wrong in finding the node by offset
-		// h = hoverSubGraph(16);
-		// expect(h.contents).to.equal("(edge) c -- a");
+		h = hoverSubGraph(16);
+		expect(h.contents).to.equal("(edge) c -- a");
 
 		h = hoverSubGraph(17);
 		expect(h.contents).to.equal("(edge) c -- a");
