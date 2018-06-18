@@ -92,7 +92,7 @@ function getAssignmentCompletion(assignment: Assignment): lst.CompletionItem[] {
 	}
 }
 
-function getColorCompletions(): lst.CompletionItem[] {
+function getShapeCompletions(): lst.CompletionItem[] {
 	const kind = lst.CompletionItemKind.EnumMember;
 	return languageFacts.shapes.map(s => ({
 		kind,
@@ -100,7 +100,7 @@ function getColorCompletions(): lst.CompletionItem[] {
 	}));
 }
 
-function getShapeCompletions(): lst.CompletionItem[] {
+function getColorCompletions(): lst.CompletionItem[] {
 	const kind = lst.CompletionItemKind.Color;
 	const colors = languageFacts.colors;
 
