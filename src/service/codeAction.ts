@@ -27,6 +27,7 @@ import {
 	getIdentifierText,
 	isAttrStatement,
 	edgeStatementHasAttributes,
+	nodeContainsErrors,
 } from "../checker";
 
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand";
@@ -294,12 +295,12 @@ export function executeCommand(doc: DocumentLike, sourceFile: SourceFile, cmd: E
 
 
 function subtreeContainsErrors(node: SyntaxNode): boolean {
-	if (hasNodeError(node))
+	if (nodeContainsErrors(node))
 		return true;
 
 	let hasError = false;
 	forEachChild(node, child => {
-		if (hasNodeError(child)) {
+		if (nodeContainsErrors(child)) {
 			hasError = true;
 		}
 		if (!hasError) {
@@ -307,8 +308,4 @@ function subtreeContainsErrors(node: SyntaxNode): boolean {
 		}
 	});
 	return hasError;
-}
-
-function hasNodeError(node: SyntaxNode): boolean {
-	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors
 }

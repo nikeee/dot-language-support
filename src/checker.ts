@@ -255,5 +255,5 @@ function createCheckerError(sub: CheckError): CheckErrorCode {
 }
 
 export function nodeContainsErrors(node: SyntaxNode): boolean {
-	return (node.flags & SyntaxNodeFlags.ContainsErrors) !== 0;
+	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors;
 }
