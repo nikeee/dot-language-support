@@ -57,6 +57,7 @@ export interface SourceFile {
 	identifiers: Set<ID>; // init via parser
 	diagnostics: DiagnosticMessage[];
 	symbols?: SymbolTable; // init via binder
+	colors?: ColorTable; // init via binder
 }
 
 export interface HtmlIdentifier extends SyntaxNode {
@@ -487,12 +488,29 @@ export const enum CharacterCodes {
 
 
 export type SymbolTable = Map<string, TypeSymbol>;
+export type ColorTable = Map<string, ColorInfo>;
 
 export interface TypeSymbol {
 	name: string;
 	firstMention: SyntaxNode;
 	references?: SyntaxNode[];
 	members?: SymbolTable; // sub-types (when current syntax node is a NodeStatement, members are the attribute left IDs)
+}
+
+export interface ColorInfo {
+	node: SyntaxNode;
+}
+
+/** Color representation for LSP */
+export interface Color {
+	/** The red component of this color in the range [0-1]. */
+	readonly red: number;
+	/** The green component of this color in the range [0-1]. */
+	readonly green: number;
+	/** The blue component of this color in the range [0-1]. */
+	readonly blue: number;
+	/** The alpha component of this color in the range [0-1]. */
+	readonly alpha: number;
 }
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
