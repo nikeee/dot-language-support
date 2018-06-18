@@ -171,7 +171,7 @@ function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeR
 		: undefined;
 
 	if (wrongEdges && wrongEdges.length > 0) {
-		wrongEdges.forEach(e => e.operation.flags != SyntaxNodeFlags.ContainsErrors);
+		wrongEdges.forEach(e => e.operation.flags |= SyntaxNodeFlags.ContainsErrors);
 		return wrongEdges;
 	}
 	return undefined;
@@ -252,4 +252,8 @@ function createCheckerError(sub: CheckError): CheckErrorCode {
 		source: ErrorSource.Check,
 		sub,
 	};
+}
+
+export function nodeContainsErrors(node: SyntaxNode): boolean {
+	return (node.flags & SyntaxNodeFlags.ContainsErrors) !== 0;
 }
