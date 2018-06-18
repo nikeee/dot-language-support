@@ -3,7 +3,7 @@ import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFil
 import { getIdentifierText, findNodeAtOffset } from "../checker";
 import { DocumentLike } from "../";
 import { isIdentifierNode } from "../parser";
-import { getStart } from "./util";
+import { getStart, syntaxNodeToRange } from "./util";
 import { getEdgeStr } from "./command/common";
 
 
@@ -25,13 +25,9 @@ function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hov
 	const contents = getHoverContents(n);
 
 	if (contents) {
-		const range = {
-			start: doc.positionAt(getStart(sf, n)),
-			end: doc.positionAt(n.end),
-		};
 		return {
 			contents,
-			range,
+			range: syntaxNodeToRange(doc, sf, n),
 		};
 	}
 	return undefined;
