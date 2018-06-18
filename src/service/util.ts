@@ -33,7 +33,6 @@ export function syntaxNodeToRange(doc: DocumentLike, sourceFile: SourceFile, nod
 	};
 }
 
-
 export function escapeIdentifierText(text: string): string {
 	if (text === "")
 		return quote("");
