@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { ColorInformation } from "vscode-languageserver-protocol"; // TODO: Remove this import and use lst later
+import { ColorInformation } from "./polyfill"; // TODO: Remove this import and use lst later
 import { SourceFile, ColorTable } from "../types";
 import { DocumentLike } from "../";
 import { syntaxNodeToRange } from "./util";
