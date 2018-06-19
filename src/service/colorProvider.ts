@@ -60,5 +60,4 @@ function getHexCodeColor(colorCode: string) {
 		blue: (colorInt & 0x00000ff) / 255.0,
 		alpha: hexCode.length === 8 ? (colorInt & 0xff00000) / 255.0 : 1.0,
 	};
-
 }
