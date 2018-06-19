@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { ColorInformation } from "./polyfill"; // TODO: Remove this import and use lst later
+import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
 import { SourceFile, ColorTable } from "../types";
 import { DocumentLike } from "../";
 import { syntaxNodeToRange } from "./util";
@@ -12,6 +12,19 @@ export function getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): Co
 	return cs
 		? colorTableToColorInformation(doc, sourceFile, cs)
 		: undefined;
+}
+
+export function getColorRepresentation(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined {
+	if (!color || !range)
+		return undefined;
+
+	const hexColor = getColorStringFromColor(color);
+
+	return [
+		{
+			label: hexColor,
+		}
+	];
 }
 
 function colorTableToColorInformation(doc: DocumentLike, sf: SourceFile, colors: ColorTable): ColorInformation[] {
@@ -60,4 +73,21 @@ function getHexCodeColor(colorCode: string) {
 		blue: (colorInt & 0x00000ff) / 255.0,
 		alpha: hexCode.length === 8 ? (colorInt & 0xff00000) / 255.0 : 1.0,
 	};
+}
+
+function getColorStringFromColor(c: Color): string {
+	const red = (c.red * 255) | 0;
+	const green = (c.green * 255) | 0;
+	const blue = (c.blue * 255) | 0;
+	// we ignore alpha here
+
+	return "#" + numberToPaddedString(red) + numberToPaddedString(green) + numberToPaddedString(blue);
+}
+
+function numberToPaddedString(n: number): string {
+	const s = n.toString(16);
+	return (s.length === 1
+		? "0" + s
+		: s
+	).toLowerCase();
 }
