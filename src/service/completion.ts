@@ -21,17 +21,22 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 	const node = findNodeAtOffset(g, offset, true);
 	if (!node)
 		return [];
+	const prevOffsetNode = findNodeAtOffset(g, offset - 1, true);
 
 	const parent = node.parent;
+	const prevOffsetNodeParent = prevOffsetNode ? prevOffsetNode.parent : undefined;
+
+	if ((parent && parent.parent && isEdgeStatement(parent.parent)
+			||
+			(prevOffsetNodeParent && prevOffsetNodeParent.parent && isEdgeStatement(prevOffsetNodeParent.parent )))
+	) {
+		// const edgeStatement = parent.parent as EdgeStatement;
+		return getNodeCompletions(symbols);
+	}
 
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
 	if (!prevNode)
 		return [];
-
-	if (parent && parent.parent && isEdgeStatement(parent.parent)) {
-		// const edgeStatement = parent.parent as EdgeStatement;
-		return getNodeCompletions(symbols);
-	}
 
 	if (isIdentifierNode(prevNode)) {
 		const p = prevNode.parent;
