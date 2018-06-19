@@ -1,6 +1,6 @@
 import * as lst from "vscode-languageserver-types";
-import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId } from "../types";
-import { findNodeAtOffset, getIdentifierText } from "../checker";
+import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable } from "../types";
+import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker";
 import { escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";
 import * as languageFacts from "./languageFacts";
@@ -22,40 +22,23 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 	if (!node)
 		return [];
 
+	const parent = node.parent;
+
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
 	if (!prevNode)
 		return [];
+
+	if (parent && parent.parent && isEdgeStatement(parent.parent)) {
+		// const edgeStatement = parent.parent as EdgeStatement;
+		return getNodeCompletions(symbols);
+	}
 
 	if (isIdentifierNode(prevNode)) {
 		const p = prevNode.parent;
 		if (p) {
 			switch (p.kind) {
 				case SyntaxKind.NodeId: {
-					// Someone is typing an identifier, send the list of identifiers
-					const parentIdText = getIdentifierText((p as NodeId).id);
-
-					const res = new Array<lst.CompletionItem>();
-					symbols.forEach((value, key) => {
-						if (key !== parentIdText) {
-							let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
-							const a = value.firstMention.parent;
-							if (a) {
-								switch (a.kind) {
-									case SyntaxKind.DirectedGraph:
-									case SyntaxKind.UndirectedGraph:
-										kind = lst.CompletionItemKind.Class;
-										break;
-								}
-							}
-
-							res.push({
-								label: escapeIdentifierText(key),
-								kind: kind as lst.CompletionItemKind,
-							});
-						}
-					});
-
-					return res;
+					return getNodeCompletions(symbols);
 				}
 				case SyntaxKind.Assignment: {
 					return getAssignmentCompletion(p as Assignment);
@@ -112,6 +95,29 @@ function getColorCompletions(): lst.CompletionItem[] {
 			// The color name is then displayed along with a preview of the color
 			documentation: (colors as { [i: string]: string })[label],
 		}));
+}
+
+function getNodeCompletions(symbols: SymbolTable): lst.CompletionItem[] {
+	const res = new Array<lst.CompletionItem>();
+	for (const [key, value] of symbols) {
+		let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
+		const a = value.firstMention.parent;
+		if (a) {
+			switch (a.kind) {
+				case SyntaxKind.DirectedGraph:
+				case SyntaxKind.UndirectedGraph:
+					kind = lst.CompletionItemKind.Class;
+					break;
+			}
+		}
+
+		res.push({
+			label: escapeIdentifierText(key),
+			kind: kind as lst.CompletionItemKind,
+		});
+	}
+
+	return res;
 }
 
 /*
