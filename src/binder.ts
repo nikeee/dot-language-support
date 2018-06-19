@@ -292,6 +292,8 @@ function createBinder(): Binder {
 	}
 
 	function ensureSymbolOnTable(name: string, node: SyntaxNode, symbols: SymbolTable) {
+		if (!name)
+			return;
 		let sym = symbols.get(name);
 		if (sym === undefined) {
 			sym = createSymbol(name, node);
