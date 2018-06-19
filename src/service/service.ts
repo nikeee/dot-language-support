@@ -10,7 +10,7 @@ import { renameSymbol } from "./rename";
 import { getCompletions } from "./completion";
 import { checkSourceFile } from "../checker";
 import { getCodeActions, executeCommand, getAvailableCommands } from "./codeAction";
-import { getDocumentColors, getColorRepresentation } from "./colorProvider";
+import { getDocumentColors, getColorRepresentations } from "./colorProvider";
 
 export interface DocumentLike {
 	positionAt(offset: number): lst.Position;
@@ -35,7 +35,7 @@ export interface LanguageService {
 	getCompletions(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.CompletionItem[];
 
 	getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): ColorInformation[] | undefined;
-	getColorRepresentation(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined;
+	getColorRepresentations(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined;
 
 	getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context: lst.CodeActionContext): lst.Command[] | undefined;
 	executeCommand(doc: DocumentLike, sourceFile: SourceFile, command: Omit<lst.Command, "title">): CommandApplication | undefined;
@@ -64,7 +64,7 @@ export function createService(): LanguageService {
 		renameSymbol,
 		getCompletions,
 		getDocumentColors,
-		getColorRepresentation,
+		getColorRepresentations,
 		getCodeActions,
 		executeCommand,
 		getAvailableCommands,
