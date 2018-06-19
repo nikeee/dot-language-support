@@ -153,6 +153,8 @@ function createBinder(): Binder {
 	function bindIdEqualsIdStatement(node: IdEqualsIdStatement) {
 		bind(node.leftId);
 
+		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
+
 		if (node.rightId && !nodeContainsErrors(node.rightId)) {
 			// if right-id is all-okay, we can look if it provides something for our tables
 
@@ -162,7 +164,6 @@ function createBinder(): Binder {
 			}
 		}
 
-		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
 		if (node.terminator) bind(node.terminator);
 	}
 
@@ -210,6 +211,8 @@ function createBinder(): Binder {
 		if (carrierIdentifier)
 			ensureMemberSymbol(node.leftId, carrierIdentifier);
 
+		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
+
 		if (node.rightId && !nodeContainsErrors(node.rightId)) {
 			// TODO: Look out for other assignments that can assign colors
 
@@ -221,7 +224,6 @@ function createBinder(): Binder {
 			}
 		}
 
-		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
 		if (node.terminator) bind(node.terminator);
 	}
 

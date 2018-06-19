@@ -22,7 +22,7 @@ export function getColorRepresentations(doc: DocumentLike, sourceFile: SourceFil
 
 	return [
 		{
-			label: hexColor,
+			label: '"' + hexColor + '"',
 		}
 	];
 }
