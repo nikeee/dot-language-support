@@ -325,10 +325,6 @@ export interface SyntaxNodeArray<T extends SyntaxNode> extends ReadonlyArray<T>,
 }
 export type MutableSyntaxNodeArray<T extends SyntaxNode> = SyntaxNodeArray<T> & T[];
 
-export interface MapLike<T> {
-	[index: string]: T;
-}
-
 
 export const enum SyntaxNodeFlags {
 	None = 0,

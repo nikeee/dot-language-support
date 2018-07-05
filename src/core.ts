@@ -1,6 +1,5 @@
-import { MapLike } from "./types";
 
-export function createMapFromTemplate<T>(template: MapLike<T>): Map<string, T> {
+export function createMapFromTemplate<T>(template: Record<string, T>): Map<string, T> {
 	const map = new Map<string, T>();
 	// Copies keys/values from template. Note that for..in will not throw if
 	// template is undefined, and instead will just exit the loop.
