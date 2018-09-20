@@ -21,8 +21,11 @@ import {
 	Identifier,
 	GraphContext,
 	SubGraph,
+	ColorTable,
+	ColorInfo,
+	SyntaxNodeFlags,
 } from "./types";
-import { getIdentifierText } from "./checker";
+import { getIdentifierText, nodeContainsErrors } from "./checker";
 import { isIdentifierNode } from "./parser";
 
 interface Binder {
@@ -39,8 +42,8 @@ function createBinder(): Binder {
 
 	let parent: SyntaxNode | undefined = undefined;
 	let symbolTable: SymbolTable | undefined = undefined;
+	let colorTable: ColorTable | undefined = undefined;
 	let graphContext: GraphContext = GraphContext.None;
-	// TODO: Color table
 
 	function bind(node: SyntaxNode): void {
 		if (!node)
@@ -149,9 +152,18 @@ function createBinder(): Binder {
 
 	function bindIdEqualsIdStatement(node: IdEqualsIdStatement) {
 		bind(node.leftId);
-		// ensureMemberSymbol(node.leftId, node); // TODO: is this okay? should assignment stuff be in the symbol table?
 
 		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
+
+		if (node.rightId && !nodeContainsErrors(node.rightId)) {
+			// if right-id is all-okay, we can look if it provides something for our tables
+
+			// if the leftId is "color", rightId provides a color
+			if (isAttributeName("color", node.leftId)) {
+				ensureGlobalColor(node.rightId);
+			}
+		}
+
 		if (node.terminator) bind(node.terminator);
 	}
 
@@ -200,6 +212,18 @@ function createBinder(): Binder {
 			ensureMemberSymbol(node.leftId, carrierIdentifier);
 
 		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
+
+		if (node.rightId && !nodeContainsErrors(node.rightId)) {
+			// TODO: Look out for other assignments that can assign colors
+
+			// if right-id is all-okay, we can look if it provides something for our tables
+
+			// if the leftId is "color", rightId provides a color
+			if (isAttributeName("color", node.leftId)) {
+				ensureGlobalColor(node.rightId);
+			}
+		}
+
 		if (node.terminator) bind(node.terminator);
 	}
 
@@ -229,6 +253,9 @@ function createBinder(): Binder {
 	function createSymbolTable(): SymbolTable {
 		return new Map<string, TypeSymbol>();
 	}
+	function createColorTable(): ColorTable {
+		return new Map<string, ColorInfo>();
+	}
 
 	function ensureMemberSymbol(node: SyntaxNode, carrier: Identifier) {
 		if (node && carrier && isIdentifierNode(node)) {
@@ -253,6 +280,7 @@ function createBinder(): Binder {
 		if (node && isIdentifierNode(node)) {
 			const symbols = symbolTable;
 			const name = getIdentifierText(node);
+
 			if (name === undefined) return;
 			if (symbols === undefined) throw "symbolTable is undefined";
 
@@ -264,6 +292,8 @@ function createBinder(): Binder {
 	}
 
 	function ensureSymbolOnTable(name: string, node: SyntaxNode, symbols: SymbolTable) {
+		if (!name)
+			return;
 		let sym = symbols.get(name);
 		if (sym === undefined) {
 			sym = createSymbol(name, node);
@@ -277,6 +307,23 @@ function createBinder(): Binder {
 		node.symbol = sym;
 	}
 
+	function ensureGlobalColor(node: Identifier) {
+		if (node && isIdentifierNode(node)) {
+			const colors = colorTable;
+			const name = getIdentifierText(node);
+
+			if (name === undefined) return;
+			if (colors === undefined) throw "symbolTable is undefined";
+
+			const color = createColor(node);
+			colors.set(name, color);
+
+			return;
+		}
+		console.warn("ensureSymbol called on non-identifier node");
+		debugger;
+	}
+
 	function createSymbol(name: string, node: SyntaxNode): TypeSymbol {
 		if (!name) throw "name is falsy";
 		if (!node) throw "node is undefined or null";
@@ -287,13 +334,28 @@ function createBinder(): Binder {
 		};
 	}
 
+	function createColor(node: Identifier): ColorInfo {
+		return {
+			node,
+		};
+	}
+
+	/**
+	 * @param name Pass lower cased
+	 */
+	function isAttributeName(name: string, id?: Identifier): boolean {
+		return id ? getIdentifierText(id).trim().toLowerCase() === name : false;
+	}
+
 	return {
 		bind: file => {
 			symbolTable = createSymbolTable();
+			colorTable = createColorTable();
 			const { graph } = file;
 			if (graph)
 				bind(graph);
 			file.symbols = symbolTable;
+			file.colors = colorTable;
 		},
 	};
 }

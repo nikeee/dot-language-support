@@ -12,3 +12,5 @@ tests/
 .travis.yml
 LICENSE
 *.md
+
+lib/tester.*

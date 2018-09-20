@@ -27,6 +27,7 @@ import {
 	getIdentifierText,
 	isAttrStatement,
 	edgeStatementHasAttributes,
+	nodeContainsErrors,
 } from "../checker";
 
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand";
@@ -133,16 +134,21 @@ function getGeneralRefactorings(doc: DocumentLike, file: SourceFile, range: lst.
 
 							if (hasVisitedNodeModifier) {
 								return;
-							} else if (
-								isAttrStatement(statement)
-								|| subtreeContainsErrors(statement) // We treat errors in the following statements as semantic changes
-							) {
-								// TODO: We may make this less strict, allowing graph modofications or something
+							} else if (hasVisitedStatement) {
+								// If we have visited the clicked statement AND...
+								if (
+									isAttrStatement(statement) // we have encountered a semantic-changing AttrStatement
+									|| subtreeContainsErrors(statement) // ...or there is an error in the sub tree
+								) {
+									// ... then we want to stop here.
 
-								// We have visited a statement that changes the behaviour of the following notes
-								// We dont want to proceed here
-								hasVisitedNodeModifier = true;
-								return true;
+									// TODO: We may make this less strict, allowing graph modofications or something
+
+									// We have visited a statement that changes the behaviour of the following notes
+									// We dont want to proceed here
+									hasVisitedNodeModifier = true;
+									return true;
+								}
 							}
 
 							if (hasVisitedStatement) {
@@ -289,12 +295,12 @@ export function executeCommand(doc: DocumentLike, sourceFile: SourceFile, cmd: E
 
 
 function subtreeContainsErrors(node: SyntaxNode): boolean {
-	if (hasNodeError(node))
+	if (nodeContainsErrors(node))
 		return true;
 
 	let hasError = false;
 	forEachChild(node, child => {
-		if (hasNodeError(child)) {
+		if (nodeContainsErrors(child)) {
 			hasError = true;
 		}
 		if (!hasError) {
@@ -302,8 +308,4 @@ function subtreeContainsErrors(node: SyntaxNode): boolean {
 		}
 	});
 	return hasError;
-}
-
-function hasNodeError(node: SyntaxNode): boolean {
-	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors
 }

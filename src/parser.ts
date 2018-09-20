@@ -262,7 +262,7 @@ export class Parser {
 					const subgraphStatement = this.createNode(SyntaxKind.SubGraphStatement, subgraph.pos) as SubGraphStatement;
 					subgraphStatement.subgraph = subgraph;
 					subgraphStatement.terminator = this.parseExpectedToken(SyntaxKind.SemicolonToken);
-					return subgraphStatement;
+					return this.finishNode(subgraphStatement);
 				}
 
 				// if there was an edge op, we actually have an EdgeStatement, not a SubGraphStatement
@@ -272,7 +272,7 @@ export class Parser {
 
 				const subgraphStatement = this.createNode(SyntaxKind.SubGraphStatement, subgraph.pos) as SubGraphStatement;
 				subgraphStatement.subgraph = subgraph;
-				return subgraphStatement;
+				return this.finishNode(subgraphStatement);
 
 			default: {
 				if (!this.isIdentifier)

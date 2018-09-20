@@ -1,4 +1,5 @@
-import { SyntaxNode,
+import {
+	SyntaxNode,
 	Identifier,
 	SyntaxKind,
 	Graph,
@@ -19,7 +20,8 @@ import { SyntaxNode,
 	Statement,
 	StatementOf,
 	Token,
- } from "./types";
+	TextRange,
+} from "./types";
 import { assertNever, getStart } from "./service/util";
 import { forEachChild } from "./visitor";
 
@@ -47,27 +49,26 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 	return prev;
 }
 
-export function findNodeAtOffset(root: SyntaxNode, offset: number): SyntaxNode | undefined {
+function rangeContainsOffset(range: TextRange, offset: number, inclusiveEnd: boolean) {
+	return inclusiveEnd
+	? range.pos <= offset && offset <= range.end
+	: range.pos <= offset && offset < range.end;
+}
+
+// TODO: inclusiveEnd seems a hack to me. We shoudl remove that later.
+export function findNodeAtOffset(root: SyntaxNode, offset: number, inclusiveEnd: boolean = false): SyntaxNode | undefined {
 	// Wow, I don't think this actually works. But it seems to.
 
 	// TODO: Fix this, this methods throws sometimes
 
-	if (root.pos <= offset && offset <= root.end) {
-		let candidate = root;
+	if (root.pos === offset && root.pos === root.end)
+		return root;
 
-		forEachChild(root, n => {
-			const r = findNodeAtOffset(n, offset);
-			if (r && (candidate.end - candidate.end) < (root.end - root.pos))
-				candidate = r;
-		}, ns => {
-			for (const n of ns) {
-				const r = findNodeAtOffset(n, offset);
-				if (r && (candidate.end - candidate.end) < (root.end - root.pos))
-					candidate = r;
-			}
-		});
+	// Check if the current checked contains the passed offset
+	if (rangeContainsOffset(root, offset, inclusiveEnd)) {
+		const narrowerChild = forEachChild(root, child => findNodeAtOffset(child, offset, inclusiveEnd));
 
-		return candidate;
+		return narrowerChild ? narrowerChild : root;
 	}
 	return undefined;
 }
@@ -170,7 +171,7 @@ function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeR
 		: undefined;
 
 	if (wrongEdges && wrongEdges.length > 0) {
-		wrongEdges.forEach(e => e.operation.flags != SyntaxNodeFlags.ContainsErrors);
+		wrongEdges.forEach(e => e.operation.flags |= SyntaxNodeFlags.ContainsErrors);
 		return wrongEdges;
 	}
 	return undefined;
@@ -231,7 +232,7 @@ export function edgeStatementHasAttributes(es: EdgeStatement) {
 		&& es.attributes.some(a => a.assignments && a.assignments.length > 0);
 }
 
-export function getIdentifierText(n: Identifier) {
+export function getIdentifierText(n: Identifier): string {
 	switch (n.kind) {
 		case SyntaxKind.HtmlIdentifier:
 			return n.htmlContent;
@@ -240,7 +241,7 @@ export function getIdentifierText(n: Identifier) {
 		case SyntaxKind.NumericIdentifier:
 			return n.text;
 		case SyntaxKind.QuotedTextIdentifier:
-			return n.concatenation;
+			return n.concatenation as string; // Assertion because concatenation is filled in binding step
 		default:
 			return assertNever(n);
 	}
@@ -251,4 +252,8 @@ function createCheckerError(sub: CheckError): CheckErrorCode {
 		source: ErrorSource.Check,
 		sub,
 	};
+}
+
+export function nodeContainsErrors(node: SyntaxNode): boolean {
+	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors;
 }

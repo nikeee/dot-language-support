@@ -1,6 +1,6 @@
 {
   "name": "dot-language-support",
-  "version": "1.1.6",
+  "version": "1.2.5",
   "description": "Parser and language service for graphviz (dot) files",
   "author": "Niklas Mollenhauer",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.spec.ts tests/*.spec.ts",
-    "clean": "rm -rv -- lib/* || true",
+    "clean": "rimraf lib",
     "compile": "tsc",
     "prepare": "npm run compile"
   },

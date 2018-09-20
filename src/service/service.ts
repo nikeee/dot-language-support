@@ -1,6 +1,7 @@
 import * as lst from "vscode-languageserver-types";
+import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
 import { Parser } from "../";
-import { SourceFile, SyntaxNode, Omit } from "../types";
+import { SourceFile, Omit } from "../types";
 import { bindSourceFile } from "../binder";
 import { hover } from "./hover";
 import { validateDocument } from "./validation";
@@ -9,7 +10,7 @@ import { renameSymbol } from "./rename";
 import { getCompletions } from "./completion";
 import { checkSourceFile } from "../checker";
 import { getCodeActions, executeCommand, getAvailableCommands } from "./codeAction";
-
+import { getDocumentColors, getColorRepresentations } from "./colorProvider";
 
 export interface DocumentLike {
 	positionAt(offset: number): lst.Position;
@@ -32,6 +33,9 @@ export interface LanguageService {
 	renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, newName: string): lst.WorkspaceEdit | undefined;
 
 	getCompletions(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.CompletionItem[];
+
+	getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): ColorInformation[] | undefined;
+	getColorRepresentations(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined;
 
 	getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context: lst.CodeActionContext): lst.Command[] | undefined;
 	executeCommand(doc: DocumentLike, sourceFile: SourceFile, command: Omit<lst.Command, "title">): CommandApplication | undefined;
@@ -59,6 +63,8 @@ export function createService(): LanguageService {
 		findDefinition,
 		renameSymbol,
 		getCompletions,
+		getDocumentColors,
+		getColorRepresentations,
 		getCodeActions,
 		executeCommand,
 		getAvailableCommands,
