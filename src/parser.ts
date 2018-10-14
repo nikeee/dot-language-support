@@ -471,22 +471,21 @@ export class Parser {
 		const result = this.createNode(kind) as T;
 
 		// TODO: Enhance this, this seems wrong
-		if (isIdentifier(result.kind)) {
+		if (isIdentifierNode(result)) {
 			switch (result.kind) {
 				case SyntaxKind.QuotedTextIdentifier: {
 					const literal = this.createNode(SyntaxKind.StringLiteral) as StringLiteral;
 					literal.text = "";
 					const values = this.createNodeArray([literal], result.pos, result.pos);
-					const a = result as any as QuotedTextIdentifier;
-					a.values = values;
+					result.values = values;
 					break;
 				}
 				case SyntaxKind.HtmlIdentifier:
-					(result as any as HtmlIdentifier).htmlContent = "";
+					result.htmlContent = "";
 					break;
 				case SyntaxKind.TextIdentifier:
 				case SyntaxKind.NumericIdentifier:
-					(result as any as (TextIdentifier | NumericIdentifier)).text = "";
+					result.text = "";
 					break;
 			}
 		}
