@@ -323,6 +323,12 @@ export const attributes = Array.from(new Set([
 	...clusterAttributes,
 ])).sort();
 
+/*
+export function getDocsUrl(attribute: string) {
+	return "https://www.graphviz.org/doc/info/attrs.html#d:" + encodeURIComponent(attribute);
+}
+*/
+
 /**
  * We only support the X11 color scheme
  */
