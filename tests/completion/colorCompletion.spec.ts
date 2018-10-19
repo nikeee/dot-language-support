@@ -1,4 +1,4 @@
-import { ensureDocAndSourceFile, getLabel  } from "../testutils";
+import { ensureDocAndSourceFile, getLabel } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
