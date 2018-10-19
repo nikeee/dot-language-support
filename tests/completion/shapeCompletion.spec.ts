@@ -21,7 +21,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 
@@ -39,7 +39,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 
@@ -57,7 +57,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 
@@ -75,7 +75,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 
@@ -93,7 +93,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 
@@ -112,7 +112,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
-		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions.map(getLabel)).to.include.members(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).to.have.length(shapes.length);
 	});
 });
