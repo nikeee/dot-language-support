@@ -34,6 +34,12 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 		return getNodeCompletions(symbols);
 	}
 
+	if(node.kind === SyntaxKind.AttributeContainer
+		|| (node.kind == SyntaxKind.CommaToken && parent && parent.kind === SyntaxKind.Assignment)
+	) {
+		return getAttributeCompletions();
+	}
+
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
 	if (!prevNode)
 		return [];
@@ -100,6 +106,14 @@ function getColorCompletions(): lst.CompletionItem[] {
 			// The color name is then displayed along with a preview of the color
 			documentation: (colors as { [i: string]: string })[label],
 		}));
+}
+
+function getAttributeCompletions(): lst.CompletionItem[] {
+	const kind = lst.CompletionItemKind.Property;
+	return languageFacts.nodeAttributes.map(a => ({
+		kind,
+		label: escapeIdentifierText(a),
+	}));
 }
 
 function getNodeCompletions(symbols: SymbolTable): lst.CompletionItem[] {

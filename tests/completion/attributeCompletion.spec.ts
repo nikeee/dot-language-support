@@ -101,7 +101,7 @@ describe("Attribute completion", () => {
 			node_name_a -- node_name_b [color=blue,
 			];
 		}`;
-		const requestOffset = invokeIndex(content)("color=blue, \n\t\t\t");
+		const requestOffset = invokeIndex(content)("color=blue,\n\t\t\t");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -205,7 +205,7 @@ describe("Attribute completion", () => {
 			node_name_a -- node_name_b [color=blue,
 			] [shape=box];
 		}`;
-		const requestOffset = invokeIndex(content)("color=blue, \n\t\t\t");
+		const requestOffset = invokeIndex(content)("color=blue,\n\t\t\t");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
