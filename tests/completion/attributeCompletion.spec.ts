@@ -3,7 +3,7 @@ import { expect } from "chai";
 import "mocha";
 
 import { getCompletions } from "../../src/service/completion";
-import { nodeAttributes } from "../../src/service/languageFacts";
+import { attributes } from "../../src/service/languageFacts";
 
 
 describe("Attribute completion", () => {
@@ -31,8 +31,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (empty list, a lot of whitespace)", () => {
@@ -52,8 +52,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item)", () => {
@@ -72,8 +72,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item, leading whitespace)", () => {
@@ -92,8 +92,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item, leading whitespace, linebreak)", () => {
@@ -113,8 +113,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 
@@ -135,8 +135,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (empty list, a lot of whitespace, first container)", () => {
@@ -156,8 +156,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item, first container)", () => {
@@ -176,8 +176,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item, leading whitespace, first container)", () => {
@@ -196,8 +196,8 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 
 	it("should provide completion for attributes (preceeding item, leading whitespace, linebreak, first container)", () => {
@@ -217,7 +217,7 @@ describe("Attribute completion", () => {
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
 		expect(completions.map(getLabel)).not.to.contain("node_name_b");
-		expect(completions.map(getLabel)).to.include.members(nodeAttributes as any[] /* TODO: See PR to DT */);
-		expect(completions).to.have.length(nodeAttributes.length);
+		expect(completions.map(getLabel)).to.include.members(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions).to.have.length(attributes.length);
 	});
 });

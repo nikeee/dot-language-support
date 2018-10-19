@@ -110,7 +110,7 @@ function getColorCompletions(): lst.CompletionItem[] {
 
 function getAttributeCompletions(): lst.CompletionItem[] {
 	const kind = lst.CompletionItemKind.Property;
-	return languageFacts.nodeAttributes.map(a => ({
+	return languageFacts.attributes.map(a => ({
 		kind,
 		label: escapeIdentifierText(a),
 	}));
