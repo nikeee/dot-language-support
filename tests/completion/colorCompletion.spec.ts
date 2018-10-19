@@ -1,8 +1,11 @@
-import { ensureDocAndSourceFile } from "../testutils";
+import { ensureDocAndSourceFile, getLabel  } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
 import { getCompletions } from "../../src/service/completion";
+import { colors } from "../../src/service/languageFacts";
+
+const allColors = Object.keys(colors);
 
 describe("Color completion", () => {
 
@@ -20,6 +23,8 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 
 	it("should provide completion for colors (leading attribute)", () => {
@@ -36,6 +41,8 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 
 	it("should provide completion for colors (center attribute)", () => {
@@ -52,6 +59,8 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 
 	it("should provide completion for colors (center attribute with spaces)", () => {
@@ -68,6 +77,8 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 
 	it("should provide completion for colors (center attribute with spaces and semicolons)", () => {
@@ -84,6 +95,8 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 
 	it("should provide completion for colors (center attribute mixed spaces and separators)", () => {
@@ -101,5 +114,7 @@ describe("Color completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(allColors);
+		expect(completions).to.have.length(allColors.length);
 	});
 });
