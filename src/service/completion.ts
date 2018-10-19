@@ -37,7 +37,7 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 	if(node.kind === SyntaxKind.AttributeContainer
 		|| (node.kind == SyntaxKind.CommaToken && parent && parent.kind === SyntaxKind.Assignment)
 	) {
-		return getAttributeCompletions();
+		return getAttributeCompletions(position);
 	}
 
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
@@ -108,11 +108,20 @@ function getColorCompletions(): lst.CompletionItem[] {
 		}));
 }
 
-function getAttributeCompletions(): lst.CompletionItem[] {
+function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] {
 	const kind = lst.CompletionItemKind.Property;
-	return languageFacts.attributes.map(a => ({
+	const range = {
+		start: posistion,
+		end: posistion,
+	}
+
+	return languageFacts.attributes.map(label => ({
 		kind,
-		label: escapeIdentifierText(a),
+		label,
+		textEdit: {
+			range,
+			newText: escapeIdentifierText(label) + "=",
+		}
 	}));
 }
 
