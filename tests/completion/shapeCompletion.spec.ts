@@ -1,8 +1,9 @@
-import { ensureDocAndSourceFile } from "../testutils";
+import { ensureDocAndSourceFile, getLabel } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
 import { getCompletions } from "../../src/service/completion";
+import { shapes } from "../../src/service/languageFacts";
 
 describe("Shape completion", () => {
 
@@ -20,6 +21,8 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 
 	it("should provide completion for shapes (leading attribute)", () => {
@@ -36,6 +39,8 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 
 	it("should provide completion for shapes (center attribute)", () => {
@@ -52,6 +57,8 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 
 	it("should provide completion for shapes (center attribute with spaces)", () => {
@@ -68,6 +75,8 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 
 	it("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
@@ -84,6 +93,8 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 
 	it("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
@@ -101,5 +112,7 @@ describe("Shape completion", () => {
 		if (!completions) throw "Just for the type checker";
 
 		expect(completions).to.have.length.greaterThan(0);
+		expect(completions.map(getLabel)).to.include.members(shapes);
+		expect(completions).to.have.length(shapes.length);
 	});
 });
