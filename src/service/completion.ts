@@ -121,7 +121,7 @@ function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] 
 		textEdit: {
 			range,
 			newText: escapeIdentifierText(label) + "=",
-		}
+		},
 	}));
 }
 
@@ -147,20 +147,3 @@ function getNodeCompletions(symbols: SymbolTable): lst.CompletionItem[] {
 
 	return res;
 }
-
-/*
-function findPrevEquals(text: string, offset: number): number | undefined {
-	for (let i = offset; i >= 0; --i) {
-		const ch = text.charCodeAt(i);
-
-		switch(ch) {
-			case
-
-		}
-
-		if (ch === CharacterCodes.equals)
-			return i;
-	}
-	return undefined;
-}
-*/
