@@ -63,6 +63,11 @@ export const shapes = Object.freeze([
 	"lpromoter",
 ]);
 
+export const nodeAttributes = Object.freeze([
+	"foo",
+	"bar",
+]);
+
 /**
  * We only support the X11 color scheme
  */
