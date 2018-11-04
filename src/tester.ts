@@ -6,7 +6,10 @@ import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
 import { getCompletions } from "./service/completion";
 import { hover } from "./service/hover";
 
-const text = `graph{subgraph{c--a;c--b}}`;
+const text = `graph {
+	node_name_a -- node_name_b [color=blue,
+	];
+}`;
 
 function main() {
 	const parser = new Parser();
@@ -15,16 +18,17 @@ function main() {
 	checkSourceFile(sf);
 	const doc = TextDocument.create("inmemory://model.json", "DOT", 0, text);
 
+/*
 	const h = hover(doc, sf, doc.positionAt(15));
 	console.dir(h);
+*/
 
-/*
-	const requestOffset = text.indexOf("color=") + "color=".length;
+	const requestOffset = text.indexOf("color=blue,\n\t") + "color=blue,\n\t".length;
 
 	const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 	console.dir(completions);
-*/
+
 }
 
 main();
