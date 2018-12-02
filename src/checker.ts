@@ -51,8 +51,8 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 
 function rangeContainsOffset(range: TextRange, offset: number, inclusiveEnd: boolean) {
 	return inclusiveEnd
-	? range.pos <= offset && offset <= range.end
-	: range.pos <= offset && offset < range.end;
+		? range.pos <= offset && offset <= range.end
+		: range.pos <= offset && offset < range.end;
 }
 
 // TODO: inclusiveEnd seems a hack to me. We shoudl remove that later.
@@ -98,7 +98,12 @@ export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 	forEachChild(node, child => {
 		if (isEdgeStatement(child)) {
 			if (child.rhs && child.rhs.length > 0) {
-				allEdges.push.apply(allEdges, child.rhs);
+				// Was:
+				// allEdges.push.apply(allEdges, child.rhs);
+				// Since TypeScript 3.2, the apply call is checked aswell. child.rhs is no genuine EdgeRhs[] (it contains additional data)
+				// So we're pushing the items one-by-one here.
+				for (const edgeRhs of child.rhs)
+					allEdges.push(edgeRhs);
 			}
 		}
 
