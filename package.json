@@ -29,11 +29,11 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
+    "@types/mocha": "^5.2.6",
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.1",
     "ts-node": "^8.0.2",
-    "typescript": "^3.3.3",
+    "typescript": "^3.3.3333",
     "vscode-languageserver": "^5.3.0-next.1"
   },
   "engines": {
