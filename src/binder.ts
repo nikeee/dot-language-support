@@ -12,8 +12,8 @@ import {
 	QuotedTextIdentifier,
 	EdgeRhs,
 	AttributeContainer,
-	Assignment, NormalPointDeclaration,
-	CompassPointDeclaration,
+	Assignment, NormalPortDeclaration,
+	CompassPortDeclaration,
 	NodeId,
 	SymbolTable,
 	TypeSymbol,
@@ -88,10 +88,10 @@ function createBinder(): Binder {
 				return bindAttributeContainer(node as AttributeContainer);
 			case SyntaxKind.Assignment:
 				return bindAssignment(node as Assignment);
-			case SyntaxKind.NormalPointDeclaration:
-				return bindNormalPointDeclaration(node as NormalPointDeclaration);
-			case SyntaxKind.CompassPointDeclaration:
-				return bindCompassPointDeclaration(node as CompassPointDeclaration);
+			case SyntaxKind.NormalPortDeclaration:
+				return bindNormalPortDeclaration(node as NormalPortDeclaration);
+			case SyntaxKind.CompassPortDeclaration:
+				return bindCompassPortDeclaration(node as CompassPortDeclaration);
 			case SyntaxKind.NodeId:
 				return bindNodeId(node as NodeId);
 			default:
@@ -227,14 +227,14 @@ function createBinder(): Binder {
 		if (node.terminator) bind(node.terminator);
 	}
 
-	function bindNormalPointDeclaration(node: NormalPointDeclaration) {
+	function bindNormalPortDeclaration(node: NormalPortDeclaration) {
 		bind(node.colon);
 		ensureGlobalSymbol(node.id);
 		bind(node.id);
 		if (node.compassPt) bind(node.compassPt);
 	}
 
-	function bindCompassPointDeclaration(node: CompassPointDeclaration) {
+	function bindCompassPortDeclaration(node: CompassPortDeclaration) {
 		bind(node.colon);
 		if (node.compassPt) bind(node.compassPt);
 	}
@@ -242,7 +242,7 @@ function createBinder(): Binder {
 	function bindNodeId(node: NodeId) {
 		ensureGlobalSymbol(node.id);
 		bind(node.id);
-		if (node.point) bind(node.point);
+		if (node.port) bind(node.port);
 	}
 
 	function bindChildren(nodes: SyntaxNodeArray<SyntaxNode>): void {

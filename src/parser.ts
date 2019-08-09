@@ -9,9 +9,9 @@ import {
 	HtmlIdentifier,
 	Statement,
 	NodeId,
-	CompassPointDeclaration,
-	NormalPointDeclaration,
-	PointDeclaration,
+	CompassPortDeclaration,
+	NormalPortDeclaration,
+	PortDeclaration,
 	EdgeOp,
 	SyntaxNode,
 	SyntaxNodeArray,
@@ -546,17 +546,17 @@ export class Parser {
 
 		node.id = this.parseIdentifier();
 
-		node.point = this.token() === SyntaxKind.ColonToken
-			? this.parsePointDeclaration()
+		node.port = this.token() === SyntaxKind.ColonToken
+			? this.parsePortDeclaration()
 			: undefined;
 
 		return this.finishNode(node);
 	}
 
-	private parseCompassPointDeclaration(): CompassPointDeclaration {
+	private parseCompassPortDeclaration(): CompassPortDeclaration {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
-		const node = this.createNode(SyntaxKind.CompassPointDeclaration) as CompassPointDeclaration;
+		const node = this.createNode(SyntaxKind.CompassPortDeclaration) as CompassPortDeclaration;
 
 		// TODO: compass points are just identifiers -> parse them as identifiers and set a flag for being a compass point?
 		node.colon = this.parseTokenNode();
@@ -565,36 +565,36 @@ export class Parser {
 		return this.finishNode(node);
 	}
 
-	private parseNormalPointDeclaration(): NormalPointDeclaration {
+	private parseNormalPortDeclaration(): NormalPortDeclaration {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
-		const node = this.createNode(SyntaxKind.NormalPointDeclaration) as NormalPointDeclaration;
+		const node = this.createNode(SyntaxKind.NormalPortDeclaration) as NormalPortDeclaration;
 
 		node.colon = this.parseTokenNode();
 		node.id = this.parseIdentifier();
 		node.compassPt = this.token() === SyntaxKind.ColonToken
-			? this.parseCompassPointDeclaration()
+			? this.parseCompassPortDeclaration()
 			: undefined;
 
 		return this.finishNode(node);
 	}
 
-	private parsePointDeclaration(): PointDeclaration {
+	private parsePortDeclaration(): PortDeclaration {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
-		if (this.lookAhead(() => this.isCompassPoint()))
-			return this.parseCompassPointDeclaration()
-		return this.parseNormalPointDeclaration();
+		if (this.lookAhead(() => this.isCompassPort()))
+			return this.parseCompassPortDeclaration()
+		return this.parseNormalPortDeclaration();
 	}
 
-	private isCompassPoint() {
+	private isCompassPort() {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
 		if (this.token() !== SyntaxKind.ColonToken)
 			return false;
 
 		this.nextToken();
-		return this.isCompassPointKind(this.token());
+		return this.isCompassPortKind(this.token());
 	}
 
 	private parseList<T extends SyntaxNode>(context: ParsingContext, parseElement: () => T, atLeastOne = false): SyntaxNodeArray<T> {
@@ -930,7 +930,7 @@ export class Parser {
 				return false;
 		}
 	}
-	private isCompassPointKind(kind: SyntaxKind): boolean {
+	private isCompassPortKind(kind: SyntaxKind): boolean {
 		return kind >= SyntaxKind.CompassCenterToken && kind <= SyntaxKind.CompassEnd;
 	}
 

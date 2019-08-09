@@ -129,7 +129,7 @@ export interface NodeId extends SyntaxNode {
 	kind: SyntaxKind.NodeId;
 
 	id: Identifier;
-	point?: PointDeclaration;
+	port?: PortDeclaration;
 }
 
 export type EdgeSourceOrTarget = NodeId | SubGraph;
@@ -196,22 +196,22 @@ export interface Assignment extends SyntaxNode {
 
 export type AssignmentSeparator = Token<SyntaxKind.SemicolonToken> | Token<SyntaxKind.CommaToken>;
 
-export type PointDeclaration = NormalPointDeclaration | CompassPointDeclaration;
+export type PortDeclaration = NormalPortDeclaration | CompassPortDeclaration;
 
-export interface NormalPointDeclaration extends SyntaxNode {
-	kind: SyntaxKind.NormalPointDeclaration;
+export interface NormalPortDeclaration extends SyntaxNode {
+	kind: SyntaxKind.NormalPortDeclaration;
 
 	colon: Token<SyntaxKind.ColonToken>;
 	id: Identifier;
-	compassPt?: CompassPointDeclaration;
+	compassPt?: CompassPortDeclaration;
 }
-export interface CompassPointDeclaration extends SyntaxNode {
-	kind: SyntaxKind.CompassPointDeclaration;
+export interface CompassPortDeclaration extends SyntaxNode {
+	kind: SyntaxKind.CompassPortDeclaration;
 
 	colon: Token<SyntaxKind.ColonToken>;
-	compassPt: CompassPoint;
+	compassPt: CompassPort;
 }
-export type CompassPoint = Token<SyntaxKind.CompassNorthToken>
+export type CompassPort = Token<SyntaxKind.CompassNorthToken>
 	| Token<SyntaxKind.CompassNorthEastToken>
 	| Token<SyntaxKind.CompassEastToken>
 	| Token<SyntaxKind.CompassSouthEastToken>
@@ -290,8 +290,8 @@ export /* const */ enum SyntaxKind {
 	EdgeRhs,
 	AttributeContainer,
 	Assignment,
-	NormalPointDeclaration,
-	CompassPointDeclaration,
+	NormalPortDeclaration,
+	CompassPortDeclaration,
 	NodeId,
 
 	Count, // Number of items in this enum

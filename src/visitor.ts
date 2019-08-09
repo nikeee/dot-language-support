@@ -13,8 +13,8 @@ import {
 	EdgeRhs,
 	AttributeContainer,
 	Assignment,
-	NormalPointDeclaration,
-	CompassPointDeclaration,
+	NormalPortDeclaration,
+	CompassPortDeclaration,
 	SubGraph
 } from "./types";
 
@@ -80,15 +80,15 @@ export function forEachChild<TReturn>(node: SyntaxNode, cbNode: (node: SyntaxNod
 			return visitNode(cbNode, (node as Assignment).leftId)
 				|| visitNode(cbNode, (node as Assignment).rightId)
 				|| visitNode(cbNode, (node as Assignment).terminator);
-		case SyntaxKind.NormalPointDeclaration:
-			return visitNode(cbNode, (node as NormalPointDeclaration).colon)
-				|| visitNode(cbNode, (node as NormalPointDeclaration).id)
-				|| visitNode(cbNode, (node as NormalPointDeclaration).compassPt);
-		case SyntaxKind.CompassPointDeclaration:
-			return visitNode(cbNode, (node as CompassPointDeclaration).colon)
-				|| visitNode(cbNode, (node as CompassPointDeclaration).compassPt);
+		case SyntaxKind.NormalPortDeclaration:
+			return visitNode(cbNode, (node as NormalPortDeclaration).colon)
+				|| visitNode(cbNode, (node as NormalPortDeclaration).id)
+				|| visitNode(cbNode, (node as NormalPortDeclaration).compassPt);
+		case SyntaxKind.CompassPortDeclaration:
+			return visitNode(cbNode, (node as CompassPortDeclaration).colon)
+				|| visitNode(cbNode, (node as CompassPortDeclaration).compassPt);
 		case SyntaxKind.NodeId:
-			return visitNode(cbNode, (node as NodeId).point)
+			return visitNode(cbNode, (node as NodeId).port)
 				|| visitNode(cbNode, (node as NodeId).id);
 		default:
 			return undefined;
