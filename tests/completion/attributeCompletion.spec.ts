@@ -19,7 +19,7 @@ describe("Attribute completion", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [];
 		}`;
-		const requestOffset = invokeIndex(content)("[");
+		const requestOffset = invokeIndex(content)("["); // cursor is at space between [ and ]
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 

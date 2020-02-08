@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable } from "../types";
+import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable, AttributeContainer } from "../types";
 import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker";
 import { escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";
@@ -18,24 +18,36 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 	const offset = doc.offsetAt(position);
 
+
 	const node = findNodeAtOffset(g, offset, true);
 	if (!node)
 		return [];
 	const prevOffsetNode = findNodeAtOffset(g, offset - 1, true);
 
 	const parent = node.parent;
-	const prevOffsetNodeParent = prevOffsetNode ? prevOffsetNode.parent : undefined;
+	const prevOffsetNodeParent = prevOffsetNode?.parent;
 
-	if ((parent && parent.parent && isEdgeStatement(parent.parent)
-			||
-			(prevOffsetNodeParent && prevOffsetNodeParent.parent && isEdgeStatement(prevOffsetNodeParent.parent )))
+
+	if (
+		(parent?.parent && isEdgeStatement(parent.parent))
+		|| (prevOffsetNodeParent?.parent && isEdgeStatement(prevOffsetNodeParent.parent))
 	) {
 		// const edgeStatement = parent.parent as EdgeStatement;
 		return getNodeCompletions(symbols);
 	}
 
-	if(node.kind === SyntaxKind.AttributeContainer
-		|| (node.kind == SyntaxKind.CommaToken && parent && parent.kind === SyntaxKind.Assignment)
+	// Hack to fix GitHub issue #17
+	// We have problems handling whitespace when finding a node at a specific offset
+	// So we check if the current cursor is in an AttributeContainer ("   [   ]") and if the cursor is before the end
+	if (node.kind === SyntaxKind.AttributeContainer && prevOffsetNodeParent?.kind === SyntaxKind.EdgeStatement) {
+		const openingBracket = (node as AttributeContainer).openBracket;
+		if (openingBracket.end - 1 > offset - 1) { // - 1 for semantic clarity
+			return getNodeCompletions(symbols);
+		}
+	}
+
+	if (node.kind === SyntaxKind.AttributeContainer
+		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}
