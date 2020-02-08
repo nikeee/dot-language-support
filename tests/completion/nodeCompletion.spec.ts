@@ -1,4 +1,4 @@
-import { ensureDocAndSourceFile } from "../testutils";
+import { ensureDocAndSourceFile, getRequestOffset } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
@@ -36,7 +36,7 @@ describe("Node completion", () => {
 
 	it("should provide completion for nodes (trailing space)", () => {
 		const content = `digraph{green->blue;green->yellow;b->  }`;
-		const requestOffset = content.indexOf("b-> ") + "b-> ".length; // latter space between > and ;
+		const requestOffset = getRequestOffset(content, "b-> "); // latter space between > and ;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -50,7 +50,7 @@ describe("Node completion", () => {
 
 	it("should provide completion for nodes (trailing space; between nodes)", () => {
 		const content = `digraph{green->blue;b->  ;green->yellow}`;
-		const requestOffset = content.indexOf("b-> ") + "b-> ".length; // latter space between > and ;
+		const requestOffset = getRequestOffset(content, "b-> "); // latter space between > and ;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -126,7 +126,7 @@ describe("Node completion", () => {
 
 	music_bus -> breakfast -> [color=gray]
 }`;
-		const requestOffset = content.indexOf("breakfast ->") + "breakfast ->".length;
+		const requestOffset = getRequestOffset(content, "breakfast ->");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -146,7 +146,7 @@ describe("Node completion", () => {
 
 	music_bus -> breakfast ->  [color=gray]
 }`;
-		const requestOffset = content.indexOf("breakfast ->") + "breakfast ->".length;
+		const requestOffset = getRequestOffset(content, "breakfast ->");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -166,7 +166,7 @@ describe("Node completion", () => {
 
 	music_bus -> breakfast ->[color=gray]
 }`;
-		const requestOffset = content.indexOf("breakfast ->") + "breakfast ->".length;
+		const requestOffset = getRequestOffset(content, "breakfast ->");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
@@ -186,7 +186,7 @@ describe("Node completion", () => {
 
 	music_bus -> breakfast ->[color=gray,]
 }`;
-		const requestOffset = content.indexOf("color=gray,") + "color=gray,".length;
+		const requestOffset = getRequestOffset(content, "color=gray,");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
 

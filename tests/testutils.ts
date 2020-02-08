@@ -31,3 +31,7 @@ export function ensureDocAndSourceFile(text: string): [TextDocument, SourceFile]
 export function getLabel(c: { label: string }): string {
 	return c.label;
 }
+
+export function getRequestOffset(content: string, uniqueNeedle: string): number {
+	return content.indexOf(uniqueNeedle) + uniqueNeedle.length;
+}
