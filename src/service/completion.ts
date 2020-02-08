@@ -18,7 +18,6 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 	const offset = doc.offsetAt(position);
 
-
 	const node = findNodeAtOffset(g, offset, true);
 	if (!node)
 		return [];
@@ -26,7 +25,6 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 	const parent = node.parent;
 	const prevOffsetNodeParent = prevOffsetNode?.parent;
-
 
 	if (
 		(parent?.parent && isEdgeStatement(parent.parent))
@@ -39,13 +37,16 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 	// Hack to fix GitHub issue #17
 	// We have problems handling whitespace when finding a node at a specific offset
 	// So we check if the current cursor is in an AttributeContainer ("   [   ]") and if the cursor is before the end
-	if (node.kind === SyntaxKind.AttributeContainer && prevOffsetNodeParent?.kind === SyntaxKind.EdgeStatement) {
+	if (node.kind === SyntaxKind.AttributeContainer) {
 		const openingBracket = (node as AttributeContainer).openBracket;
 		if (openingBracket.end - 1 > offset - 1) { // - 1 for semantic clarity
-			return getNodeCompletions(symbols);
+
+			const exclusions = prevOffsetNode?.kind === SyntaxKind.TextIdentifier && prevOffsetNode.symbol
+				? [prevOffsetNode.symbol.name]
+				: [];
+			return getNodeCompletions(symbols, exclusions);
 		}
 	}
-
 	if (node.kind === SyntaxKind.AttributeContainer
 		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
 	) {
@@ -137,9 +138,12 @@ function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] 
 	}));
 }
 
-function getNodeCompletions(symbols: SymbolTable): lst.CompletionItem[] {
+function getNodeCompletions(symbols: SymbolTable, exlucdedSymbols?: string[]): lst.CompletionItem[] {
 	const res = new Array<lst.CompletionItem>();
 	for (const [key, value] of symbols) {
+		if (exlucdedSymbols?.includes(key))
+			continue;
+
 		let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
 		const a = value.firstMention.parent;
 		if (a) {
