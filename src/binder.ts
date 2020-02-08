@@ -178,7 +178,9 @@ function createBinder(): Binder {
 	}
 
 	function bindAttributeContainer(node: AttributeContainer) {
+		bind(node.openBracket);
 		bindChildren(node.assignments);
+		bind(node.closeBracket);
 	}
 
 	function bindAssignment(node: Assignment) {

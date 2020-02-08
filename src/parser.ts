@@ -341,7 +341,7 @@ export class Parser {
 
 		const node = this.createNode(SyntaxKind.AttributeContainer) as AttributeContainer;
 
-		/* node.openBracket = */ this.parseExpectedToken(SyntaxKind.OpenBracketToken);
+		node.openBracket = this.parseExpectedToken(SyntaxKind.OpenBracketToken);
 
 		if (this.isIdentifier() && this.lookAhead(() => this.isAssignmentStart())) {
 			node.assignments = this.parseList(ParsingContext.AssignmentList, () => this.parseAssignment());
@@ -350,7 +350,7 @@ export class Parser {
 			node.assignments = this.createEmptyArray();
 		}
 
-		/* node.closeBracket = */ this.parseExpectedToken(SyntaxKind.CloseBracketToken);
+		node.closeBracket = this.parseExpectedToken(SyntaxKind.CloseBracketToken);
 
 		return this.finishNode(node);
 	}

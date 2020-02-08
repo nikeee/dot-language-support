@@ -180,9 +180,9 @@ export interface EdgeRhs extends SyntaxNode {
 export interface AttributeContainer extends SyntaxNode {
 	kind: SyntaxKind.AttributeContainer;
 
+	openBracket: Token<SyntaxKind.OpenBracketToken>;
 	assignments: SyntaxNodeArray<Assignment>;
-	// openBracket: Token<SyntaxKind.OpenBracketToken>;
-	// closeBracket: Token<SyntaxKind.CloseBracketToken>;
+	closeBracket: Token<SyntaxKind.CloseBracketToken>;
 }
 
 export interface Assignment extends SyntaxNode {
