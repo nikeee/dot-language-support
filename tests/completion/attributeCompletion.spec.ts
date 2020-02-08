@@ -1,4 +1,4 @@
-import { ensureDocAndSourceFile, getLabel } from "../testutils";
+import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
@@ -26,7 +26,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -47,7 +47,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -67,7 +67,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -87,7 +87,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -108,7 +108,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -130,7 +130,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -151,7 +151,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -171,7 +171,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -191,7 +191,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");
@@ -212,7 +212,7 @@ describe("Attribute completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length.greaterThan(0);
 		expect(completions.map(getLabel)).not.to.contain("node_name_a");

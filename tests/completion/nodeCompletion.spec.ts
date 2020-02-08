@@ -1,4 +1,4 @@
-import { ensureDocAndSourceFile, getRequestOffset } from "../testutils";
+import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
@@ -15,7 +15,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(4); // green, blue, yellow, b
 	});
@@ -29,7 +29,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(4); // green, blue, yellow, b
 	});
@@ -43,7 +43,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(4); // green, blue, yellow, b
 	});
@@ -57,7 +57,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(4); // green, blue, yellow, b
 	});
@@ -71,7 +71,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // node_{0,1,2}
 	});
@@ -85,7 +85,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // node_{0,1,2}
 	});
@@ -99,7 +99,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // node_{0,1,2}
 	});
@@ -113,7 +113,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // node_{0,1,2}
 	});
@@ -133,7 +133,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // music_bus, breakfast, sell_game
 	});
@@ -153,7 +153,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // music_bus, breakfast, sell_game
 	});
@@ -173,7 +173,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(3); // music_bus, breakfast, sell_game
 	});
@@ -193,7 +193,7 @@ describe("Node completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).to.exist;
-		if (!completions) throw "Just for the type checker";
+		assertExists(completions);
 
 		expect(completions).to.have.length(170); // music_bus, breakfast, sell_game
 	});
