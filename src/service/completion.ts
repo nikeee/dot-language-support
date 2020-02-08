@@ -43,10 +43,18 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 
 			const exclusions = prevOffsetNode?.kind === SyntaxKind.TextIdentifier && prevOffsetNode.symbol
 				? [prevOffsetNode.symbol.name]
-				: [];
+				: undefined;
 			return getNodeCompletions(symbols, exclusions);
 		}
 	}
+
+	if (node.kind === SyntaxKind.TextIdentifier && parent?.kind === SyntaxKind.NodeId) {
+		const exclusions = node.symbol
+			? [node.symbol.name]
+			: undefined;
+		return getNodeCompletions(symbols, exclusions);
+	}
+
 	if (node.kind === SyntaxKind.AttributeContainer
 		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
 	) {
