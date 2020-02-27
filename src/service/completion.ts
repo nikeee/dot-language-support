@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable } from "../types";
+import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable, AttributeContainer } from "../types";
 import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker";
 import { escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";
@@ -24,18 +24,39 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 	const prevOffsetNode = findNodeAtOffset(g, offset - 1, true);
 
 	const parent = node.parent;
-	const prevOffsetNodeParent = prevOffsetNode ? prevOffsetNode.parent : undefined;
+	const prevOffsetNodeParent = prevOffsetNode?.parent;
 
-	if ((parent && parent.parent && isEdgeStatement(parent.parent)
-			||
-			(prevOffsetNodeParent && prevOffsetNodeParent.parent && isEdgeStatement(prevOffsetNodeParent.parent )))
+	if (
+		(parent?.parent && isEdgeStatement(parent.parent))
+		|| (prevOffsetNodeParent?.parent && isEdgeStatement(prevOffsetNodeParent.parent))
 	) {
 		// const edgeStatement = parent.parent as EdgeStatement;
 		return getNodeCompletions(symbols);
 	}
 
-	if(node.kind === SyntaxKind.AttributeContainer
-		|| (node.kind == SyntaxKind.CommaToken && parent && parent.kind === SyntaxKind.Assignment)
+	// Hack to fix GitHub issue #17
+	// We have problems handling whitespace when finding a node at a specific offset
+	// So we check if the current cursor is in an AttributeContainer ("   [   ]") and if the cursor is before the end
+	if (node.kind === SyntaxKind.AttributeContainer) {
+		const openingBracket = (node as AttributeContainer).openBracket;
+		if (openingBracket.end - 1 > offset - 1) { // - 1 for semantic clarity
+
+			const exclusions = prevOffsetNode?.kind === SyntaxKind.TextIdentifier && prevOffsetNode.symbol
+				? [prevOffsetNode.symbol.name]
+				: undefined;
+			return getNodeCompletions(symbols, exclusions);
+		}
+	}
+
+	if (node.kind === SyntaxKind.TextIdentifier && parent?.kind === SyntaxKind.NodeId) {
+		const exclusions = node.symbol
+			? [node.symbol.name]
+			: undefined;
+		return getNodeCompletions(symbols, exclusions);
+	}
+
+	if (node.kind === SyntaxKind.AttributeContainer
+		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}
@@ -125,9 +146,12 @@ function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] 
 	}));
 }
 
-function getNodeCompletions(symbols: SymbolTable): lst.CompletionItem[] {
+function getNodeCompletions(symbols: SymbolTable, exlucdedSymbols?: string[]): lst.CompletionItem[] {
 	const res = new Array<lst.CompletionItem>();
 	for (const [key, value] of symbols) {
+		if (exlucdedSymbols?.includes(key))
+			continue;
+
 		let kind: lst.CompletionItemKind = lst.CompletionItemKind.Variable;
 		const a = value.firstMention.parent;
 		if (a) {
