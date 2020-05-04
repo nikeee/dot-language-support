@@ -121,6 +121,7 @@ function createBinder(): Binder {
 
 	function bindAttributeStatement(node: AttributeStatement) {
 		// ensureGlobalSymbol(node.subject); // TODO: this treats "node", "edge", "graph" as symbols. is this correct?
+		bind(node.subject);
 		bindChildren(node.attributes);
 		if (node.terminator) bind(node.terminator);
 	}

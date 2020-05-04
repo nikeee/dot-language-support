@@ -38,6 +38,13 @@ describe("Hover Handling", () => {
 		expect(h.contents).to.equal("(directed graph) GraphName");
 	});
 
+	it("Issue #21", () => {
+		const h = hoverSample(`digraph{ graph [] }`)("digraph{ g".length);
+		expect(h).not.to.be.null;
+		expect(h).not.to.be.undefined;
+		expect(h.contents).to.equal("(undirected graph)");
+	});
+
 	it("should correctly return graph info (offset 3)", () => {
 		const h = hoverAtSampleAtOffset(3);
 		expect(h.contents).to.equal("(directed graph) GraphName");
