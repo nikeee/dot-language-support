@@ -68,10 +68,10 @@ function getHexCodeColor(colorCode: string) {
 
 	const colorInt = parseInt(hexCode, 16);
 	return {
-		red: (colorInt & 0x00ff0000) / 255.0,
-		green: (colorInt & 0x0000ff00) / 255.0,
-		blue: (colorInt & 0x00000ff) / 255.0,
-		alpha: hexCode.length === 8 ? (colorInt & 0xff00000) / 255.0 : 1.0,
+		red: (colorInt >> 16 & 0xff) / 255.0,
+		green: (colorInt >> 8 & 0xff) / 255.0,
+		blue: (colorInt & 0xff) / 255.0,
+		alpha: hexCode.length === 8 ? (colorInt >> 24 & 0xff) / 255.0 : 1.0,
 	};
 }
 
