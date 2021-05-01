@@ -162,6 +162,12 @@ function createBinder(): Binder {
 			// if the leftId is "color", rightId provides a color
 			if (isAttributeName("color", node.leftId)) {
 				ensureGlobalColor(node.rightId);
+			} else if (isAttributeName("fillcolor", node.leftId)) {
+				ensureGlobalColor(node.rightId);
+			} else if (isAttributeName("bgcolor", node.leftId)) {
+				ensureGlobalColor(node.rightId);
+			} else if (isAttributeName("fontcolor", node.leftId)) {
+				ensureGlobalColor(node.rightId);
 			}
 		}
 
