@@ -58,67 +58,61 @@ describe("Shape completion", () => {
 		expect(completions).toHaveLength(shapes.length);
 	});
 
-	it(
-		"should provide completion for shapes (center attribute with spaces)",
-		() => {
-			const content = `graph {
+	it("should provide completion for shapes (center attribute with spaces)", () => {
+		const content = `graph {
                 a -- b [label="hi!" , shape=,  shape=box];
             }`;
-			const requestOffset = content.indexOf("shape=") + "shape=".length;
+		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
-			const [doc, sf] = ensureDocAndSourceFile(content);
+		const [doc, sf] = ensureDocAndSourceFile(content);
 
-			const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-			expect(completions).toBeDefined();
-			assertExists(completions);
+		expect(completions).toBeDefined();
+		assertExists(completions);
 
-			expect(completions.length).toBeGreaterThan(0);
-			expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-			expect(completions).toHaveLength(shapes.length);
-		}
+		expect(completions.length).toBeGreaterThan(0);
+		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
+		expect(completions).toHaveLength(shapes.length);
+	}
 	);
 
-	it(
-		"should provide completion for shapes (center attribute with spaces and semicolons)",
-		() => {
-			const content = `graph {
+	it("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
+		const content = `graph {
                 a -- b [label="hi!" ; shape=;  shape=box];
             }`;
-			const requestOffset = content.indexOf("shape=") + "shape=".length;
+		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
-			const [doc, sf] = ensureDocAndSourceFile(content);
+		const [doc, sf] = ensureDocAndSourceFile(content);
 
-			const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-			expect(completions).toBeDefined();
-			assertExists(completions);
+		expect(completions).toBeDefined();
+		assertExists(completions);
 
-			expect(completions.length).toBeGreaterThan(0);
-			expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-			expect(completions).toHaveLength(shapes.length);
-		}
+		expect(completions.length).toBeGreaterThan(0);
+		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
+		expect(completions).toHaveLength(shapes.length);
+	}
 	);
 
-	it(
-		"should provide completion for shapes (center attribute mixed spaces and separators)",
-		() => {
-			const content = `graph {
+	it("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
+		const content = `graph {
                 a -- b [label="hi!" ,shape=;
                  shape=box];
             }`;
-			const requestOffset = content.indexOf("shape=") + "shape=".length;
+		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
-			const [doc, sf] = ensureDocAndSourceFile(content);
+		const [doc, sf] = ensureDocAndSourceFile(content);
 
-			const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-			expect(completions).toBeDefined();
-			assertExists(completions);
+		expect(completions).toBeDefined();
+		assertExists(completions);
 
-			expect(completions.length).toBeGreaterThan(0);
-			expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-			expect(completions).toHaveLength(shapes.length);
-		}
+		expect(completions.length).toBeGreaterThan(0);
+		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
+		expect(completions).toHaveLength(shapes.length);
+	}
 	);
 });

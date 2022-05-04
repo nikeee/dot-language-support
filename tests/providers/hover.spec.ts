@@ -48,20 +48,16 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	it(
-		"should correctly return graph info (offset " + "digraph".length + ")",
-		() => {
-			const h = hoverAtSampleAtOffset("digraph".length);
-			expect(h.contents).toEqual("(directed graph) GraphName");
-		}
+	it("should correctly return graph info (offset " + "digraph".length + ")", () => {
+		const h = hoverAtSampleAtOffset("digraph".length);
+		expect(h.contents).toEqual("(directed graph) GraphName");
+	}
 	);
 
-	it(
-		"should correctly return graph info (offset " + "digraph Gra".length + ")",
-		() => {
-			const h = hoverAtSampleAtOffset("digraph Gra".length);
-			expect(h.contents).toEqual("(directed graph) GraphName");
-		}
+	it("should correctly return graph info (offset " + "digraph Gra".length + ")", () => {
+		const h = hoverAtSampleAtOffset("digraph Gra".length);
+		expect(h.contents).toEqual("(directed graph) GraphName");
+	}
 	);
 
 	it("should correctly return graph info, strict graph (offset 0)", () => {
@@ -79,12 +75,10 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	it(
-		"should correctly return graph info, unnamed strict graph (offset 0)",
-		() => {
-			const h = hoverAtStrictSampleAtOffset(21);
-			expect(h.contents).toEqual("(strict directed graph) GraphName");
-		}
+	it("should correctly return graph info, unnamed strict graph (offset 0)", () => {
+		const h = hoverAtStrictSampleAtOffset(21);
+		expect(h.contents).toEqual("(strict directed graph) GraphName");
+	}
 	);
 
 
