@@ -413,15 +413,15 @@ export class Parser {
 		return this.finishNode(node);
 	}
 
-	private parseEdgeStatement(preceedingItem: SubGraph | NodeId): EdgeStatement {
-		console.assert(preceedingItem.kind === SyntaxKind.SubGraph || preceedingItem.kind === SyntaxKind.NodeId);
-		console.assert(preceedingItem.pos !== undefined);
+	private parseEdgeStatement(precedingItem: SubGraph | NodeId): EdgeStatement {
+		console.assert(precedingItem.kind === SyntaxKind.SubGraph || precedingItem.kind === SyntaxKind.NodeId);
+		console.assert(precedingItem.pos !== undefined);
 
 		if (!this.isEdgeOp())
 			debugger; // console.assert(this.isEdgeOp());
 
-		const node = this.createNode(SyntaxKind.EdgeStatement, preceedingItem.pos) as EdgeStatement;
-		node.source = preceedingItem;
+		const node = this.createNode(SyntaxKind.EdgeStatement, precedingItem.pos) as EdgeStatement;
+		node.source = precedingItem;
 
 		// TODO: Check edge ops in directed and undirected graphs via flags
 		node.rhs = this.parseList(ParsingContext.EdgeRhsList, () => this.parseEdgeRhs());
