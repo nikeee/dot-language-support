@@ -20,11 +20,15 @@
 
     "strict": true,
 
-    "noUnusedLocals": false, // TODO: Fix
+    "noUnusedLocals": false, // Turn this on occasionally to perform maintenance
+    "noUnusedParameters": false, // Turn this on occasionally to perform maintenance
+    // "exactOptionalPropertyTypes": true, // Interpret optional property types as written, rather than adding 'undefined'.
     "noImplicitReturns": true,
-    "noUnusedParameters": false, // TODO: Fix
-    "noFallthroughCasesInSwitch": true,
-
+    "noUncheckedIndexedAccess": false, // Disabled to keep array index simple
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
     "skipLibCheck": true
   },
   "include": [
