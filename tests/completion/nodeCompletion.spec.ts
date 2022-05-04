@@ -57,8 +57,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(4); // green, blue, yellow, b
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
 		const content = `graph{node_0;node_1;node_2;node_0 -- node_1 -- [color=gray]; }`;
@@ -72,8 +71,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // node_{0,1,2}
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, directed)", () => {
 		const content = `digraph{node_0;node_1;node_2;node_0 -> node_1 -> [color=gray]; }`;
@@ -87,8 +85,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // node_{0,1,2}
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
 		const content = `graph{node_0;node_1;node_2;node_0 -- node_1 -- [color=gray]; }`;
@@ -102,8 +99,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // node_{0,1,2}
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, directed)", () => {
 		const content = `digraph{node_0;node_1;node_2;node_0 -> node_1 -> [color=gray]; }`;
@@ -117,8 +113,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // node_{0,1,2}
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 1)", () => {
 		const content = `digraph {
@@ -159,8 +154,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 3)", () => {
 		const content = `digraph {
@@ -180,8 +174,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 4)", () => {
 		const content = `digraph {
@@ -222,8 +215,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 6)", () => {
 		const content = `digraph {
@@ -244,8 +236,7 @@ describe("Node completion", () => {
 
 		// console.log(completions)
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 7)", () => {
 		const content = `digraph {
@@ -265,8 +256,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 8)", () => {
 		const content = `digraph {
@@ -286,8 +276,7 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game (excluding sel)
-	}
-	);
+	});
 
 	it("should provide completion for nodes (trailing space; between nodes, issue #17 9)", () => {
 		const content = `digraph {
@@ -309,6 +298,5 @@ describe("Node completion", () => {
 		assertExists(completions);
 
 		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
-	}
-	);
+	});
 });
