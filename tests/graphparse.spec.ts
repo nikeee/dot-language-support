@@ -9,7 +9,7 @@ describe("Graph Parsing", () => {
 
 		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
-		if(pg.id === undefined) throw "Just for type checker";
+		if (pg.id === undefined) throw "Just for type checker";
 		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
 		expect((pg.id as any).text).toEqual("lol");
 		expect(pg.strict).toBeDefined();
@@ -42,7 +42,7 @@ describe("Graph Parsing", () => {
 		expect(es.source.kind).toEqual(SyntaxKind.NodeId);
 		const ess = es.source as NodeId;
 		expect(ess).toBeDefined();
-		if(ess === undefined) throw "Just for type checker";
+		if (ess === undefined) throw "Just for type checker";
 		expect(ess.id.kind).toEqual(SyntaxKind.NumericIdentifier);
 	});
 
@@ -56,7 +56,7 @@ describe("Graph Parsing", () => {
 
 		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
-		if(pg.id === undefined) throw "Just for type checker";
+		if (pg.id === undefined) throw "Just for type checker";
 		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
 		expect((pg.id as any).text).toEqual("lol");
 		expect(pg.strict).toBeDefined();
@@ -171,7 +171,7 @@ describe("Graph Parsing", () => {
 
 		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
-		if(pg.id === undefined) throw "Just for type checker";
+		if (pg.id === undefined) throw "Just for type checker";
 		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
 		expect((pg.id as any).text).toEqual("G");
 
