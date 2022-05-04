@@ -4,23 +4,28 @@
     "module": "commonjs",
     "lib": [
       "es2017",
-      "dom"
+      "dom" // for console
     ],
 
-    "strict": true,
+    "moduleResolution": "node",
 
+    "outDir": "lib",
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
+
+    "strict": true,
 
     "noUnusedLocals": false, // TODO: Fix
     "noImplicitReturns": true,
     "noUnusedParameters": false, // TODO: Fix
     "noFallthroughCasesInSwitch": true,
 
-    "outDir": "lib",
-    "declaration": true,
-    "sourceMap": true,
-    "removeComments": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts"
