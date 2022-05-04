@@ -1,4 +1,5 @@
 import { Scanner, DefaultScanner, getTokenAsText } from "./scanner";
+import { assertNever } from "./service/util";
 import {
 	SyntaxKind,
 	SourceFile,
@@ -634,8 +635,9 @@ export class Parser {
 				return "Wat, no parsing context";
 			case ParsingContext.Count:
 				return "Wat, 'Count' parsing context";
+			default:
+				return assertNever(context);
 		}
-		return "Error parsing list";
 	}
 
 	private isInSomeParsingContext(): boolean {
@@ -661,7 +663,7 @@ export class Parser {
 		return false;
 	}
 
-	private isListElement(context: ParsingContext, inErrorRecovery: boolean) {
+	private isListElement(context: ParsingContext, _inErrorRecovery: boolean) {
 		switch (context) {
 			case ParsingContext.AssignmentList:
 				return this.isIdentifier();
@@ -671,7 +673,7 @@ export class Parser {
 				return this.token() === SyntaxKind.DirectedEdgeOp
 					|| this.token() === SyntaxKind.UndirectedEdgeOp;
 			case ParsingContext.QuotedTextIdentifierConcatenation:
-				// TODO: This may be wrong because the plus is only allowed to occurr after a plusToken
+				// TODO: This may be wrong because the plus is only allowed to occur after a plusToken
 				return this.token() === SyntaxKind.StringLiteral
 					|| this.token() === SyntaxKind.PlusToken;
 			case ParsingContext.StatementList:
@@ -799,7 +801,7 @@ export class Parser {
 		return this.parseErrorAtPosition(this.scanner.tokenPos, this.scanner.pos, message, error);
 	}
 
-	private scanError(message: string, category: DiagnosticCategory, sub: ScanError, length: number) {
+	private scanError(message: string, _category: DiagnosticCategory, sub: ScanError, length: number) {
 		const errorPos = this.scanner.pos;
 		const err = {
 			source: ErrorSource.Scan as ErrorSource.Scan,

@@ -51,6 +51,6 @@ export function escapeIdentifierText(text: string): string {
 
 const quote = (s: string) => "\"" + s + "\"";
 
-export function assertNever(_: never): never {
-	throw new Error("Never assertion");
+export function assertNever(v: never): never {
+	throw new Error("Should not have reached this. Value: " + (v ?? ""));
 }
