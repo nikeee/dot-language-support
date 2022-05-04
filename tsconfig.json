@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
     "module": "commonjs",
     "lib": [
       "es2017",
@@ -9,7 +9,7 @@
 
     "moduleResolution": "node",
 
-    "outDir": "lib",
+    "outDir": "lib/cjs",
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,

@@ -4,13 +4,16 @@
   "description": "Parser and language service for graphviz (dot) files",
   "author": "Niklas Mollenhauer",
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.spec.ts tests/*.spec.ts",
     "clean": "rimraf lib",
-    "compile": "tsc",
-    "prepare": "npm run compile"
+    "compile:esm": "tsc --target esnext --module esnext --outDir lib/esm",
+    "compile:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
+    "compile": "npm run compile:esm && npm run compile:cjs",
+    "prepare": "npm run clean && npm run compile"
   },
   "keywords": [
     "graphviz",
