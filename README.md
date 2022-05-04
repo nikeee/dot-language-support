@@ -1,5 +1,4 @@
-# dot-language-support
-> [![CD](https://github.com/nikeee/dot-language-support/actions/workflows/CD.yml/badge.svg)](https://github.com/nikeee/dot-language-support/actions/workflows/CD.yml) [![CI](https://github.com/nikeee/dot-language-support/actions/workflows/CI.yml/badge.svg)](https://github.com/nikeee/dot-language-support/actions/workflows/CI.yml) ![Dependencies](https://img.shields.io/librariesio/release/npm/dot-language-support) [![npm version](https://img.shields.io/npm/v/dot-language-support)](https://www.npmjs.com/package/dot-language-support)
+# dot-language-support [![CD](https://github.com/nikeee/dot-language-support/actions/workflows/CD.yml/badge.svg)](https://github.com/nikeee/dot-language-support/actions/workflows/CD.yml) [![CI](https://github.com/nikeee/dot-language-support/actions/workflows/CI.yml/badge.svg)](https://github.com/nikeee/dot-language-support/actions/workflows/CI.yml) ![Dependencies](https://img.shields.io/librariesio/release/npm/dot-language-support) [![npm version](https://img.shields.io/npm/v/dot-language-support)](https://www.npmjs.com/package/dot-language-support)
 
 
 
