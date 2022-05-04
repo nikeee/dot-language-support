@@ -1,8 +1,8 @@
 import { TextEdit, Position, WorkspaceEdit } from "vscode-languageserver-types";
-import { SourceFile, SyntaxNode, SyntaxKind } from "../types";
-import { findNodeAtOffset } from "../checker";
-import { isIdentifierNode, DocumentLike } from "../";
-import { syntaxNodesToRanges } from "./util";
+import { SourceFile, SyntaxNode, SyntaxKind } from "../types.js";
+import { findNodeAtOffset } from "../checker.js";
+import { isIdentifierNode, DocumentLike } from "../index.js";
+import { syntaxNodesToRanges } from "./util.js";
 
 export function renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position: Position, newName: string): WorkspaceEdit | undefined {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";

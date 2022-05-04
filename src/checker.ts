@@ -21,9 +21,9 @@ import {
 	StatementOf,
 	Token,
 	TextRange,
-} from "./types";
-import { assertNever, getStart } from "./service/util";
-import { forEachChild } from "./visitor";
+} from "./types.js";
+import { assertNever, getStart } from "./service/util.js";
+import { forEachChild } from "./visitor.js";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;

@@ -1,8 +1,8 @@
-import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
-import { getCompletions } from "../../src/service/completion";
+import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils.js";
+import { getCompletions } from "../../src/service/completion.js";
 
 describe("Node completion", () => {
 

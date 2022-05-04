@@ -1,7 +1,8 @@
-import { DefaultScanner, Parser } from "../src"
-import { SourceFile, Graph } from "../src/types";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { expect } from "chai";
-import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
+
+import { Parser } from "../src"
+import { SourceFile, Graph } from "../src/types";
 import { bindSourceFile } from "../src/binder";
 import { checkSourceFile } from "../src/checker";
 

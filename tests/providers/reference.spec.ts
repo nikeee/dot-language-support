@@ -1,7 +1,8 @@
-import { ensureDocAndSourceFile } from "../testutils";
 import { expect } from "chai";
 import "mocha";
-import { findReferences } from "../../src/service/reference";
+
+import { ensureDocAndSourceFile } from "../testutils.js";
+import { findReferences } from "../../src/service/reference.js";
 
 describe("Reference Finding", () => {
 

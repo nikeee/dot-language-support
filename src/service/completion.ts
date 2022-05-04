@@ -1,9 +1,9 @@
 import * as lst from "vscode-languageserver-types";
-import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, SymbolTable, AttributeContainer } from "../types";
-import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker";
-import { escapeIdentifierText } from "./util";
-import { isIdentifierNode, DocumentLike } from "../";
-import * as languageFacts from "./languageFacts";
+import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, SymbolTable, AttributeContainer } from "../types.js";
+import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker.js";
+import { escapeIdentifierText } from "./util.js";
+import { isIdentifierNode, DocumentLike } from "../index.js";
+import * as languageFacts from "./languageFacts.js";
 
 // TODO: Rewrite pattern matching + completion
 // Currently, we use this hack with "inclusiveEnd"

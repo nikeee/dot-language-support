@@ -1,9 +1,9 @@
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils";
 import { expect } from "chai";
 import "mocha";
 
-import { getCompletions } from "../../src/service/completion";
-import { colors } from "../../src/service/languageFacts";
+import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
+import { getCompletions } from "../../src/service/completion.js";
+import { colors } from "../../src/service/languageFacts.js";
 
 const allColors = Object.keys(colors);
 

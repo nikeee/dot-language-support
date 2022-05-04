@@ -1,6 +1,5 @@
 import { createParserWithText, ensureGraph } from "./testutils";
-import { SyntaxKind, SourceFile } from "../src/types";
-import { Parser } from "../src/parser";
+import { SyntaxKind } from "../src/types";
 import { expect } from "chai";
 import "mocha";
 

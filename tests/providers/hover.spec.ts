@@ -1,7 +1,8 @@
-import { ensureDocAndSourceFile } from "../testutils";
 import { expect } from "chai";
 import "mocha";
-import { hover } from "../../src/service/hover";
+
+import { ensureDocAndSourceFile } from "../testutils.js";
+import { hover } from "../../src/service/hover.js";
 
 describe("Hover Handling", () => {
 

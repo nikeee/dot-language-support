@@ -1,9 +1,9 @@
 import type * as lst from "vscode-languageserver-types";
-import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
-import { SourceFile, ColorTable } from "../types";
-import { DocumentLike } from "../";
-import { syntaxNodeToRange } from "./util";
-import * as languageFacts from "./languageFacts";
+import { ColorInformation, Color, ColorPresentation } from "./polyfill.js"; // TODO: Remove this import and use lst later
+import { SourceFile, ColorTable } from "../types.js";
+import { DocumentLike } from "../index.js";
+import { syntaxNodeToRange } from "./util.js";
+import * as languageFacts from "./languageFacts.js";
 
 const colorMap = languageFacts.colors as { [i: string]: string | undefined };
 

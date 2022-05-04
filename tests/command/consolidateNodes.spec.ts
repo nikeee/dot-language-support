@@ -1,11 +1,11 @@
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { expect } from "chai";
 import "mocha";
 
-import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand";
-import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
-import { CommandIds, getCodeActions } from "../../src/service/codeAction";
-import { ExecutableCommand } from "../../src/service/command/common";
+import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
+import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.js";
+import { CommandIds, getCodeActions } from "../../src/service/codeAction.js";
+import { ExecutableCommand } from "../../src/service/command/common.js";
 
 describe("Consolidate graph command execution", () => {
 

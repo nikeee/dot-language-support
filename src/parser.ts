@@ -1,5 +1,5 @@
-import { Scanner, DefaultScanner, getTokenAsText } from "./scanner";
-import { assertNever } from "./service/util";
+import { Scanner, DefaultScanner, getTokenAsText } from "./scanner.js";
+import { assertNever } from "./service/util.js";
 import {
 	SyntaxKind,
 	SourceFile,

@@ -1,17 +1,17 @@
 import type * as lst from "vscode-languageserver-types";
 import type { TextDocument } from "vscode-languageserver-textdocument";
-import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
-import { Parser } from "../";
-import { SourceFile, Omit } from "../types";
-import { bindSourceFile } from "../binder";
-import { hover } from "./hover";
-import { validateDocument } from "./validation";
-import { findReferences, findDefinition } from "./reference";
-import { renameSymbol } from "./rename";
-import { getCompletions } from "./completion";
-import { checkSourceFile } from "../checker";
-import { getCodeActions, executeCommand, getAvailableCommands } from "./codeAction";
-import { getDocumentColors, getColorRepresentations } from "./colorProvider";
+import { ColorInformation, Color, ColorPresentation } from "./polyfill.js"; // TODO: Remove this import and use lst later
+import { Parser } from "../index.js";
+import { SourceFile, Omit } from "../types.js";
+import { bindSourceFile } from "../binder.js";
+import { hover } from "./hover.js";
+import { validateDocument } from "./validation.js";
+import { findReferences, findDefinition } from "./reference.js";
+import { renameSymbol } from "./rename.js";
+import { getCompletions } from "./completion.js";
+import { checkSourceFile } from "../checker.js";
+import { getCodeActions, executeCommand, getAvailableCommands } from "./codeAction.js";
+import { getDocumentColors, getColorRepresentations } from "./colorProvider.js";
 
 export interface DocumentLike {
 	positionAt(offset: number): lst.Position;

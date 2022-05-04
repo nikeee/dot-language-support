@@ -1,8 +1,8 @@
 import type { Position, ReferenceContext, Location } from "vscode-languageserver-types";
-import type { SyntaxNode, SourceFile } from "../types";
-import { isIdentifierNode, type DocumentLike } from "../";
-import { findNodeAtOffset } from "../checker";
-import { syntaxNodesToRanges, syntaxNodeToRange } from "./util";
+import type { SyntaxNode, SourceFile } from "../types.js";
+import { isIdentifierNode, type DocumentLike } from "../index.js";
+import { findNodeAtOffset } from "../checker.js";
+import { syntaxNodesToRanges, syntaxNodeToRange } from "./util.js";
 
 export function findReferences(doc: DocumentLike, sourceFile: SourceFile, position: Position, context: ReferenceContext): Location[] {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";

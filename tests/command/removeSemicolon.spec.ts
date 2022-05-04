@@ -1,9 +1,11 @@
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { expect } from "chai";
 import "mocha";
 
+
+import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
+
 import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons";
-import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
 import { CommandIds, getCodeActions } from "../../src/service/codeAction";
 
 describe("Remove semicolon command execution", () => {

@@ -15,8 +15,8 @@ import {
 	isIdentifierNode,
 	SyntaxNode,
 	EdgeStatement,
-} from "../";
-import { assertNever, getStart } from "./util";
+} from "../index.js";
+import { assertNever, getStart } from "./util.js";
 import {
 	getAllowedEdgeOperation,
 	findAllEdges,
@@ -27,14 +27,12 @@ import {
 	isAttrStatement,
 	edgeStatementHasAttributes,
 	nodeContainsErrors,
-} from "../checker";
-
-import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand";
-import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand";
-import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand";
-import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons";
-
-import { ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common";
+} from "../checker.js";
+import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
+import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
+import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
+import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
+import { ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common.js";
 
 export function getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, _context?: lst.CodeActionContext): lst.Command[] | undefined {
 	let actions = getActionsFromDiagnostics(doc, sourceFile, range);

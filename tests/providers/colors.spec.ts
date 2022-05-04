@@ -1,7 +1,8 @@
-import { ensureDocAndSourceFile } from "../testutils";
 import { expect } from "chai";
 import "mocha";
-import { getDocumentColors } from "../../src/service/colorProvider";
+
+import { ensureDocAndSourceFile } from "../testutils.js";
+import { getDocumentColors } from "../../src/service/colorProvider.js";
 
 describe("Reference Finding", () => {
 

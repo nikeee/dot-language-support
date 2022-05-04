@@ -1,8 +1,8 @@
-import { createParserWithText, ensureGraph } from "./testutils";
-import { SyntaxKind, EdgeStatement, NodeId } from "../src/types";
-import { Parser } from "../src/parser";
 import { expect } from "chai";
 import "mocha";
+
+import { createParserWithText, ensureGraph } from "./testutils.js";
+import { SyntaxKind, EdgeStatement, NodeId } from "../src/types.js";
 
 describe("Graph Parsing", () => {
 

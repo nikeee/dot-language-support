@@ -16,7 +16,7 @@ import {
 	NormalPortDeclaration,
 	CompassPortDeclaration,
 	SubGraph
-} from "./types";
+} from "./types.js";
 
 function visitNode<T>(cbNode: (node: SyntaxNode) => T, node?: SyntaxNode): T | undefined {
 	return node && cbNode(node);

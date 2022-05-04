@@ -23,9 +23,9 @@ import {
 	SubGraph,
 	ColorTable,
 	ColorInfo,
-} from "./types";
-import { getIdentifierText, nodeContainsErrors } from "./checker";
-import { isIdentifierNode } from "./parser";
+} from "./types.js";
+import { getIdentifierText, nodeContainsErrors } from "./checker.js";
+import { isIdentifierNode } from "./parser.js";
 
 interface Binder {
 	bind(file: SourceFile): void;

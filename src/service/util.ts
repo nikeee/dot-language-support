@@ -1,7 +1,7 @@
 import type { Range } from "vscode-languageserver-types";
-import { SourceFile, SyntaxNode, SyntaxKind } from "../types";
-import type { DocumentLike } from "../";
-import { skipTrivia, isIdentifierStart } from "../scanner";
+import { SourceFile, SyntaxNode, SyntaxKind } from "../types.js";
+import { skipTrivia, isIdentifierStart } from "../scanner.js";
+import type { DocumentLike } from "../index.js";
 
 export function getStart(sourceFile: SourceFile, node: SyntaxNode) {
 	return getTokenPosOfNode(sourceFile, node);
