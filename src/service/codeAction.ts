@@ -142,9 +142,9 @@ function getGeneralRefactorings(doc: DocumentLike, file: SourceFile, range: lst.
 								) {
 									// ... then we want to stop here.
 
-									// TODO: We may make this less strict, allowing graph modofications or something
+									// TODO: We may make this less strict, allowing graph modifications or something
 
-									// We have visited a statement that changes the behaviour of the following notes
+									// We have visited a statement that changes the behavior of the following notes
 									// We dont want to proceed here
 									hasVisitedNodeModifier = true;
 									return true;
