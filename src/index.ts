@@ -3,4 +3,3 @@ export * from "./scanner";
 export * from "./parser";
 export * from "./visitor";
 export * from "./service/service";
-export * from "./service/interop";
