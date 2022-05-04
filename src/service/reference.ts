@@ -70,8 +70,9 @@ export function findDefinition(doc: DocumentLike, sourceFile: SourceFile, positi
 		const nodeSymbol = node.symbol;
 		if (!nodeSymbol) throw "node.symbol is not bound";
 
-		const refs = nodeSymbol.references || [];
-		let symbolRefs: SyntaxNode[];
+		// TODO: These are unused?
+		// const refs = nodeSymbol.references || [];
+		// let symbolRefs: SyntaxNode[];
 
 		const firstMention = nodeSymbol.firstMention;
 		if (!firstMention)

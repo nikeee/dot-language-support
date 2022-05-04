@@ -1,9 +1,9 @@
-import * as lst from "vscode-languageserver-types";
-import { SyntaxKind, Omit } from "../../";
+import { TextEdit, Range, type Position } from "vscode-languageserver-types";
+import { SyntaxKind } from "../../";
 import { CommandIds } from "../codeAction";
 
-export function createChangeToEdit(start: lst.Position, end: lst.Position, changeTo: string): lst.TextEdit {
-	return lst.TextEdit.replace(lst.Range.create(start, end), changeTo);
+export function createChangeToEdit(start: Position, end: Position, changeTo: string): TextEdit {
+	return TextEdit.replace(Range.create(start, end), changeTo);
 }
 
 export interface Offset {

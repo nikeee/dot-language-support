@@ -90,10 +90,12 @@ export interface NumericIdentifier extends SyntaxNode {
 	text: string;
 	value: number;
 }
-export type Identifier = TextIdentifier
+export type Identifier =
+	| TextIdentifier
 	| QuotedTextIdentifier
 	| HtmlIdentifier
-	| NumericIdentifier;
+	| NumericIdentifier
+	;
 
 export interface Graph extends SyntaxNode {
 	kind: SyntaxKind.DirectedGraph | SyntaxKind.UndirectedGraph
@@ -112,11 +114,13 @@ export interface StatementBase {
 export type StatementSeparator = Token<SyntaxKind.SemicolonToken>;
 
 
-export type Statement = NodeStatement
+export type Statement =
+	| NodeStatement
 	| EdgeStatement
 	| AttributeStatement
 	| IdEqualsIdStatement
-	| SubGraphStatement;
+	| SubGraphStatement
+	;
 
 export interface NodeStatement extends SyntaxNode, StatementBase {
 	kind: SyntaxKind.NodeStatement;

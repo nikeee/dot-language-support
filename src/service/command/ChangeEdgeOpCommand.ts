@@ -19,7 +19,7 @@ export function create(startOffset: number, endOffset: number, changeTo: EdgeTyp
 	};
 }
 
-export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
+export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
 	if (!isChangeEdgeOpCommand(cmd))
 		return undefined; // Invalid arguments
 

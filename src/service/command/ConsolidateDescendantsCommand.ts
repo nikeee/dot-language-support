@@ -1,8 +1,8 @@
 import * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction";
-import { EdgeOpStr, ExecutableCommand, getEdgeStr, EdgeType } from "./common";
-import { DocumentLike, SourceFile, CommandApplication, EdgeStatement, NodeId, forEachChild, SyntaxNode, SubGraphStatement } from "../../";
-import { getIdentifierText, findNodeAtOffset, isSubGraphStatement } from "../../checker";
+import { ExecutableCommand } from "./common";
+import { DocumentLike, SourceFile, CommandApplication, EdgeStatement, NodeId, SyntaxNode } from "../../";
+import { getIdentifierText, findNodeAtOffset } from "../../checker";
 import { getStart } from "../util";
 
 export interface ConsolidateDescendantsCommand extends lst.Command {
@@ -21,16 +21,6 @@ export function create(statements: EdgeStatement[], below: boolean): Consolidate
 		command: CommandIds.ConsolidateDescendants,
 		arguments: statements.map(s => s.pos),
 	};
-}
-
-function unbind(statements: EdgeStatement[]): EdgeStatement[] {
-	const res: EdgeStatement[] = [];
-
-	for (const statement of statements) {
-		const { parent, ...copy } = statement;
-	}
-
-	return res;
 }
 
 export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {

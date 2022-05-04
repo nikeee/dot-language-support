@@ -1,7 +1,7 @@
 import * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction";
-import { GraphTypeStr, Offset, EdgeOpStr, createChangeToEdit, ExecutableCommand, getEdgeStr, EdgeType, GraphType, getGraphKeywordStr } from "./common";
-import { DocumentLike, SourceFile, CommandApplication, SyntaxKind } from "../../";
+import { createChangeToEdit, ExecutableCommand } from "./common";
+import { DocumentLike, SourceFile, CommandApplication } from "../../";
 import { findOptionalSemicolons } from "../../checker";
 
 export interface RemoveSemicolonsCommand extends lst.Command {

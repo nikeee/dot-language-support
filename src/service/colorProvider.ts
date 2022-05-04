@@ -14,7 +14,7 @@ export function getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): Co
 		: undefined;
 }
 
-export function getColorRepresentations(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined {
+export function getColorRepresentations(_doc: DocumentLike, _sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined {
 	if (!color || !range)
 		return undefined;
 

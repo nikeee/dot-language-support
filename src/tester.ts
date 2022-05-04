@@ -1,10 +1,10 @@
-import { Scanner, DefaultScanner } from "./scanner";
 import { Parser } from "./parser";
 import { bindSourceFile } from "./binder";
 import { checkSourceFile } from "./checker";
-import { TextDocument } from "vscode-languageserver-types/lib/umd/main";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { getCompletions } from "./service/completion";
-import { hover } from "./service/hover";
+// import { Scanner, DefaultScanner } from "./scanner";
+// import { hover } from "./service/hover";
 
 const text = `graph {
 	node_name_a -- node_name_b [color=blue,

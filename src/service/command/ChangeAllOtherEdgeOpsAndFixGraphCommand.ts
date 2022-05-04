@@ -1,7 +1,7 @@
 import * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction";
 import { GraphTypeStr, Offset, EdgeOpStr, createChangeToEdit, ExecutableCommand, getEdgeStr, EdgeType, GraphType, getGraphKeywordStr } from "./common";
-import { DocumentLike, SourceFile, CommandApplication, SyntaxKind } from "../../";
+import { DocumentLike, SourceFile, CommandApplication } from "../../";
 
 export interface ChangeAllOtherEdgeOpsAndFixGraphCommand extends lst.Command {
 	command: CommandIds.ConvertGraphType;
@@ -23,7 +23,7 @@ export function create(edgeOffsets: Offset[], changeEdgesTo: EdgeType, graphOffs
 	};
 }
 
-export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
+export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
 	if (!isChangeAllOtherEdgeOpsAndFixGraphCommand(cmd))
 		return undefined;
 

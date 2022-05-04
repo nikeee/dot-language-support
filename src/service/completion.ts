@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, NodeId, EdgeStatement, SymbolTable, AttributeContainer } from "../types";
+import { SourceFile, SyntaxNodeFlags, SyntaxKind, Assignment, SymbolTable, AttributeContainer } from "../types";
 import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker";
 import { escapeIdentifierText } from "./util";
 import { isIdentifierNode, DocumentLike } from "../";

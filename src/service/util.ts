@@ -1,4 +1,4 @@
-import * as lst from "vscode-languageserver-types";
+import type { Range } from "vscode-languageserver-types";
 import { SourceFile, SyntaxNode, SyntaxKind } from "../types";
 import type { DocumentLike } from "../";
 import { skipTrivia, isIdentifierStart } from "../scanner";
@@ -21,7 +21,7 @@ function nodeIsMissing(node: SyntaxNode) {
 		: node.pos === node.end && node.pos >= 0 && node.kind !== SyntaxKind.EndOfFileToken;
 }
 
-export function syntaxNodesToRanges(doc: DocumentLike, sourceFile: SourceFile, nodes: SyntaxNode[]): lst.Range[] {
+export function syntaxNodesToRanges(doc: DocumentLike, sourceFile: SourceFile, nodes: SyntaxNode[]): Range[] {
 	return nodes.map(node => syntaxNodeToRange(doc, sourceFile, node));
 }
 
@@ -51,6 +51,6 @@ export function escapeIdentifierText(text: string): string {
 
 const quote = (s: string) => "\"" + s + "\"";
 
-export function assertNever(n: never): never {
+export function assertNever(_: never): never {
 	throw new Error("Never assertion");
 }

@@ -3,7 +3,7 @@ import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFil
 import { getIdentifierText, findNodeAtOffset } from "../checker";
 import { DocumentLike } from "../";
 import { isIdentifierNode } from "../parser";
-import { getStart, syntaxNodeToRange } from "./util";
+import { syntaxNodeToRange } from "./util";
 import { getEdgeStr } from "./command/common";
 
 

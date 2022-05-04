@@ -15,7 +15,6 @@ import {
 	isIdentifierNode,
 	SyntaxNode,
 	EdgeStatement,
-	SyntaxNodeFlags,
 } from "../";
 import { assertNever, getStart } from "./util";
 import {
@@ -35,9 +34,9 @@ import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOth
 import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand";
 import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons";
 
-import { EdgeOpStr, getGraphKeywordStr, getEdgeStr, ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common";
+import { ExecutableCommand, getOppositeKind, getOppositeEdgeOp, getAllowedOp } from "./command/common";
 
-export function getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context?: lst.CodeActionContext): lst.Command[] | undefined {
+export function getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, _context?: lst.CodeActionContext): lst.Command[] | undefined {
 	let actions = getActionsFromDiagnostics(doc, sourceFile, range);
 	const general = getGeneralRefactorings(doc, sourceFile, range);
 	if (general) {
@@ -190,19 +189,19 @@ function getCommandsForDiagnostic(doc: DocumentLike, file: SourceFile, d: Diagno
 		default: return assertNever(d.code);
 	}
 }
-function getScannerErrorCommand(doc: DocumentLike, file: SourceFile, d: DiagnosticMessage, code: ScanErrorCode): lst.Command[] | undefined {
+function getScannerErrorCommand(_doc: DocumentLike, _file: SourceFile, d: DiagnosticMessage, code: ScanErrorCode): lst.Command[] | undefined {
 	console.assert(d.code.source === ErrorSource.Scan);
 	console.assert(code.source === ErrorSource.Scan);
 	return undefined; // TODO
 }
 
-function getParserErrorCommand(doc: DocumentLike, file: SourceFile, d: DiagnosticMessage, code: ParseErrorCode): lst.Command[] | undefined {
+function getParserErrorCommand(_doc: DocumentLike, _file: SourceFile, d: DiagnosticMessage, code: ParseErrorCode): lst.Command[] | undefined {
 	console.assert(d.code.source === ErrorSource.Parse);
 	console.assert(code.source === ErrorSource.Parse);
 	return undefined; // TODO
 }
 
-function getCheckerErrorCommand(doc: DocumentLike, file: SourceFile, d: DiagnosticMessage, code: CheckErrorCode): lst.Command[] | undefined {
+function getCheckerErrorCommand(_doc: DocumentLike, file: SourceFile, d: DiagnosticMessage, code: CheckErrorCode): lst.Command[] | undefined {
 	console.assert(d.code.source === ErrorSource.Check);
 	console.assert(code.source === ErrorSource.Check);
 	switch (code.sub) {
@@ -261,7 +260,6 @@ function isInRange(rangeStartOffset: number, rangeEndOffset: number, startOffset
 	return false; // TODO
 }
 
-type CommandID = string;
 export const enum CommandIds {
 	ChangeEdgeOp = "DOT.changeEdgeOp",
 	ConvertGraphType = "DOT.convertGraphType",

@@ -1,4 +1,4 @@
-import { Scanner, DefaultScanner, getTokenAsText, getTextAsToken, ErrorCallback } from "./scanner";
+import { Scanner, DefaultScanner, getTokenAsText } from "./scanner";
 import {
 	SyntaxKind,
 	SourceFile,
@@ -12,7 +12,6 @@ import {
 	CompassPortDeclaration,
 	NormalPortDeclaration,
 	PortDeclaration,
-	EdgeOp,
 	SyntaxNode,
 	SyntaxNodeArray,
 	MutableSyntaxNodeArray,
@@ -1003,6 +1002,6 @@ export function isIdentifier(kind: SyntaxKind) {
 	// || kind === SyntaxKind.StringLiteral // TODO: Is this needed?
 }
 
-export function isIdentifierNode<T extends SyntaxNode>(node: SyntaxNode): node is Identifier {
+export function isIdentifierNode(node: SyntaxNode): node is Identifier {
 	return isIdentifier(node.kind);
 }
