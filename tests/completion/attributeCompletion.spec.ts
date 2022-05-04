@@ -26,8 +26,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	});
@@ -47,8 +47,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -68,8 +68,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	});
@@ -88,8 +88,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -110,8 +110,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -133,8 +133,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -155,8 +155,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -176,8 +176,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -197,8 +197,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
@@ -219,8 +219,8 @@ describe("Attribute completion", () => {
 		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
-		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
