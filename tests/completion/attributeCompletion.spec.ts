@@ -34,8 +34,8 @@ describe("Attribute completion", () => {
 
 	it("should provide completion for attributes (empty list, a lot of whitespace)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [    ];
-            }`;
+			node_name_a -- node_name_b [    ];
+		}`;
 
 		const requestOffset = invokeIndex(content)("[  ");
 
@@ -51,8 +51,7 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (preceding item)", () => {
 		const content = `graph {
@@ -76,8 +75,8 @@ describe("Attribute completion", () => {
 
 	it("should provide completion for attributes (preceding item, leading whitespace)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [color=blue, ];
-            }`;
+			node_name_a -- node_name_b [color=blue, ];
+		}`;
 		const requestOffset = invokeIndex(content)("color=blue, ");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -92,14 +91,13 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (preceding item, leading whitespace, line break)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [color=blue,
-                ];
-            }`;
+			node_name_a -- node_name_b [color=blue,
+			];
+		}`;
 		const requestOffset = invokeIndex(content)("color=blue,\n\t\t\t");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -114,15 +112,13 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
-
+	});
 
 
 	it("should provide completion for attributes (empty list, first container)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [] [shape=box];
-            }`;
+			node_name_a -- node_name_b [] [shape=box];
+		}`;
 		const requestOffset = invokeIndex(content)("[");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -137,13 +133,12 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (empty list, a lot of whitespace, first container)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [    ] [shape=box];
-            }`;
+			node_name_a -- node_name_b [    ] [shape=box];
+		}`;
 
 		const requestOffset = invokeIndex(content)("[  ");
 
@@ -159,13 +154,12 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (preceding item, first container)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [color=blue,] [shape=box];
-            }`;
+			node_name_a -- node_name_b [color=blue,] [shape=box];
+		}`;
 		const requestOffset = invokeIndex(content)("color=blue,");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -180,13 +174,12 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (preceding item, leading whitespace, first container)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [color=blue, ] [shape=box];
-            }`;
+			node_name_a -- node_name_b [color=blue, ] [shape=box];
+		}`;
 		const requestOffset = invokeIndex(content)("color=blue, ");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -201,14 +194,13 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 
 	it("should provide completion for attributes (preceding item, leading whitespace, line break, first container)", () => {
 		const content = `graph {
-                node_name_a -- node_name_b [color=blue,
-                ] [shape=box];
-            }`;
+			node_name_a -- node_name_b [color=blue,
+			] [shape=box];
+		}`;
 		const requestOffset = invokeIndex(content)("color=blue,\n\t\t\t");
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -223,6 +215,5 @@ describe("Attribute completion", () => {
 		expect(completions.map(getLabel)).not.toContain("node_name_b");
 		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
-	}
-	);
+	});
 });
