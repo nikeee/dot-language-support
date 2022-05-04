@@ -1,4 +1,4 @@
-import * as lst from "vscode-languageserver-types";
+import type * as lst from "vscode-languageserver-types";
 import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
 import { Parser } from "../";
 import { SourceFile, Omit } from "../types";

@@ -1,4 +1,4 @@
-import * as lst from "vscode-languageserver-types";
+import type * as lst from "vscode-languageserver-types";
 import {
 	DocumentLike,
 	SourceFile,

@@ -1,6 +1,6 @@
-import * as lst from "vscode-languageserver-types";
-import { DiagnosticMessage, DiagnosticCategory } from "../types";
-import { DocumentLike } from "../";
+import { DiagnosticSeverity, type Diagnostic } from "vscode-languageserver-types";
+import { type DiagnosticMessage, DiagnosticCategory } from "../types";
+import type { DocumentLike } from "../";
 
 /**
  * VSCode's/Monaco's Marker data (used for diagnostics)
@@ -29,7 +29,7 @@ export function getDiagnosticMarkerData(doc: DocumentLike, source: DiagnosticMes
 	};
 }
 
-export function getMarkerDataDiagnostic(m: IMarkerData): lst.Diagnostic {
+export function getMarkerDataDiagnostic(m: IMarkerData): Diagnostic {
 	return {
 		message: m.message,
 		range: {
@@ -57,16 +57,16 @@ const enum MonacoSeverity {
 	Error = 3,
 }
 const lspToMonacoSeverityMap = {
-	[lst.DiagnosticSeverity.Error]: MonacoSeverity.Error,
-	[lst.DiagnosticSeverity.Warning]: MonacoSeverity.Warning,
-	[lst.DiagnosticSeverity.Information]: MonacoSeverity.Info,
-	[lst.DiagnosticSeverity.Hint]: MonacoSeverity.Ignore,
+	[DiagnosticSeverity.Error]: MonacoSeverity.Error,
+	[DiagnosticSeverity.Warning]: MonacoSeverity.Warning,
+	[DiagnosticSeverity.Information]: MonacoSeverity.Info,
+	[DiagnosticSeverity.Hint]: MonacoSeverity.Ignore,
 };
 const monacoToLspSeverityMap = {
-	[MonacoSeverity.Error]: lst.DiagnosticSeverity.Error,
-	[MonacoSeverity.Warning]: lst.DiagnosticSeverity.Warning,
-	[MonacoSeverity.Info]: lst.DiagnosticSeverity.Information,
-	[MonacoSeverity.Ignore]: lst.DiagnosticSeverity.Hint,
+	[MonacoSeverity.Error]: DiagnosticSeverity.Error,
+	[MonacoSeverity.Warning]: DiagnosticSeverity.Warning,
+	[MonacoSeverity.Info]: DiagnosticSeverity.Information,
+	[MonacoSeverity.Ignore]: DiagnosticSeverity.Hint,
 };
 function convertToMonacoSeverity(s: DiagnosticCategory): number {
 	return lspToMonacoSeverityMap[s];

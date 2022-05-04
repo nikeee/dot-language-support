@@ -1,7 +1,7 @@
 import * as lst from "vscode-languageserver-types";
 import { SourceFile, SyntaxNode, SyntaxKind } from "../types";
-import { DocumentLike } from "../";
-import { isLineBreak, skipTrivia, isIdentifierStart } from "../scanner";
+import type { DocumentLike } from "../";
+import { skipTrivia, isIdentifierStart } from "../scanner";
 
 export function getStart(sourceFile: SourceFile, node: SyntaxNode) {
 	return getTokenPosOfNode(sourceFile, node);

@@ -23,7 +23,6 @@ import {
 	SubGraph,
 	ColorTable,
 	ColorInfo,
-	SyntaxNodeFlags,
 } from "./types";
 import { getIdentifierText, nodeContainsErrors } from "./checker";
 import { isIdentifierNode } from "./parser";

@@ -1,5 +1,5 @@
 import * as lst from "vscode-languageserver-types";
-import { DiagnosticMessage, SourceFile, DiagnosticCategory } from "../types";
+import { DiagnosticMessage, SourceFile } from "../types";
 import { formatError, diagnosicSource } from "../error";
 import { DocumentLike } from "../";
 

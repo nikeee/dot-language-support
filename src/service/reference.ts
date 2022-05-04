@@ -1,10 +1,10 @@
-import * as lst from "vscode-languageserver-types";
-import { SyntaxNode, SourceFile } from "../types";
-import { isIdentifierNode, DocumentLike } from "../";
+import type { Position, ReferenceContext, Location } from "vscode-languageserver-types";
+import type { SyntaxNode, SourceFile } from "../types";
+import { isIdentifierNode, type DocumentLike } from "../";
 import { findNodeAtOffset } from "../checker";
 import { syntaxNodesToRanges, syntaxNodeToRange } from "./util";
 
-export function findReferences(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, context: lst.ReferenceContext): lst.Location[] {
+export function findReferences(doc: DocumentLike, sourceFile: SourceFile, position: Position, context: ReferenceContext): Location[] {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";
 
 	const g = sourceFile.graph;
@@ -24,7 +24,7 @@ export function findReferences(doc: DocumentLike, sourceFile: SourceFile, positi
 		const refs = nodeSymbol.references || [];
 		let symbolRefs: SyntaxNode[];
 
-		// Depending on what should be included, create relevant referenecs
+		// Depending on what should be included, create relevant references
 		if (context.includeDeclaration) {
 			symbolRefs = [nodeSymbol.firstMention, ...refs];
 		} else {
@@ -52,7 +52,7 @@ export function findReferences(doc: DocumentLike, sourceFile: SourceFile, positi
 	return [];
 }
 
-export function findDefinition(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Location | undefined {
+export function findDefinition(doc: DocumentLike, sourceFile: SourceFile, position: Position): Location | undefined {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";
 
 	// TODO: If it is not a node identifier, there is no "definition", since it must be an assignment

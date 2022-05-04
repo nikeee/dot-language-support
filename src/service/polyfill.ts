@@ -1,13 +1,13 @@
-import * as lst from "vscode-languageserver-types";
+import type { Range, TextEdit } from "vscode-languageserver-types";
 
 /**
  * Represents a color range from a document.
  */
 export interface ColorInformation {
 	/**
-	 * The range in the document where this color appers.
+	 * The range in the document where this color appears.
 	 */
-	range: lst.Range;
+	range: Range;
 	/**
 	 * The actual color value for this color range.
 	 */
@@ -47,10 +47,10 @@ export interface ColorPresentation {
 	 * this presentation for the color.  When `falsy` the [label](#ColorPresentation.label)
 	 * is used.
 	 */
-	textEdit?: lst.TextEdit;
+	textEdit?: TextEdit;
 	/**
 	 * An optional array of additional [text edits](#TextEdit) that are applied when
 	 * selecting this color presentation. Edits must not overlap with the main [edit](#ColorPresentation.textEdit) nor with themselves.
 	 */
-	additionalTextEdits?: lst.TextEdit[];
+	additionalTextEdits?: TextEdit[];
 }

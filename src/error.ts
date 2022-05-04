@@ -1,4 +1,4 @@
-import { ErrorCode } from "./types";
+import type { ErrorCode } from "./types";
 
 export const diagnosicSource = "DOT";
 const errorCodeLength = 4;

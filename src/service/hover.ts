@@ -1,4 +1,4 @@
-import * as lst from "vscode-languageserver-types";
+import type * as lst from "vscode-languageserver-types";
 import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph, EdgeRhs, EdgeStatement, EdgeSourceOrTarget } from "../types";
 import { getIdentifierText, findNodeAtOffset } from "../checker";
 import { DocumentLike } from "../";

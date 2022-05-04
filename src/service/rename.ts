@@ -1,10 +1,10 @@
-import * as lst from "vscode-languageserver-types";
+import { TextEdit, Position, WorkspaceEdit } from "vscode-languageserver-types";
 import { SourceFile, SyntaxNode, SyntaxKind } from "../types";
 import { findNodeAtOffset } from "../checker";
 import { isIdentifierNode, DocumentLike } from "../";
 import { syntaxNodesToRanges } from "./util";
 
-export function renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, newName: string): lst.WorkspaceEdit | undefined {
+export function renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position: Position, newName: string): WorkspaceEdit | undefined {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";
 
 	if (!newName)
@@ -35,7 +35,7 @@ export function renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position
 
 		const res = {
 			changes: {
-				[uri]: ranges.map(r => lst.TextEdit.replace(r, newName)),
+				[uri]: ranges.map(r => TextEdit.replace(r, newName)),
 			}
 		};
 		return res;
