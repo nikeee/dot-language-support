@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+import type { TextDocument } from "vscode-languageserver-textdocument";
 import { ColorInformation, Color, ColorPresentation } from "./polyfill"; // TODO: Remove this import and use lst later
 import { Parser } from "../";
 import { SourceFile, Omit } from "../types";
@@ -25,7 +26,7 @@ export interface CommandApplication {
 }
 
 export interface LanguageService {
-	parseDocument(doc: lst.TextDocument | string): SourceFile;
+	parseDocument(doc: TextDocument | string): SourceFile;
 	validateDocument(doc: DocumentLike, sourceFile: SourceFile): lst.Diagnostic[];
 	hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Hover | undefined;
 	findReferences(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, context: lst.ReferenceContext): lst.Location[];
@@ -45,7 +46,7 @@ export interface LanguageService {
 	// formatDocument(doc: Positioner, options: lsp.FormattingOptions, ct: lsp.CancellationToken): lsp.TextEdit[] | "cancelled";
 }
 
-function parseDocument(doc: lst.TextDocument | string): SourceFile {
+function parseDocument(doc: TextDocument | string): SourceFile {
 	const parser = new Parser();
 	const content = typeof doc === "string" ? doc : doc.getText();
 	const sourceFile = parser.parse(content);
