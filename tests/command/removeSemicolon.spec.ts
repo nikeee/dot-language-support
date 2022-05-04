@@ -1,6 +1,4 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { expect } from "chai";
-import "mocha";
 
 
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
@@ -43,22 +41,22 @@ describe("Remove semicolon command execution", () => {
 
 		const execution = RemoveSemicolons.execute(doc, sf, command);
 
-		expect(execution).to.exist;
+		expect(execution).toBeDefined();
 		if (!execution) throw "Just for the type checker";
 
 
-		expect(execution.edit.changes).to.exist;
+		expect(execution.edit.changes).toBeDefined();
 		if (!execution.edit.changes) throw "Just for the type checker";
 
 		const edits = execution.edit.changes[doc.uri];
-		expect(edits).to.exist;
+		expect(edits).toBeDefined();
 		if (!edits) throw "Just for the type checker";
 
-		expect(edits).to.have.length(semicolons);
+		expect(edits).toHaveLength(semicolons);
 
 		const actual = TextDocument.applyEdits(doc, edits);
 
-		expect(actual).to.equal(expected);
+		expect(actual).toEqual(expected);
 	});
 
 	it("should offer code action", () => {
@@ -77,7 +75,7 @@ describe("Remove semicolon command execution", () => {
 		const pg = ensureGraph(sf);
 
 		const secondSemicolon = pg.statements[2].terminator;
-		expect(secondSemicolon).to.exist;
+		expect(secondSemicolon).toBeDefined();
 		if (!secondSemicolon) throw "Just for the type checker";
 
 		const start = secondSemicolon.end - 1;
@@ -89,16 +87,16 @@ describe("Remove semicolon command execution", () => {
 		};
 
 		let actions = getCodeActions(doc, sf, range, undefined);
-		expect(actions).to.exist;
+		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
 		let firstAction = actions[0];
-		expect(firstAction).to.exist;
+		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).to.equal(CommandIds.RemoveSemicolons);
-		expect(firstAction.arguments).to.be.undefined;
-		expect(firstAction.title).to.exist;
+		expect(firstAction.command).toEqual(CommandIds.RemoveSemicolons);
+		expect(firstAction.arguments).toBeUndefined();
+		expect(firstAction.title).toBeDefined();
 /*
 		range.start = doc.positionAt(end);
 		range.end = doc.positionAt(end);

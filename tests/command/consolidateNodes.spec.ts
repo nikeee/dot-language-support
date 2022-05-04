@@ -1,6 +1,4 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { expect } from "chai";
-import "mocha";
 
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
 import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.js";
@@ -26,70 +24,73 @@ describe("Consolidate graph command execution", () => {
 
 		const actions = getCodeActions(doc, sf, range, undefined);
 
-		expect(actions).to.exist;
+		expect(actions).toBeDefined();
 		if(!actions) throw "Just for the type checker";
-		expect(actions).to.have.length(1);
-		expect(actions[0]).to.exist;
+		expect(actions).toHaveLength(1);
+		expect(actions[0]).toBeDefined();
 
 		const command = actions[0];
 
 		const execution = ConsolidateDescendantsCommand.execute(doc, sf, command as ExecutableCommand);
 
-		expect(execution).to.exist;
+		expect(execution).toBeDefined();
 		if (!execution) throw "Just for the type checker";
 
-		expect(execution.edit.changes).to.exist;
+		expect(execution.edit.changes).toBeDefined();
 		if (!execution.edit.changes) throw "Just for the type checker";
 
 		const edits = execution.edit.changes[doc.uri];
-		expect(edits).to.exist;
+		expect(edits).toBeDefined();
 		if (!edits) throw "Just for the type checker";
 
 		const actual = TextDocument.applyEdits(doc, edits);
 
-		expect(actual).to.equal(expected);
+		expect(actual).toEqual(expected);
 	});
 
-	it("should correclty consolidate descendents (leading assigment statement)", () => {
-		const content = `graph{node[shape=box];a -- b;a -- c;}`;
-		const expected = `graph{node[shape=box];a -- { b c };}`;
+	it(
+        "should correclty consolidate descendents (leading assigment statement)",
+        () => {
+            const content = `graph{node[shape=box];a -- b;a -- c;}`;
+            const expected = `graph{node[shape=box];a -- { b c };}`;
 
-		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
+            const [doc, sf] = ensureDocAndSourceFile(content);
+            const pg = ensureGraph(sf);
 
-		const start = pg.statements[1].pos;
-		const end = pg.statements[1].pos;
+            const start = pg.statements[1].pos;
+            const end = pg.statements[1].pos;
 
-		const range = {
-			start: doc.positionAt(start),
-			end: doc.positionAt(end),
-		};
+            const range = {
+                start: doc.positionAt(start),
+                end: doc.positionAt(end),
+            };
 
-		const actions = getCodeActions(doc, sf, range, undefined);
+            const actions = getCodeActions(doc, sf, range, undefined);
 
-		expect(actions).to.exist;
-		if(!actions) throw "Just for the type checker";
-		expect(actions).to.have.length(1);
-		expect(actions[0]).to.exist;
+            expect(actions).toBeDefined();
+            if(!actions) throw "Just for the type checker";
+            expect(actions).toHaveLength(1);
+            expect(actions[0]).toBeDefined();
 
-		const command = actions[0];
+            const command = actions[0];
 
-		const execution = ConsolidateDescendantsCommand.execute(doc, sf, command as ExecutableCommand);
+            const execution = ConsolidateDescendantsCommand.execute(doc, sf, command as ExecutableCommand);
 
-		expect(execution).to.exist;
-		if (!execution) throw "Just for the type checker";
+            expect(execution).toBeDefined();
+            if (!execution) throw "Just for the type checker";
 
-		expect(execution.edit.changes).to.exist;
-		if (!execution.edit.changes) throw "Just for the type checker";
+            expect(execution.edit.changes).toBeDefined();
+            if (!execution.edit.changes) throw "Just for the type checker";
 
-		const edits = execution.edit.changes[doc.uri];
-		expect(edits).to.exist;
-		if (!edits) throw "Just for the type checker";
+            const edits = execution.edit.changes[doc.uri];
+            expect(edits).toBeDefined();
+            if (!edits) throw "Just for the type checker";
 
-		const actual = TextDocument.applyEdits(doc, edits);
+            const actual = TextDocument.applyEdits(doc, edits);
 
-		expect(actual).to.equal(expected);
-	});
+            expect(actual).toEqual(expected);
+        }
+    );
 
 	it("should offer code action", () => {
 		const content = `graph{a -- b;a -- c;}`;
@@ -106,17 +107,17 @@ describe("Consolidate graph command execution", () => {
 		};
 
 		let actions = getCodeActions(doc, sf, range, undefined);
-		expect(actions).to.exist;
+		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
 		let firstAction = actions[0];
-		expect(firstAction).to.exist;
+		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).to.equal(CommandIds.ConsolidateDescendants);
-		expect(firstAction.arguments).not.to.be.undefined;
-		expect(firstAction.arguments).to.have.length(2)
-		expect(firstAction.title).to.exist;
+		expect(firstAction.command).toEqual(CommandIds.ConsolidateDescendants);
+		expect(firstAction.arguments).toBeDefined();
+		expect(firstAction.arguments).toHaveLength(2)
+		expect(firstAction.title).toBeDefined();
 	});
 
 	it("should offer code action (leading assigment statement)", () => {
@@ -134,16 +135,16 @@ describe("Consolidate graph command execution", () => {
 		};
 
 		let actions = getCodeActions(doc, sf, range, undefined);
-		expect(actions).to.exist;
+		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
 		let firstAction = actions[0];
-		expect(firstAction).to.exist;
+		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).to.equal(CommandIds.ConsolidateDescendants);
-		expect(firstAction.arguments).not.to.be.undefined;
-		expect(firstAction.arguments).to.have.length(2)
-		expect(firstAction.title).to.exist;
+		expect(firstAction.command).toEqual(CommandIds.ConsolidateDescendants);
+		expect(firstAction.arguments).toBeDefined();
+		expect(firstAction.arguments).toHaveLength(2)
+		expect(firstAction.title).toBeDefined();
 	});
 });

@@ -1,6 +1,3 @@
-import { expect } from "chai";
-import "mocha";
-
 import { createParserWithText, ensureGraph } from "./testutils.js";
 import { SyntaxKind, EdgeStatement, NodeId } from "../src/types.js";
 
@@ -10,14 +7,14 @@ describe("Graph Parsing", () => {
 		const p = createParserWithText(`strict digraph lol {}`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
-		expect(pg.id).to.exist;
+		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.id).toBeDefined();
 		if(pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((pg.id as any).text).to.equal("lol");
-		expect(pg.strict).to.exist;
-		expect(pg.statements).to.exist;
-		expect(pg.statements.length).to.equal(0);
+		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((pg.id as any).text).toEqual("lol");
+		expect(pg.strict).toBeDefined();
+		expect(pg.statements).toBeDefined();
+		expect(pg.statements.length).toEqual(0);
 
 		// expect(pg.openBrace).to.exist;
 		// expect(pg.closeBrace).to.exist;
@@ -27,26 +24,26 @@ describe("Graph Parsing", () => {
 		const p = createParserWithText(`digraph { 1 -> 2}`);
 		const pg = ensureGraph(p);
 
-		expect(p.diagnostics).to.have.lengthOf(0);
+		expect(p.diagnostics).toHaveLength(0);
 
-		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
-		expect(pg.id).not.to.exist;
+		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.id).toBeFalsy();
 
-		expect(pg.statements).to.exist;
-		expect(pg.statements.length).to.equal(1);
+		expect(pg.statements).toBeDefined();
+		expect(pg.statements.length).toEqual(1);
 
 		const fs = pg.statements[0];
 
-		expect(fs).to.exist;
-		expect(fs.kind).to.equal(SyntaxKind.EdgeStatement);
+		expect(fs).toBeDefined();
+		expect(fs.kind).toEqual(SyntaxKind.EdgeStatement);
 		const es = fs as EdgeStatement;
-		expect(es).to.exist;
-		expect(es.source).to.exist;
-		expect(es.source.kind).to.equal(SyntaxKind.NodeId);
+		expect(es).toBeDefined();
+		expect(es.source).toBeDefined();
+		expect(es.source.kind).toEqual(SyntaxKind.NodeId);
 		const ess = es.source as NodeId;
-		expect(ess).to.exist;
+		expect(ess).toBeDefined();
 		if(ess === undefined) throw "Just for type checker";
-		expect(ess.id.kind).to.equal(SyntaxKind.NumericIdentifier);
+		expect(ess.id.kind).toEqual(SyntaxKind.NumericIdentifier);
 	});
 
 	it("should parse attributes", () => {
@@ -57,14 +54,14 @@ describe("Graph Parsing", () => {
 		`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
-		expect(pg.id).to.exist;
+		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.id).toBeDefined();
 		if(pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((pg.id as any).text).to.equal("lol");
-		expect(pg.strict).to.exist;
-		expect(pg.statements).to.exist;
-		expect(pg.statements.length).to.equal(2);
+		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((pg.id as any).text).toEqual("lol");
+		expect(pg.strict).toBeDefined();
+		expect(pg.statements).toBeDefined();
+		expect(pg.statements.length).toEqual(2);
 
 		// expect(pg.openBrace).to.exist;
 		// expect(pg.closeBrace).to.exist;
@@ -72,92 +69,92 @@ describe("Graph Parsing", () => {
 		const sts = pg.statements;
 
 		const gS = sts[0];
-		expect(gS).to.exist;
-		expect(gS.kind).to.equal(SyntaxKind.AttributeStatement);
+		expect(gS).toBeDefined();
+		expect(gS.kind).toEqual(SyntaxKind.AttributeStatement);
 		if (gS.kind !== SyntaxKind.AttributeStatement) throw "Just for type checker";
 
-		expect(gS.subject.kind).to.equal(SyntaxKind.GraphKeyword);
+		expect(gS.subject.kind).toEqual(SyntaxKind.GraphKeyword);
 
-		expect(gS.attributes).to.exist;
-		expect(gS.attributes.length).to.equal(1);
+		expect(gS.attributes).toBeDefined();
+		expect(gS.attributes.length).toEqual(1);
 		if (gS.attributes === undefined || gS.attributes.length !== 1) throw "Just for type checker";
 
 		const gsa = gS.attributes;
-		expect(gsa[0]).to.exist;
-		expect(gsa[0].kind).to.equal(SyntaxKind.AttributeContainer);
+		expect(gsa[0]).toBeDefined();
+		expect(gsa[0].kind).toEqual(SyntaxKind.AttributeContainer);
 
 		const gsaa = gsa[0].assignments;
-		expect(gsaa).to.exist;
-		expect(gsaa.length).to.equal(3);
+		expect(gsaa).toBeDefined();
+		expect(gsaa.length).toEqual(3);
 
-		expect(gsaa[0].kind).to.equal(SyntaxKind.Assignment);
-		expect(gsaa[0].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((gsaa[0].leftId as any).text).to.equal("size");
+		expect(gsaa[0].kind).toEqual(SyntaxKind.Assignment);
+		expect(gsaa[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((gsaa[0].leftId as any).text).toEqual("size");
 		// expect(gsaa[0].equalsToken).to.exist;
-		expect(gsaa[0].rightId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((gsaa[0].rightId as any).text).to.equal("lel");
+		expect(gsaa[0].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((gsaa[0].rightId as any).text).toEqual("lel");
 
-		expect(gsaa[1].kind).to.equal(SyntaxKind.Assignment);
-		expect(gsaa[1].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((gsaa[1].leftId as any).text).to.equal("other");
+		expect(gsaa[1].kind).toEqual(SyntaxKind.Assignment);
+		expect(gsaa[1].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((gsaa[1].leftId as any).text).toEqual("other");
 		// expect(gsaa[1].equalsToken).to.exist;
-		expect(gsaa[1].rightId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((gsaa[1].rightId as any).text).to.equal("lal");
+		expect(gsaa[1].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((gsaa[1].rightId as any).text).toEqual("lal");
 
-		expect(gsaa[2].kind).to.equal(SyntaxKind.Assignment);
-		expect(gsaa[2].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((gsaa[2].leftId as any).text).to.equal("pi");
+		expect(gsaa[2].kind).toEqual(SyntaxKind.Assignment);
+		expect(gsaa[2].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((gsaa[2].leftId as any).text).toEqual("pi");
 		// expect(gsaa[2].equalsToken).to.exist;
-		expect(gsaa[2].rightId.kind).to.equal(SyntaxKind.NumericIdentifier);
-		expect((gsaa[2].rightId as any).text).to.equal("3");
+		expect(gsaa[2].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect((gsaa[2].rightId as any).text).toEqual("3");
 
 		const nS = sts[1];
-		expect(nS).to.exist;
-		expect(nS.kind).to.equal(SyntaxKind.AttributeStatement);
+		expect(nS).toBeDefined();
+		expect(nS.kind).toEqual(SyntaxKind.AttributeStatement);
 		if (nS.kind !== SyntaxKind.AttributeStatement) throw "Just for type checker";
 
-		expect(nS.subject.kind).to.equal(SyntaxKind.NodeKeyword);
+		expect(nS.subject.kind).toEqual(SyntaxKind.NodeKeyword);
 
-		expect(nS.attributes).to.exist;
-		expect(nS.attributes.length).to.equal(3);
+		expect(nS.attributes).toBeDefined();
+		expect(nS.attributes.length).toEqual(3);
 		if (nS.attributes === undefined || nS.attributes.length !== 3) throw "Just for type checker";
 
 		const nsa = nS.attributes;
-		expect(nsa[0]).to.exist;
-		expect(nsa[0].kind).to.equal(SyntaxKind.AttributeContainer);
+		expect(nsa[0]).toBeDefined();
+		expect(nsa[0].kind).toEqual(SyntaxKind.AttributeContainer);
 
 		const nsaa = nsa[0].assignments;
-		expect(nsaa).to.exist;
-		expect(nsaa.length).to.equal(2);
+		expect(nsaa).toBeDefined();
+		expect(nsaa.length).toEqual(2);
 
-		expect(nsaa[0].kind).to.equal(SyntaxKind.Assignment);
-		expect(nsaa[0].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((nsaa[0].leftId as any).text).to.equal("fontsize");
+		expect(nsaa[0].kind).toEqual(SyntaxKind.Assignment);
+		expect(nsaa[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((nsaa[0].leftId as any).text).toEqual("fontsize");
 		// expect(nsaa[0].equalsToken).to.exist;
-		expect(nsaa[0].rightId.kind).to.equal(SyntaxKind.NumericIdentifier);
-		expect((nsaa[0].rightId as any).text).to.equal("36");
+		expect(nsaa[0].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect((nsaa[0].rightId as any).text).toEqual("36");
 
-		expect(nsaa[1].kind).to.equal(SyntaxKind.Assignment);
-		expect(nsaa[1].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((nsaa[1].leftId as any).text).to.equal("shape");
+		expect(nsaa[1].kind).toEqual(SyntaxKind.Assignment);
+		expect(nsaa[1].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((nsaa[1].leftId as any).text).toEqual("shape");
 		// expect(nsaa[1].equalsToken).to.exist;
-		expect(nsaa[1].rightId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((nsaa[1].rightId as any).text).to.equal("polygon");
+		expect(nsaa[1].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((nsaa[1].rightId as any).text).toEqual("polygon");
 
 		const nsaa1 = nsa[1].assignments;
-		expect(nsaa1).to.exist;
-		expect(nsaa1.length).to.equal(0);
+		expect(nsaa1).toBeDefined();
+		expect(nsaa1.length).toEqual(0);
 
 		const nsaa2 = nsa[2].assignments;
-		expect(nsaa2).to.exist;
-		expect(nsaa2.length).to.equal(1);
+		expect(nsaa2).toBeDefined();
+		expect(nsaa2.length).toEqual(1);
 
-		expect(nsaa2[0].kind).to.equal(SyntaxKind.Assignment);
-		expect(nsaa2[0].leftId.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((nsaa2[0].leftId as any).text).to.equal("e");
+		expect(nsaa2[0].kind).toEqual(SyntaxKind.Assignment);
+		expect(nsaa2[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((nsaa2[0].leftId as any).text).toEqual("e");
 		// expect(nsaa2[0].equalsToken).to.exist;
-		expect(nsaa2[0].rightId.kind).to.equal(SyntaxKind.NumericIdentifier);
-		expect((nsaa2[0].rightId as any).text).to.equal("2");
+		expect(nsaa2[0].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect((nsaa2[0].rightId as any).text).toEqual("2");
 
 	});
 
@@ -172,130 +169,130 @@ describe("Graph Parsing", () => {
 		}`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
-		expect(pg.id).to.exist;
+		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.id).toBeDefined();
 		if(pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).to.equal(SyntaxKind.TextIdentifier);
-		expect((pg.id as any).text).to.equal("G");
+		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect((pg.id as any).text).toEqual("G");
 
-		expect(pg.strict).to.be.undefined;
+		expect(pg.strict).toBeUndefined();
 
 		const ss = pg.statements;
-		expect(ss).to.exist;
-		expect(ss.length).to.equal(5);
+		expect(ss).toBeDefined();
+		expect(ss.length).toEqual(5);
 
 		const s0 = ss[0];
-		expect(s0).to.exist;
-		expect(s0.kind).to.equal(SyntaxKind.SubGraphStatement);
+		expect(s0).toBeDefined();
+		expect(s0.kind).toEqual(SyntaxKind.SubGraphStatement);
 		if (s0.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
-		expect(s0.terminator).to.not.exist;
-		expect(s0.subgraph.id).to.exist;
-		expect((s0.subgraph.id as any).text).to.equal("cluster_0");
-		expect(s0.subgraph.statements).to.exist;
-		expect(s0.subgraph.statements.length).to.equal(0);
+		expect(s0.terminator).toBeFalsy();
+		expect(s0.subgraph.id).toBeDefined();
+		expect((s0.subgraph.id as any).text).toEqual("cluster_0");
+		expect(s0.subgraph.statements).toBeDefined();
+		expect(s0.subgraph.statements.length).toEqual(0);
 
 		const s1 = ss[1];
-		expect(s1).to.exist;
-		expect(s1.kind).to.equal(SyntaxKind.SubGraphStatement);
+		expect(s1).toBeDefined();
+		expect(s1.kind).toEqual(SyntaxKind.SubGraphStatement);
 		if (s1.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
-		expect(s1.terminator).to.not.exist;
-		expect(s1.subgraph.id).to.exist;
-		expect((s1.subgraph.id as any).text).to.equal("cluster_1");
-		expect(s1.subgraph.statements).to.exist;
-		expect(s1.subgraph.statements.length).to.equal(0);
+		expect(s1.terminator).toBeFalsy();
+		expect(s1.subgraph.id).toBeDefined();
+		expect((s1.subgraph.id as any).text).toEqual("cluster_1");
+		expect(s1.subgraph.statements).toBeDefined();
+		expect(s1.subgraph.statements.length).toEqual(0);
 
 		const s2 = ss[2];
-		expect(s2).to.exist;
-		expect(s2.kind).to.equal(SyntaxKind.SubGraphStatement);
+		expect(s2).toBeDefined();
+		expect(s2.kind).toEqual(SyntaxKind.SubGraphStatement);
 		if (s2.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
-		expect(s2.terminator).to.not.exist;
-		expect(s2.subgraph.id).to.be.undefined;
-		expect(s2.subgraph.statements).to.exist;
-		expect(s2.subgraph.statements.length).to.equal(0);
+		expect(s2.terminator).toBeFalsy();
+		expect(s2.subgraph.id).toBeUndefined();
+		expect(s2.subgraph.statements).toBeDefined();
+		expect(s2.subgraph.statements.length).toEqual(0);
 
 		const s3 = ss[3];
-		expect(s3).to.exist;
-		expect(s3.kind).to.equal(SyntaxKind.SubGraphStatement);
+		expect(s3).toBeDefined();
+		expect(s3.kind).toEqual(SyntaxKind.SubGraphStatement);
 		if (s3.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
-		expect(s3.terminator).to.not.exist;
-		expect(s3.subgraph.id).to.be.undefined;
-		expect(s3.subgraph.statements).to.exist;
-		expect(s3.subgraph.statements.length).to.equal(1);
+		expect(s3.terminator).toBeFalsy();
+		expect(s3.subgraph.id).toBeUndefined();
+		expect(s3.subgraph.statements).toBeDefined();
+		expect(s3.subgraph.statements.length).toEqual(1);
 
 		const s4 = ss[4];
-		expect(s4).to.exist;
-		expect(s4.kind).to.equal(SyntaxKind.SubGraphStatement);
+		expect(s4).toBeDefined();
+		expect(s4.kind).toEqual(SyntaxKind.SubGraphStatement);
 		if (s4.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
-		expect(s4.terminator).to.exist;
-		expect(s4.subgraph.id).to.be.undefined;
-		expect(s4.subgraph.statements).to.exist;
-		expect(s4.subgraph.statements.length).to.equal(2);
+		expect(s4.terminator).toBeDefined();
+		expect(s4.subgraph.id).toBeUndefined();
+		expect(s4.subgraph.statements).toBeDefined();
+		expect(s4.subgraph.statements.length).toEqual(2);
 
 		const s4s = s4.subgraph.statements;
-		expect(s4s[0]).to.exist;
-		expect(s4s[1]).to.exist;
-		expect(s4s[0].terminator).to.exist;
-		expect(s4s[1].terminator).to.not.exist;
+		expect(s4s[0]).toBeDefined();
+		expect(s4s[1]).toBeDefined();
+		expect(s4s[0].terminator).toBeDefined();
+		expect(s4s[1].terminator).toBeFalsy();
 	});
 
 	it("should parse direct identifier assignments", () => {
 		const p = createParserWithText(`digraph G { a = b; c = d e = f g=3;}`);
 		const pg = ensureGraph(p);
 
-		expect(pg.strict).to.not.exist;
-		expect(pg.kind).to.equal(SyntaxKind.DirectedGraph);
+		expect(pg.strict).toBeFalsy();
+		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
 		if (pg.kind !== SyntaxKind.DirectedGraph) throw "Just for type checker";
 
 		// expect(pg.openBrace).to.exist;
 		// expect(pg.closeBrace).to.exist;
-		expect((pg.id as any).text).to.equal("G");
+		expect((pg.id as any).text).toEqual("G");
 
 		const s = pg.statements;
-		expect(s).to.exist;
-		expect(s.length).to.equal(4);
+		expect(s).toBeDefined();
+		expect(s.length).toEqual(4);
 
 		const s0 = s[0];
-		expect(s0).to.exist;
-		expect(s0.kind).to.equal(SyntaxKind.IdEqualsIdStatement);
+		expect(s0).toBeDefined();
+		expect(s0.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
 		if (s0.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s0.terminator).to.exist;
-		expect(s0.leftId).to.exist;
-		expect((s0.leftId as any).text).to.equal("a");
+		expect(s0.terminator).toBeDefined();
+		expect(s0.leftId).toBeDefined();
+		expect((s0.leftId as any).text).toEqual("a");
 		// expect(s0.equalsToken).to.exist;
-		expect(s0.rightId).to.exist;
-		expect((s0.rightId as any).text).to.equal("b");
+		expect(s0.rightId).toBeDefined();
+		expect((s0.rightId as any).text).toEqual("b");
 
 		const s1 = s[1];
-		expect(s1).to.exist;
-		expect(s1.kind).to.equal(SyntaxKind.IdEqualsIdStatement);
+		expect(s1).toBeDefined();
+		expect(s1.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
 		if (s1.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s1.terminator).not.to.exist;
-		expect(s1.leftId).to.exist;
-		expect((s1.leftId as any).text).to.equal("c");
+		expect(s1.terminator).toBeFalsy();
+		expect(s1.leftId).toBeDefined();
+		expect((s1.leftId as any).text).toEqual("c");
 		// expect(s1.equalsToken).to.exist;
-		expect(s1.rightId).to.exist;
-		expect((s1.rightId as any).text).to.equal("d");
+		expect(s1.rightId).toBeDefined();
+		expect((s1.rightId as any).text).toEqual("d");
 
 		const s2 = s[2];
-		expect(s2).to.exist;
-		expect(s2.kind).to.equal(SyntaxKind.IdEqualsIdStatement);
+		expect(s2).toBeDefined();
+		expect(s2.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
 		if (s2.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s2.terminator).not.to.exist;
-		expect(s2.leftId).to.exist;
-		expect((s2.leftId as any).text).to.equal("e");
+		expect(s2.terminator).toBeFalsy();
+		expect(s2.leftId).toBeDefined();
+		expect((s2.leftId as any).text).toEqual("e");
 		// expect(s2.equalsToken).to.exist;
-		expect(s2.rightId).to.exist;
-		expect((s2.rightId as any).text).to.equal("f");
+		expect(s2.rightId).toBeDefined();
+		expect((s2.rightId as any).text).toEqual("f");
 
 		const s3 = s[3];
-		expect(s3).to.exist;
-		expect(s3.kind).to.equal(SyntaxKind.IdEqualsIdStatement);
+		expect(s3).toBeDefined();
+		expect(s3.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
 		if (s3.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s3.terminator).to.exist;
-		expect(s3.leftId).to.exist;
-		expect((s3.leftId as any).text).to.equal("g");
+		expect(s3.terminator).toBeDefined();
+		expect(s3.leftId).toBeDefined();
+		expect((s3.leftId as any).text).toEqual("g");
 		// expect(s3.equalsToken).to.exist;
-		expect(s3.rightId).to.exist;
-		expect((s3.rightId as any).text).to.equal("3");
+		expect(s3.rightId).toBeDefined();
+		expect((s3.rightId as any).text).toEqual("3");
 	});
 });

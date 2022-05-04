@@ -1,5 +1,4 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { expect } from "chai";
 
 import { Parser } from "../src"
 import { SourceFile, Graph } from "../src/types";
@@ -12,8 +11,8 @@ export function createParserWithText(text: string) {
 }
 
 export function ensureGraph(sourceFile: SourceFile): Graph {
-	expect(sourceFile).to.exist;
-	expect(sourceFile.graph).to.exist;
+	expect(sourceFile).toBeDefined();
+	expect(sourceFile.graph).toBeDefined();
 
 	const g = sourceFile.graph;
 	if (g === undefined)
