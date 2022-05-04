@@ -28,7 +28,7 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	});
 
@@ -49,12 +49,12 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
 
-	it("should provide completion for attributes (preceeding item)", () => {
+	it("should provide completion for attributes (preceding item)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,];
 		}`;
@@ -70,11 +70,11 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceeding item, leading whitespace)", () => {
+	it("should provide completion for attributes (preceding item, leading whitespace)", () => {
 		const content = `graph {
                 node_name_a -- node_name_b [color=blue, ];
             }`;
@@ -90,12 +90,12 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
 
-	it("should provide completion for attributes (preceeding item, leading whitespace, linebreak)", () => {
+	it("should provide completion for attributes (preceding item, leading whitespace, line break)", () => {
 		const content = `graph {
                 node_name_a -- node_name_b [color=blue,
                 ];
@@ -112,7 +112,7 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
@@ -135,7 +135,7 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
@@ -157,12 +157,12 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
 
-	it("should provide completion for attributes (preceeding item, first container)", () => {
+	it("should provide completion for attributes (preceding item, first container)", () => {
 		const content = `graph {
                 node_name_a -- node_name_b [color=blue,] [shape=box];
             }`;
@@ -178,12 +178,12 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
 
-	it("should provide completion for attributes (preceeding item, leading whitespace, first container)", () => {
+	it("should provide completion for attributes (preceding item, leading whitespace, first container)", () => {
 		const content = `graph {
                 node_name_a -- node_name_b [color=blue, ] [shape=box];
             }`;
@@ -199,12 +199,12 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
 
-	it("should provide completion for attributes (preceeding item, leading whitespace, linebreak, first container)", () => {
+	it("should provide completion for attributes (preceding item, leading whitespace, line break, first container)", () => {
 		const content = `graph {
                 node_name_a -- node_name_b [color=blue,
                 ] [shape=box];
@@ -221,7 +221,7 @@ describe("Attribute completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_a"]));
 		expect(completions.map(getLabel)).toEqual(expect.not.arrayContaining(["node_name_b"]));
-		expect(completions.map(getLabel)).toEqual(attributes as any[] /* TODO: See PR to DT */);
+		expect(completions.map(getLabel)).toEqual(attributes);
 		expect(completions).toHaveLength(attributes.length);
 	}
 	);
