@@ -5,7 +5,7 @@
 A language service library, written in TypeScript. Used by [dot-language-server](https://github.com/nikeee/dot-language-server) and [edotor.net](https://edotor.net).
 
 ## Features
-- Hightlight semantic and syntactic errors
+- Highlight semantic and syntactic errors
 - Auto completion for colors and shapes
 - Code Actions:
     - Refactoring Graphs to Digraphs and vice-versa
@@ -13,6 +13,6 @@ A language service library, written in TypeScript. Used by [dot-language-server]
     - Refactor edges to sub graphs
 
 ## Installation
-```Shell
+```sh
 npm -S i dot-language-support
 ```
