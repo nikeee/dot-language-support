@@ -1,6 +1,6 @@
 import type * as lst from "vscode-languageserver-types";
+import type { ColorInformation, Color, ColorPresentation } from "vscode-languageserver-types";
 import type { TextDocument } from "vscode-languageserver-textdocument";
-import { ColorInformation, Color, ColorPresentation } from "./polyfill.js"; // TODO: Remove this import and use lst later
 import { Parser } from "../index.js";
 import { SourceFile, Omit } from "../types.js";
 import { bindSourceFile } from "../binder.js";
