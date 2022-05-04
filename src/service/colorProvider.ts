@@ -1,5 +1,4 @@
-import type * as lst from "vscode-languageserver-types";
-import { ColorInformation, Color, ColorPresentation } from "./polyfill.js"; // TODO: Remove this import and use lst later
+import type { ColorInformation, ColorPresentation, Range, Color } from "vscode-languageserver-types";
 import { SourceFile, ColorTable } from "../types.js";
 import { DocumentLike } from "../index.js";
 import { syntaxNodeToRange } from "./util.js";
@@ -14,24 +13,17 @@ export function getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): Co
 		: undefined;
 }
 
-export function getColorRepresentations(_doc: DocumentLike, _sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined {
-	if (!color || !range)
-		return undefined;
-
-	const hexColor = getColorStringFromColor(color);
-
-	return [
-		{
-			label: '"' + hexColor + '"',
-		}
-	];
+export function getColorRepresentations(_doc: DocumentLike, _sourceFile: SourceFile, color: Color, range: Range): ColorPresentation[] | undefined {
+	return !color || !range
+		? undefined
+		: [{ label: '"' + getColorStringFromColor(color) + '"', }];
 }
 
 function colorTableToColorInformation(doc: DocumentLike, sf: SourceFile, colors: ColorTable): ColorInformation[] {
 	if (!colors || colors.size === 0)
 		return [];
 
-	const res: ColorInformation[] = [];
+	const res = [];
 	for (const [name, value] of colors) {
 		if (!name || !value)
 			continue;
