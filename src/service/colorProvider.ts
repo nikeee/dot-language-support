@@ -46,8 +46,8 @@ function getColorFromName(name: string): ColorInformation["color"] | undefined {
 	if (name.charAt(0) === "#")
 		return getHexCodeColor(name);
 
-	// Otherwise, the name must be an laias defined in our color map
-	const colorAlias = colorMap[name];
+	// Otherwise, the name must be an alias defined in our color map
+	const colorAlias = colorMap[name.toLowerCase()];
 	return colorAlias
 		? getHexCodeColor(colorAlias)
 		: undefined;
