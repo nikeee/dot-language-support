@@ -18,18 +18,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 18
-
-    - uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+        cache: npm
 
     - run: npm ci --legacy-peer-deps
     - run: npm run compile
     - run: npm test
       env:
         CI: true
-    - run: npm config set "//registry.npmjs.org/:_authToken" "${{ secrets.NPM_TOKEN }}"
     - run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
