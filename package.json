@@ -9,6 +9,7 @@
   "types": "./lib/esm/index.d.ts",
   "scripts": {
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "clean": "rimraf lib",
     "compile:esm": "tsc --target esnext --module esnext --outDir lib/esm",
     "compile:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
@@ -32,6 +33,7 @@
     "vscode-languageserver-types": "^3.17.2"
   },
   "devDependencies": {
+    "@vitest/coverage-c8": "^0.27.1",
     "rimraf": "^4.0.4",
     "typescript": "^4.9.3",
     "vitest": "^0.27.1"
