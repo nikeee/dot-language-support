@@ -1,7 +1,9 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { getDocumentColors } from "../../src/service/colorProvider.js";
 
-describe("Reference Finding", () => {
+test("Reference Finding", () => {
 
 	function getColorsSample(content: string) {
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -13,7 +15,7 @@ describe("Reference Finding", () => {
 		return refs;
 	}
 
-	it("should correctly return all colors ", () => {
+	test("should correctly return all colors ", () => {
 		const refs = getColorsSample(`graph {a [color=red] b [color="#00ff00"] c [color="blue"]}`);
 		expect(refs).toBeDefined();
 		expect(refs).toHaveLength(3);

@@ -1,9 +1,11 @@
+import { test, expect } from "vitest";
+
 import { createParserWithText, ensureGraph } from "./testutils.js";
 import { SyntaxKind, EdgeStatement, NodeId } from "../src/types.js";
 
-describe("Graph Parsing", () => {
+test("Graph Parsing", () => {
 
-	it("should parse a simple graph", () => {
+	test("should parse a simple graph", () => {
 		const p = createParserWithText(`strict digraph lol {}`);
 		const pg = ensureGraph(p);
 
@@ -20,7 +22,7 @@ describe("Graph Parsing", () => {
 		// expect(pg.closeBrace).to.exist;
 	});
 
-	it("should parse numbers as IDs", () => {
+	test("should parse numbers as IDs", () => {
 		const p = createParserWithText(`digraph { 1 -> 2}`);
 		const pg = ensureGraph(p);
 
@@ -46,7 +48,7 @@ describe("Graph Parsing", () => {
 		expect(ess.id.kind).toEqual(SyntaxKind.NumericIdentifier);
 	});
 
-	it("should parse attributes", () => {
+	test("should parse attributes", () => {
 		const p = createParserWithText(
 			`strict digraph lol { graph [ size = lel, other=lal; pi= 3]
 		node [fontsize = 36,shape = polygon,][]
@@ -158,7 +160,7 @@ describe("Graph Parsing", () => {
 
 	});
 
-	it("should parse sub graphs", () => {
+	test("should parse sub graphs", () => {
 
 		const p = createParserWithText(`digraph G {
 			subgraph cluster_0 { }
@@ -235,7 +237,7 @@ describe("Graph Parsing", () => {
 		expect(s4s[1].terminator).toBeFalsy();
 	});
 
-	it("should parse direct identifier assignments", () => {
+	test("should parse direct identifier assignments", () => {
 		const p = createParserWithText(`digraph G { a = b; c = d e = f g=3;}`);
 		const pg = ensureGraph(p);
 

@@ -1,7 +1,9 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { hover } from "../../src/service/hover.js";
 
-describe("Hover Handling", () => {
+test("Hover Handling", () => {
 
 	function hoverSample(content: string) {
 		return (offset: number) => {
@@ -31,58 +33,58 @@ describe("Hover Handling", () => {
 				c = d e = f g=3; # some other comment
 		}`);
 
-	it("should correctly return graph info (offset 0)", () => {
+	test("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	it("Issue #21", () => {
+	test("Issue #21", () => {
 		const h = hoverSample(`digraph{ graph [] }`)("digraph{ g".length);
 		expect(h).not.toBeNull();
 		expect(h).toBeDefined();
 		expect(h.contents).toEqual("(undirected graph)");
 	});
 
-	it("should correctly return graph info (offset 3)", () => {
+	test("should correctly return graph info (offset 3)", () => {
 		const h = hoverAtSampleAtOffset(3);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	it("should correctly return graph info (offset " + "digraph".length + ")", () => {
+	test("should correctly return graph info (offset " + "digraph".length + ")", () => {
 		const h = hoverAtSampleAtOffset("digraph".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	}
 	);
 
-	it("should correctly return graph info (offset " + "digraph Gra".length + ")", () => {
+	test("should correctly return graph info (offset " + "digraph Gra".length + ")", () => {
 		const h = hoverAtSampleAtOffset("digraph Gra".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	}
 	);
 
-	it("should correctly return graph info, strict graph (offset 0)", () => {
+	test("should correctly return graph info, strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(0);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, strict graph (offset 12)", () => {
+	test("should correctly return graph info, strict graph (offset 12)", () => {
 		const h = hoverAtStrictSampleAtOffset(12);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, strict graph (offset 21)", () => {
+	test("should correctly return graph info, strict graph (offset 21)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	it("should correctly return graph info, unnamed strict graph (offset 0)", () => {
+	test("should correctly return graph info, unnamed strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	}
 	);
 
 
-	it("should correctly return edge info (undirected graph)", () => {
+	test("should correctly return edge info (undirected graph)", () => {
 		const hoverAtEdgeSampleAtOffsetUndirected = hoverSample(`graph { a -- b }`);
 		const expected = "(edge) a -- b"
 
@@ -96,7 +98,7 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual(expected);
 	});
 
-	it("should correctly return edge info (directed graph)", () => {
+	test("should correctly return edge info (directed graph)", () => {
 		const hoverAtEdgeSampleAtOffsetDirected = hoverSample(`graph { a -> b }`);
 		const expected = "(edge) a -> b"
 
@@ -111,7 +113,7 @@ describe("Hover Handling", () => {
 	});
 
 
-	it("should correctly hover on sub graphs", () => {
+	test("should correctly hover on sub graphs", () => {
 		const hoverSubGraph = hoverSample("graph{subgraph{c--a;c--b}}");
 
 		let h = hoverSubGraph(15);

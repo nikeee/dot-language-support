@@ -1,7 +1,9 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { findDefinition } from "../../src/service/reference.js";
 
-describe("Definition Finding", () => {
+test("Definition Finding", () => {
 
 	function findDefinitionSample(content: string) {
 		return (offset: number) => {
@@ -15,7 +17,7 @@ describe("Definition Finding", () => {
 		};
 	}
 
-	it("should correctly find reference (referring other)", () => {
+	test("should correctly find reference (referring other)", () => {
 		const as = findDefinitionSample(`graph {a a b a}`);
 
 		const def = as(9);
@@ -30,7 +32,7 @@ describe("Definition Finding", () => {
 		expect(def.range.end.line).toEqual(0);
 	});
 
-	it("should correctly find reference (referring other)", () => {
+	test("should correctly find reference (referring other)", () => {
 		const as = findDefinitionSample(`graph {a a b a}`);
 
 		const def = as(7);

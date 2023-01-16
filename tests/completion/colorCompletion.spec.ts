@@ -1,12 +1,14 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { colors } from "../../src/service/languageFacts.js";
 
 const allColors = Object.keys(colors);
 
-describe("Color completion", () => {
+test("Color completion", () => {
 
-	it("should provide completion for colors (trailing attribute)", () => {
+	test("should provide completion for colors (trailing attribute)", () => {
 		const content = `graph {
 			a -- b [color=];
 		}`;
@@ -24,7 +26,7 @@ describe("Color completion", () => {
 		expect(completions).toHaveLength(allColors.length);
 	});
 
-	it("should provide completion for colors (leading attribute)", () => {
+	test("should provide completion for colors (leading attribute)", () => {
 		const content = `graph {
 			a -- b [color=,shape=box];
 		}`;
@@ -42,7 +44,7 @@ describe("Color completion", () => {
 		expect(completions).toHaveLength(allColors.length);
 	});
 
-	it("should provide completion for colors (center attribute)", () => {
+	test("should provide completion for colors (center attribute)", () => {
 		const content = `graph {
 			a -- b [label="hi!",color=,shape=box];
 		}`;
@@ -60,7 +62,7 @@ describe("Color completion", () => {
 		expect(completions).toHaveLength(allColors.length);
 	});
 
-	it("should provide completion for colors (center attribute with spaces)", () => {
+	test("should provide completion for colors (center attribute with spaces)", () => {
 		const content = `graph {
                 a -- b [label="hi!" , color=,  shape=box];
             }`;
@@ -79,7 +81,7 @@ describe("Color completion", () => {
 	}
 	);
 
-	it("should provide completion for colors (center attribute with spaces and semicolons)", () => {
+	test("should provide completion for colors (center attribute with spaces and semicolons)", () => {
 		const content = `graph {
                 a -- b [label="hi!" ; color=;  shape=box];
             }`;
@@ -98,7 +100,7 @@ describe("Color completion", () => {
 	}
 	);
 
-	it("should provide completion for colors (center attribute mixed spaces and separators)", () => {
+	test("should provide completion for colors (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
                 a -- b [label="hi!" ,color=;
                  shape=box];

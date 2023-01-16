@@ -1,9 +1,11 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { attributes } from "../../src/service/languageFacts.js";
 
 
-describe("Attribute completion", () => {
+test("Attribute completion", () => {
 	function invokeIndex(content: string) {
 		return (location: string) => {
 			const requestOffset = content.indexOf(location) + location.length;
@@ -12,7 +14,7 @@ describe("Attribute completion", () => {
 		};
 	}
 
-	it("should provide completion for attributes (empty list)", () => {
+	test("should provide completion for attributes (empty list)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [];
 		}`;
@@ -32,7 +34,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (empty list, a lot of whitespace)", () => {
+	test("should provide completion for attributes (empty list, a lot of whitespace)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [    ];
 		}`;
@@ -53,7 +55,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item)", () => {
+	test("should provide completion for attributes (preceding item)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,];
 		}`;
@@ -73,7 +75,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item, leading whitespace)", () => {
+	test("should provide completion for attributes (preceding item, leading whitespace)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue, ];
 		}`;
@@ -93,7 +95,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item, leading whitespace, line break)", () => {
+	test("should provide completion for attributes (preceding item, leading whitespace, line break)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,
 			];
@@ -115,7 +117,7 @@ describe("Attribute completion", () => {
 	});
 
 
-	it("should provide completion for attributes (empty list, first container)", () => {
+	test("should provide completion for attributes (empty list, first container)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [] [shape=box];
 		}`;
@@ -135,7 +137,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (empty list, a lot of whitespace, first container)", () => {
+	test("should provide completion for attributes (empty list, a lot of whitespace, first container)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [    ] [shape=box];
 		}`;
@@ -156,7 +158,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item, first container)", () => {
+	test("should provide completion for attributes (preceding item, first container)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,] [shape=box];
 		}`;
@@ -176,7 +178,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item, leading whitespace, first container)", () => {
+	test("should provide completion for attributes (preceding item, leading whitespace, first container)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue, ] [shape=box];
 		}`;
@@ -196,7 +198,7 @@ describe("Attribute completion", () => {
 		expect(completions).toHaveLength(attributes.length);
 	});
 
-	it("should provide completion for attributes (preceding item, leading whitespace, line break, first container)", () => {
+	test("should provide completion for attributes (preceding item, leading whitespace, line break, first container)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,
 			] [shape=box];

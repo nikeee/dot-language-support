@@ -1,10 +1,12 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { shapes } from "../../src/service/languageFacts.js";
 
-describe("Shape completion", () => {
+test("Shape completion", () => {
 
-	it("should provide completion for shapes (trailing attribute)", () => {
+	test("should provide completion for shapes (trailing attribute)", () => {
 		const content = `graph {
 			a -- b [shape=];
 		}`;
@@ -22,7 +24,7 @@ describe("Shape completion", () => {
 		expect(completions).toHaveLength(shapes.length);
 	});
 
-	it("should provide completion for shapes (leading attribute)", () => {
+	test("should provide completion for shapes (leading attribute)", () => {
 		const content = `graph {
 			a -- b [shape=,shape=box];
 		}`;
@@ -40,7 +42,7 @@ describe("Shape completion", () => {
 		expect(completions).toHaveLength(shapes.length);
 	});
 
-	it("should provide completion for shapes (center attribute)", () => {
+	test("should provide completion for shapes (center attribute)", () => {
 		const content = `graph {
 			a -- b [label="hi!",shape=,shape=box];
 		}`;
@@ -58,7 +60,7 @@ describe("Shape completion", () => {
 		expect(completions).toHaveLength(shapes.length);
 	});
 
-	it("should provide completion for shapes (center attribute with spaces)", () => {
+	test("should provide completion for shapes (center attribute with spaces)", () => {
 		const content = `graph {
                 a -- b [label="hi!" , shape=,  shape=box];
             }`;
@@ -77,7 +79,7 @@ describe("Shape completion", () => {
 	}
 	);
 
-	it("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
+	test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
 		const content = `graph {
                 a -- b [label="hi!" ; shape=;  shape=box];
             }`;
@@ -96,7 +98,7 @@ describe("Shape completion", () => {
 	}
 	);
 
-	it("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
+	test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
                 a -- b [label="hi!" ,shape=;
                  shape=box];

@@ -1,8 +1,10 @@
+import { test, expect } from "vitest";
+
 import { createParserWithText, ensureGraph } from "./testutils";
 import { SyntaxKind } from "../src/types";
 
-describe("Comment Handling", () => {
-	it("should skip comments while parsing", () => {
+test("Comment Handling", () => {
+	test("should skip comments while parsing", () => {
 		const p = createParserWithText(`digraph G { // funny comment
 			a = b;
 			/* aha! */

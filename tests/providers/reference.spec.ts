@@ -1,7 +1,9 @@
+import { test, expect } from "vitest";
+
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { findReferences } from "../../src/service/reference.js";
 
-describe("Reference Finding", () => {
+test("Reference Finding", () => {
 
 	function findReferencesSample(content: string, includeDeclaration: boolean) {
 		return (offset: number) => {
@@ -15,7 +17,7 @@ describe("Reference Finding", () => {
 		};
 	}
 
-	it("should correctly return all references (including self)", () => {
+	test("should correctly return all references (including self)", () => {
 		const as = findReferencesSample(`graph {a a b a}`, true);
 
 		const refs = as(9);
@@ -38,7 +40,7 @@ describe("Reference Finding", () => {
 		expect(refs[2].range.end.line).toEqual(0);
 	});
 
-	it("should correctly return all references (excluding self)", () => {
+	test("should correctly return all references (excluding self)", () => {
 		const as = findReferencesSample(`graph {a a b a}`, false);
 
 		const refs = as(9);

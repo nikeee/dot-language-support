@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
@@ -5,9 +6,9 @@ import * as ConsolidateDescendantsCommand from "../../src/service/command/Consol
 import { CommandIds, getCodeActions } from "../../src/service/codeAction.js";
 import { ExecutableCommand } from "../../src/service/command/common.js";
 
-describe("Consolidate graph command execution", () => {
+test("Consolidate graph command execution", () => {
 
-	it("should correclty consolidate descendents", () => {
+	test("should correclty consolidate descendents", () => {
 		const content = `graph{a -- b;a -- c;}`;
 		const expected = `graph{a -- { b c };}`;
 
@@ -48,7 +49,7 @@ describe("Consolidate graph command execution", () => {
 		expect(actual).toEqual(expected);
 	});
 
-	it(
+	test(
         "should correclty consolidate descendents (leading assigment statement)",
         () => {
             const content = `graph{node[shape=box];a -- b;a -- c;}`;
@@ -92,7 +93,7 @@ describe("Consolidate graph command execution", () => {
         }
     );
 
-	it("should offer code action", () => {
+	test("should offer code action", () => {
 		const content = `graph{a -- b;a -- c;}`;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -120,7 +121,7 @@ describe("Consolidate graph command execution", () => {
 		expect(firstAction.title).toBeDefined();
 	});
 
-	it("should offer code action (leading assigment statement)", () => {
+	test("should offer code action (leading assigment statement)", () => {
 		const content = `graph{node[shape=box];a -- b;a -- c;}`;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
