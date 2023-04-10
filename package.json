@@ -36,7 +36,7 @@
     "@vitest/coverage-c8": "^0.29.7",
     "rimraf": "^4.4.1",
     "typescript": "^5.0.2",
-    "vitest": "^0.29.7"
+    "vitest": "^0.30.0"
   },
   "engines": {
     "node": ">=18"
