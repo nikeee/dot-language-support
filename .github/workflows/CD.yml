@@ -20,7 +20,7 @@ jobs:
         cache: npm
         registry-url: https://registry.npmjs.org
 
-    - run: npm ci --legacy-peer-deps
+    - run: npm ci
     - run: npm run compile
     - run: npm test
       env:
