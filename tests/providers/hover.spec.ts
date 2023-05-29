@@ -1,9 +1,9 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { hover } from "../../src/service/hover.js";
 
-test("Hover Handling", () => {
+describe("Hover Handling", () => {
 
 	function hoverSample(content: string) {
 		return (offset: number) => {

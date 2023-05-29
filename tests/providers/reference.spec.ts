@@ -1,9 +1,9 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { findReferences } from "../../src/service/reference.js";
 
-test("Reference Finding", () => {
+describe("Reference Finding", () => {
 
 	function findReferencesSample(content: string, includeDeclaration: boolean) {
 		return (offset: number) => {

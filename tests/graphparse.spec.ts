@@ -1,9 +1,9 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { createParserWithText, ensureGraph } from "./testutils.js";
 import { SyntaxKind, EdgeStatement, NodeId } from "../src/types.js";
 
-test("Graph Parsing", () => {
+describe("Graph Parsing", () => {
 
 	test("should parse a simple graph", () => {
 		const p = createParserWithText(`strict digraph lol {}`);

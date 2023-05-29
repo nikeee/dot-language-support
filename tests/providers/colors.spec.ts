@@ -1,9 +1,9 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { getDocumentColors } from "../../src/service/colorProvider.js";
 
-test("Reference Finding", () => {
+describe("Reference Finding", () => {
 
 	function getColorsSample(content: string) {
 		const [doc, sf] = ensureDocAndSourceFile(content);
