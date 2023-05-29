@@ -32,7 +32,7 @@ describe("Hover Handling", () => {
 				/* aha! */
 				c = d e = f g=3; # some other comment
 		}`);
-/*
+
 	test("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
 		expect(h.contents).toEqual("(directed graph) GraphName");
@@ -134,7 +134,6 @@ describe("Hover Handling", () => {
 		h = hoverSubGraph(17);
 		expect(h.contents).toEqual("(edge) c -- a");
 	});
-	*/
 
 	/**
 	 * See https://github.com/nikeee/dot-language-support/issues/83
