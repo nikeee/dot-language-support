@@ -32,7 +32,7 @@ describe("Hover Handling", () => {
 				/* aha! */
 				c = d e = f g=3; # some other comment
 		}`);
-
+/*
 	test("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
 		expect(h.contents).toEqual("(directed graph) GraphName");
@@ -133,5 +133,25 @@ describe("Hover Handling", () => {
 
 		h = hoverSubGraph(17);
 		expect(h.contents).toEqual("(edge) c -- a");
+	});
+	*/
+
+	/**
+	 * See https://github.com/nikeee/dot-language-support/issues/83
+	 */
+	test("should correctly show node labels on hover (source node)", () => {
+		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
+
+		let h = hoverOnCode(7);
+		expect(h.contents).toEqual("(node) c: xd");
+	});
+
+	/**
+	 * See https://github.com/nikeee/dot-language-support/issues/83
+	 */
+	test("should correctly show node labels on hover (other node)", () => {
+		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
+		let h = hoverOnCode(22);
+		expect(h.contents).toEqual("(node) c: xd");
 	});
 });

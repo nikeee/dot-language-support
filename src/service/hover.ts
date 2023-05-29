@@ -1,7 +1,7 @@
 import type * as lst from "vscode-languageserver-types";
 import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph, EdgeRhs, EdgeStatement, EdgeSourceOrTarget } from "../types.js";
 import { getIdentifierText, findNodeAtOffset } from "../checker.js";
-import { DocumentLike } from "../index.js";
+import { DocumentLike, NodeStatement } from "../index.js";
 import { isIdentifierNode } from "../parser.js";
 import { syntaxNodeToRange } from "./util.js";
 import { getEdgeStr } from "./command/common.js";
@@ -33,6 +33,12 @@ function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hov
 	return undefined;
 }
 
+function getAssignedLabel(statement: NodeStatement) {
+	const assignments = statement.attributes.flatMap(a => a.assignments);
+	const assignedLabel = assignments?.find(a => getIdentifierText(a.leftId) === "label");
+	return assignedLabel?.rightId ? getIdentifierText(assignedLabel.rightId) : undefined;
+}
+
 // TODO: Maybe improve this to use something like
 // type HoverHandler = (node: SyntaxNode, parent?: SyntaxNode) => undefined | string;
 // TODO: Handle all leafs of the syntax tree
@@ -41,8 +47,26 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		const parent = n.parent;
 		if (parent) {
 			switch (parent.kind) {
-				case SyntaxKind.NodeId:
+				case SyntaxKind.NodeId: {
+
+					// See https://github.com/nikeee/dot-language-support/issues/83
+					if (n.symbol?.references) {
+						const nodeIdentifierRefs = n.symbol?.references;
+						const labelMentions = nodeIdentifierRefs.map(e => e.symbol?.members?.get("label")?.firstMention.parent as IdEqualsIdStatement | null | undefined);
+						for (let i = labelMentions.length; i > 0; i--) {
+							const s = labelMentions[i];
+							if (s?.rightId) {
+								return `(node) ${getIdentifierText(n)}: ${getIdentifierText(s.rightId)}`;
+							}
+						}
+					} else if (parent.parent?.kind === SyntaxKind.NodeStatement) {
+						const label = getAssignedLabel(parent.parent as NodeStatement);
+						if (label) {
+							return `(node) ${getIdentifierText(n)}: ${label}`;
+						}
+					}
 					return `(node) ${getIdentifierText(n)}`;
+				}
 				case SyntaxKind.Assignment: {
 					const assignment = parent as Assignment;
 					const left = getIdentifierText(assignment.leftId);
