@@ -53,7 +53,7 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					if (n.symbol?.references) {
 						const nodeIdentifierRefs = n.symbol?.references;
 						const labelMentions = nodeIdentifierRefs.map(e => e.symbol?.members?.get("label")?.firstMention.parent as IdEqualsIdStatement | null | undefined);
-						for (let i = labelMentions.length; i > 0; i--) {
+						for (let i = labelMentions.length; i >= 0; i--) {
 							const s = labelMentions[i];
 							if (s?.rightId) {
 								return `(node) ${getIdentifierText(n)}: ${getIdentifierText(s.rightId)}`;

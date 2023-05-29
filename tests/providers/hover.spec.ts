@@ -153,4 +153,32 @@ describe("Hover Handling", () => {
 		let h = hoverOnCode(22);
 		expect(h.contents).toEqual("(node) c: xd");
 	});
+
+	/**
+	 * See https://github.com/nikeee/dot-language-support/issues/83
+	 */
+	test("should correctly show node labels on hover (other node)", () => {
+		const hoverOnCode = hoverSample(`digraph G {
+			vp [label="View Profile"];
+			vf [label="View Friends"];
+
+			vp -> vf;
+		}`);
+		let h = hoverOnCode(75);
+		expect(h.contents).toEqual("(node) vp: View Profile");
+	});
+
+	/**
+	 * See https://github.com/nikeee/dot-language-support/issues/83
+	 */
+	test("should correctly show node labels on hover (other node)", () => {
+		const hoverOnCode = hoverSample(`digraph G {
+			vp [label="View Profile"];
+			vf [label="View Friends"];
+
+			vp -> vf;
+		}`);
+		let h = hoverOnCode(81);
+		expect(h.contents).toEqual("(node) vf: View Friends");
+	});
 });
