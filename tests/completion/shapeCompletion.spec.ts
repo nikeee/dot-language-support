@@ -126,7 +126,7 @@ describe("Shape completion", () => {
 			message: `Unknown shape "test".`,
 			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
 			category: DiagnosticCategory.Warning,
-			start: 11,
+			start: 17,
 			end: 21,
 		}]);
 	});
@@ -141,7 +141,7 @@ describe("Shape completion", () => {
 			message: `Unknown shape "test".`,
 			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
 			category: DiagnosticCategory.Warning,
-			start: 14,
+			start: 20,
 			end: 24,
 		}]);
 	});

@@ -132,8 +132,8 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 			category: DiagnosticCategory.Warning,
 			code: createCheckerError(CheckError.InvalidShapeName),
 			message: `Unknown shape "${rightText}".`,
-			start: assignment.pos,
-			end: assignment.end,
+			start: rightId.pos,
+			end: rightId.end,
 		});
 	});
 
