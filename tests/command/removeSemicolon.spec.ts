@@ -1,4 +1,4 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 
@@ -7,7 +7,7 @@ import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
 import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons";
 import { CommandIds, getCodeActions } from "../../src/service/codeAction";
 
-test("Remove semicolon command execution", () => {
+describe("Remove semicolon command execution", () => {
 
 	test("should get correct semicolon edits", () => {
 		const content = `strict digraph {

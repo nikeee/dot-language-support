@@ -1,4 +1,4 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
@@ -6,7 +6,7 @@ import * as ConsolidateDescendantsCommand from "../../src/service/command/Consol
 import { CommandIds, getCodeActions } from "../../src/service/codeAction.js";
 import { ExecutableCommand } from "../../src/service/command/common.js";
 
-test("Consolidate graph command execution", () => {
+describe("Consolidate graph command execution", () => {
 
 	test("should correclty consolidate descendents", () => {
 		const content = `graph{a -- b;a -- c;}`;
