@@ -3,6 +3,7 @@ import { describe, test, expect } from "vitest";
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { colors } from "../../src/service/languageFacts.js";
+import { CheckError, DiagnosticCategory, ErrorSource } from "../../src/types.js";
 
 const allColors = Object.keys(colors);
 
@@ -128,8 +129,8 @@ describe("Color completion", () => {
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
-			code: { source: 4, sub: 1 },
-			category: 2,
+			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
+			category: DiagnosticCategory.Warning,
 			start: 11,
 			end: 21,
 		}]);
