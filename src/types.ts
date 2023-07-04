@@ -32,6 +32,7 @@ export const enum ScanError {
 
 export const enum CheckError {
 	InvalidEdgeOperation,
+	InvalidShapeName,
 }
 
 export interface DiagnosticMessage {

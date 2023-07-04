@@ -222,6 +222,8 @@ function getCheckerErrorCommand(_doc: DocumentLike, file: SourceFile, d: Diagnos
 				convertToThisWrongType,
 			];
 		}
+		case CheckError.InvalidShapeName:
+			return undefined; // Fixing spelling errors is not supported
 	}
 }
 

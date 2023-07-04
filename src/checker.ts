@@ -21,9 +21,12 @@ import {
 	StatementOf,
 	Token,
 	TextRange,
+	Assignment,
+	TextIdentifier,
 } from "./types.js";
 import { assertNever, getStart } from "./service/util.js";
 import { forEachChild } from "./visitor.js";
+import { shapes as validShapes } from "./service/languageFacts.js";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;
@@ -84,9 +87,55 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 
 	const invalidEdgeRhses = findEdgeErrors(expectedEdgeOp, root);
 
-	return invalidEdgeRhses == undefined || invalidEdgeRhses.length === 0
-		? undefined
+	const invalidShapes = checkShapeLabelValues(root, []);
+
+	const invalidEdgeDiagnostics = invalidEdgeRhses == undefined || invalidEdgeRhses.length === 0
+		? []
 		: createEdgeViolationDiagnostics(file, expectedEdgeOp, invalidEdgeRhses);
+
+	return [...invalidEdgeDiagnostics, ...invalidShapes];
+}
+
+function checkShapeLabelValues(root: SyntaxNode, prevInvalidShapes: DiagnosticMessage[]): DiagnosticMessage[] {
+	// shapes
+
+	forEachChild(root, child => {
+		if (child.kind === SyntaxKind.Assignment) {
+
+			const assignment = child as Assignment;
+
+			if (assignment.leftId.kind !== SyntaxKind.TextIdentifier ||
+				assignment.rightId.kind !== SyntaxKind.TextIdentifier) {
+				return;
+			}
+
+			const leftText = (assignment.leftId as TextIdentifier).text;
+			const rightText = (assignment.rightId as TextIdentifier).text;
+
+			if (leftText !== "shape") {
+				return;
+			}
+
+			const shapeCandidate = rightText.toLowerCase();
+			if (validShapes.includes(shapeCandidate)) {
+				return;
+			}
+
+			prevInvalidShapes.push({
+				category: DiagnosticCategory.Warning,
+				code: createCheckerError(CheckError.InvalidShapeName),
+				message: `Unknown shape "${shapeCandidate}".`,
+				start: child.pos,
+				end: child.end,
+			});
+
+			return;
+		}
+
+		forEachChild(child, c => checkShapeLabelValues(c, prevInvalidShapes));
+	});
+
+	return prevInvalidShapes;
 }
 
 /**

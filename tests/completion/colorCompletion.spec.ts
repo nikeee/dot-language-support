@@ -119,4 +119,15 @@ describe("Color completion", () => {
 		expect(completions).toHaveLength(allColors.length);
 	}
 	);
+
+	test("should validate shapes", () => {
+		let [doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
+
+		expect(sf.diagnostics).toHaveLength(0);
+
+		[doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
+
+		expect(sf.diagnostics).toHaveLength(1);
+		expect(sf.diagnostics[0].message).toBe(`Unknown shape "test".`);
+	});
 });
