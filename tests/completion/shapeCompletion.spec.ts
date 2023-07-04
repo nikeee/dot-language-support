@@ -1,10 +1,10 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { shapes } from "../../src/service/languageFacts.js";
 
-test("Shape completion", () => {
+describe("Shape completion", () => {
 
 	test("should provide completion for shapes (trailing attribute)", () => {
 		const content = `graph {

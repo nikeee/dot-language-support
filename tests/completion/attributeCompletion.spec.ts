@@ -1,11 +1,11 @@
-import { test, expect } from "vitest";
+import { test, expect, describe } from "vitest";
 
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { attributes } from "../../src/service/languageFacts.js";
 
 
-test("Attribute completion", () => {
+describe("Attribute completion", () => {
 	function invokeIndex(content: string) {
 		return (location: string) => {
 			const requestOffset = content.indexOf(location) + location.length;

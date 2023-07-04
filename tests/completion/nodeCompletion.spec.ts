@@ -1,9 +1,9 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 
 import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 
-test("Node completion", () => {
+describe("Node completion", () => {
 
 	test("should provide completion for nodes", () => {
 		const content = `digraph{green->blue;green->yellow;b-> ;}`;
