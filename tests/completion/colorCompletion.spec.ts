@@ -122,12 +122,16 @@ describe("Color completion", () => {
 
 	test("should validate shapes", () => {
 		let [doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
-
 		expect(sf.diagnostics).toHaveLength(0);
 
 		[doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
-
 		expect(sf.diagnostics).toHaveLength(1);
-		expect(sf.diagnostics[0].message).toBe(`Unknown shape "test".`);
+		expect(sf.diagnostics).toStrictEqual([{
+			message: `Unknown shape "test".`,
+			code: { source: 4, sub: 1 },
+			category: 2,
+			start: 11,
+			end: 21,
+		}]);
 	});
 });
