@@ -87,7 +87,7 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 
 	const invalidEdgeRhses = findEdgeErrors(expectedEdgeOp, root);
 
-	const invalidShapes = checkShapeLabelValues(root, []);
+	const invalidShapes = checkShapeLabelValues(root);
 
 	const invalidEdgeDiagnostics = invalidEdgeRhses == undefined || invalidEdgeRhses.length === 0
 		? []
@@ -96,46 +96,48 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 	return [...invalidEdgeDiagnostics, ...invalidShapes];
 }
 
-function checkShapeLabelValues(root: SyntaxNode, prevInvalidShapes: DiagnosticMessage[]): DiagnosticMessage[] {
-	// shapes
-
+function forEachAssignmentTransitive(root: SyntaxNode, cb: (assignment: Assignment) => void) {
 	forEachChild(root, child => {
 		if (child.kind === SyntaxKind.Assignment) {
-
-			const assignment = child as Assignment;
-
-			if (assignment.leftId.kind !== SyntaxKind.TextIdentifier ||
-				assignment.rightId.kind !== SyntaxKind.TextIdentifier) {
-				return;
-			}
-
-			const leftText = (assignment.leftId as TextIdentifier).text;
-			const rightText = (assignment.rightId as TextIdentifier).text;
-
-			if (leftText !== "shape") {
-				return;
-			}
-
-			const shapeCandidate = rightText.toLowerCase();
-			if (validShapes.includes(shapeCandidate)) {
-				return;
-			}
-
-			prevInvalidShapes.push({
-				category: DiagnosticCategory.Warning,
-				code: createCheckerError(CheckError.InvalidShapeName),
-				message: `Unknown shape "${shapeCandidate}".`,
-				start: child.pos,
-				end: child.end,
-			});
-
+			cb(child as Assignment);
 			return;
 		}
 
-		forEachChild(child, c => checkShapeLabelValues(c, prevInvalidShapes));
+		forEachChild(child, c => forEachAssignmentTransitive(c, cb));
+	});
+}
+
+function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
+	const invalidShapes: DiagnosticMessage[] = [];
+
+	forEachAssignmentTransitive(root, assignment => {
+		const { leftId, rightId } = assignment;
+		if (leftId.kind !== SyntaxKind.TextIdentifier || rightId.kind !== SyntaxKind.TextIdentifier) {
+			return;
+		}
+
+		const leftText = (leftId as TextIdentifier).text.trim()
+
+		if (leftText.toLocaleLowerCase() !== "shape") {
+			return;
+		}
+
+		const rightText = (rightId as TextIdentifier).text.trim()
+		const shapeCandidate = rightText.toLowerCase();
+		if (validShapes.includes(shapeCandidate)) {
+			return;
+		}
+
+		invalidShapes.push({
+			category: DiagnosticCategory.Warning,
+			code: createCheckerError(CheckError.InvalidShapeName),
+			message: `Unknown shape "${rightText}".`,
+			start: assignment.pos,
+			end: assignment.end,
+		});
 	});
 
-	return prevInvalidShapes;
+	return invalidShapes;
 }
 
 /**
