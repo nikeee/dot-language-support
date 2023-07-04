@@ -78,8 +78,7 @@ describe("Color completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(allColors);
 		expect(completions).toHaveLength(allColors.length);
-	}
-	);
+	});
 
 	test("should provide completion for colors (center attribute with spaces and semicolons)", () => {
 		const content = `graph {
@@ -97,8 +96,7 @@ describe("Color completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(allColors);
 		expect(completions).toHaveLength(allColors.length);
-	}
-	);
+	});
 
 	test("should provide completion for colors (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
@@ -117,6 +115,5 @@ describe("Color completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(allColors);
 		expect(completions).toHaveLength(allColors.length);
-	}
-	);
+	});
 });

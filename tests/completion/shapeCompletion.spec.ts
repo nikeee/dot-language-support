@@ -77,8 +77,7 @@ describe("Shape completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).toHaveLength(shapes.length);
-	}
-	);
+	});
 
 	test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
 		const content = `graph {
@@ -96,8 +95,7 @@ describe("Shape completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).toHaveLength(shapes.length);
-	}
-	);
+	});
 
 	test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
@@ -116,8 +114,7 @@ describe("Shape completion", () => {
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
 		expect(completions).toHaveLength(shapes.length);
-	}
-	);
+	});
 
 	test("should validate shapes (single node)", () => {
 		let [doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
