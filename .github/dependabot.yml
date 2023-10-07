@@ -3,7 +3,11 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      patch-dependencies:
+        update-types:
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
