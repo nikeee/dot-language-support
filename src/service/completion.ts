@@ -48,17 +48,22 @@ export function getCompletions(doc: DocumentLike, sourceFile: SourceFile, positi
 		}
 	}
 
+	const prevNodeNi = findNodeAtOffset(g, node.pos - 1, false);
+
+	if (node.kind === SyntaxKind.AttributeContainer
+		// FIXME: conflitcs with #issue 17 9 (last test of nodeCompletion.spec.ts)
+		// || (node.kind == SyntaxKind.TextIdentifier && prevNodeNi?.kind === SyntaxKind.AttributeContainer)
+		|| (node.kind == SyntaxKind.TextIdentifier && prevNodeNi?.kind === SyntaxKind.CommaToken)
+		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
+	) {
+		return getAttributeCompletions(position);
+	}
+
 	if (node.kind === SyntaxKind.TextIdentifier && parent?.kind === SyntaxKind.NodeId) {
 		const exclusions = node.symbol
 			? [node.symbol.name]
 			: undefined;
 		return getNodeCompletions(symbols, exclusions);
-	}
-
-	if (node.kind === SyntaxKind.AttributeContainer
-		|| (node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
-	) {
-		return getAttributeCompletions(position);
 	}
 
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
