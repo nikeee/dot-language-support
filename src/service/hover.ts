@@ -1,22 +1,22 @@
 import type * as lst from "vscode-languageserver-types";
-import {
-	SyntaxKind,
-	type Graph,
-	type SubGraphStatement,
-	type SyntaxNode,
-	type Assignment,
-	type SourceFile,
-	type IdEqualsIdStatement,
-	type SubGraph,
-	type EdgeRhs,
-	type EdgeStatement,
-	type EdgeSourceOrTarget,
-} from "../types.js";
-import { getIdentifierText, findNodeAtOffset } from "../checker.js";
+import { findNodeAtOffset, getIdentifierText } from "../checker.js";
 import type { DocumentLike, NodeStatement } from "../index.js";
 import { isIdentifierNode } from "../parser.js";
-import { syntaxNodeToRange } from "./util.js";
+import {
+	type Assignment,
+	type EdgeRhs,
+	type EdgeSourceOrTarget,
+	type EdgeStatement,
+	type Graph,
+	type IdEqualsIdStatement,
+	type SourceFile,
+	type SubGraph,
+	type SubGraphStatement,
+	SyntaxKind,
+	type SyntaxNode,
+} from "../types.js";
 import { getEdgeStr } from "./command/common.js";
+import { syntaxNodeToRange } from "./util.js";
 
 export function hover(
 	doc: DocumentLike,

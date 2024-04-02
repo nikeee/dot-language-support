@@ -1,7 +1,7 @@
 import type * as lst from "vscode-languageserver-types";
-import type { DiagnosticMessage, SourceFile } from "../types.js";
-import { formatError, diagnosicSource } from "../error.js";
+import { diagnosicSource, formatError } from "../error.js";
 import type { DocumentLike } from "../index.js";
+import type { DiagnosticMessage, SourceFile } from "../types.js";
 
 function convertDiagnostic(document: DocumentLike, source: DiagnosticMessage): lst.Diagnostic {
 	return {

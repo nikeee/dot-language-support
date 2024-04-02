@@ -1,8 +1,8 @@
 import type * as lst from "vscode-languageserver-types";
-import { CommandIds } from "../codeAction.js";
-import { createChangeToEdit, type ExecutableCommand } from "./common.js";
-import type { DocumentLike, SourceFile, CommandApplication } from "../../index.js";
 import { findOptionalSemicolons } from "../../checker.js";
+import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
+import { CommandIds } from "../codeAction.js";
+import { type ExecutableCommand, createChangeToEdit } from "./common.js";
 
 export interface RemoveSemicolonsCommand extends lst.Command {
 	command: CommandIds.RemoveSemicolons;

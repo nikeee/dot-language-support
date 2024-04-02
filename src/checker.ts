@@ -1,32 +1,32 @@
+import { shapes as validShapes } from "./service/languageFacts.js";
+import { assertNever, getStart } from "./service/util.js";
 import {
-	type SyntaxNode,
-	type Identifier,
-	SyntaxKind,
-	type Graph,
-	type EdgeStatement,
-	type SyntaxNodeArray,
-	type EdgeRhs,
-	type EdgeOp,
-	type SourceFile,
-	type DiagnosticMessage,
-	SyntaxNodeFlags,
-	CheckError,
-	DiagnosticCategory,
-	ErrorSource,
-	type CheckErrorCode,
-	type SubGraphStatement,
-	type NodeId,
+	type Assignment,
 	type AttributeStatement,
+	CheckError,
+	type CheckErrorCode,
+	DiagnosticCategory,
+	type DiagnosticMessage,
+	type EdgeOp,
+	type EdgeRhs,
+	type EdgeStatement,
+	ErrorSource,
+	type Graph,
+	type Identifier,
+	type NodeId,
+	type SourceFile,
 	type Statement,
 	type StatementOf,
-	type Token,
-	type TextRange,
-	type Assignment,
+	type SubGraphStatement,
+	SyntaxKind,
+	type SyntaxNode,
+	type SyntaxNodeArray,
+	SyntaxNodeFlags,
 	type TextIdentifier,
+	type TextRange,
+	type Token,
 } from "./types.js";
-import { assertNever, getStart } from "./service/util.js";
 import { forEachChild } from "./visitor.js";
-import { shapes as validShapes } from "./service/languageFacts.js";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;

@@ -1,43 +1,43 @@
 import type * as lst from "vscode-languageserver-types";
 import {
-	type DocumentLike,
-	type SourceFile,
-	type DiagnosticMessage,
-	ErrorSource,
-	type CheckErrorCode,
-	type ParseErrorCode,
-	type ScanErrorCode,
-	CheckError,
-	SyntaxKind,
-	type CommandApplication,
-	type Graph,
-	forEachChild,
-	isIdentifierNode,
-	type SyntaxNode,
-	type EdgeStatement,
-} from "../index.js";
-import { assertNever, getStart } from "./util.js";
-import {
-	getAllowedEdgeOperation,
+	edgeStatementHasAttributes,
 	findAllEdges,
 	findNodeAtOffset,
-	isEdgeStatement,
-	isNodeId,
+	getAllowedEdgeOperation,
 	getIdentifierText,
 	isAttrStatement,
-	edgeStatementHasAttributes,
+	isEdgeStatement,
+	isNodeId,
 	nodeContainsErrors,
 } from "../checker.js";
-import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
+import {
+	CheckError,
+	type CheckErrorCode,
+	type CommandApplication,
+	type DiagnosticMessage,
+	type DocumentLike,
+	type EdgeStatement,
+	ErrorSource,
+	type Graph,
+	type ParseErrorCode,
+	type ScanErrorCode,
+	type SourceFile,
+	SyntaxKind,
+	type SyntaxNode,
+	forEachChild,
+	isIdentifierNode,
+} from "../index.js";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
+import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
 import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
 import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
 import {
 	type ExecutableCommand,
-	getOppositeKind,
-	getOppositeEdgeOp,
 	getAllowedOp,
+	getOppositeEdgeOp,
+	getOppositeKind,
 } from "./command/common.js";
+import { assertNever, getStart } from "./util.js";
 
 export function getCodeActions(
 	doc: DocumentLike,

@@ -1,16 +1,16 @@
 import type * as lst from "vscode-languageserver-types";
-import { CommandIds } from "../codeAction.js";
-import type { ExecutableCommand } from "./common.js";
+import { findNodeAtOffset, getIdentifierText } from "../../checker.js";
 import type {
-	DocumentLike,
-	SourceFile,
 	CommandApplication,
+	DocumentLike,
 	EdgeStatement,
 	NodeId,
+	SourceFile,
 	SyntaxNode,
 } from "../../index.js";
-import { getIdentifierText, findNodeAtOffset } from "../../checker.js";
+import { CommandIds } from "../codeAction.js";
 import { getStart } from "../util.js";
+import type { ExecutableCommand } from "./common.js";
 
 export interface ConsolidateDescendantsCommand extends lst.Command {
 	command: CommandIds.ConsolidateDescendants;

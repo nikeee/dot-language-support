@@ -1,6 +1,6 @@
 import { createMapFromTemplate } from "./core.js";
-import { SyntaxKind, CharacterCodes, TokenFlags, DiagnosticCategory, ScanError } from "./types.js";
 import { assertNever } from "./service/util.js";
+import { CharacterCodes, DiagnosticCategory, ScanError, SyntaxKind, TokenFlags } from "./types.js";
 
 export interface Scanner {
 	readonly end: number;

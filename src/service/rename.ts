@@ -1,7 +1,7 @@
-import { TextEdit, type Position, type WorkspaceEdit } from "vscode-languageserver-types";
-import { type SourceFile, type SyntaxNode, SyntaxKind } from "../types.js";
+import { type Position, TextEdit, type WorkspaceEdit } from "vscode-languageserver-types";
 import { findNodeAtOffset } from "../checker.js";
-import { isIdentifierNode, type DocumentLike } from "../index.js";
+import { type DocumentLike, isIdentifierNode } from "../index.js";
+import { type SourceFile, SyntaxKind, type SyntaxNode } from "../types.js";
 import { syntaxNodesToRanges } from "./util.js";
 
 export function renameSymbol(

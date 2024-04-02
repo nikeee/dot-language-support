@@ -1,7 +1,7 @@
 import * as lst from "vscode-languageserver-types";
+import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
 import { CommandIds } from "../codeAction.js";
-import { type EdgeOpStr, type ExecutableCommand, getEdgeStr, type EdgeType } from "./common.js";
-import type { DocumentLike, SourceFile, CommandApplication } from "../../index.js";
+import { type EdgeOpStr, type EdgeType, type ExecutableCommand, getEdgeStr } from "./common.js";
 
 export interface ChangeEdgeOpCommand extends lst.Command {
 	command: CommandIds.ChangeEdgeOp;
