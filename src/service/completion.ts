@@ -150,7 +150,7 @@ function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] 
 		label,
 		textEdit: {
 			range,
-			newText: escapeIdentifierText(label) + "=",
+			newText: `${escapeIdentifierText(label)}=`,
 		},
 	}));
 }

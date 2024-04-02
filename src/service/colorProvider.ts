@@ -25,7 +25,7 @@ export function getColorRepresentations(
 	color: Color,
 	range: Range,
 ): ColorPresentation[] | undefined {
-	return !color || !range ? undefined : [{ label: '"' + getColorStringFromColor(color) + '"' }];
+	return !color || !range ? undefined : [{ label: `"${getColorStringFromColor(color)}"` }];
 }
 
 function colorTableToColorInformation(
@@ -78,12 +78,12 @@ function getColorStringFromColor(c: Color): string {
 	const blue = (c.blue * 255) | 0;
 	// we ignore alpha here
 
-	return (
-		"#" + numberToPaddedString(red) + numberToPaddedString(green) + numberToPaddedString(blue)
-	);
+	return `#${numberToPaddedString(red)}${numberToPaddedString(green)}${numberToPaddedString(
+		blue,
+	)}`;
 }
 
 function numberToPaddedString(n: number): string {
 	const s = n.toString(16);
-	return (s.length === 1 ? "0" + s : s).toLowerCase();
+	return (s.length === 1 ? `0${s}` : s).toLowerCase();
 }

@@ -36,7 +36,7 @@ export function execute(
 	});
 
 	return {
-		label: `Remove optional semicolons`,
+		label: "Remove optional semicolons",
 		edit: {
 			changes: {
 				[doc.uri]: edits,

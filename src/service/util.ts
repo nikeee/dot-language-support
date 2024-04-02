@@ -48,8 +48,8 @@ export function escapeIdentifierText(text: string): string {
 	return text;
 }
 
-const quote = (s: string) => '"' + s + '"';
+const quote = (s: string) => `"${s}"`;
 
 export function assertNever(v: never): never {
-	throw new Error("Should not have reached this. Value: " + (v ?? ""));
+	throw new Error(`Should not have reached this. Value: ${v ?? ""}`);
 }
