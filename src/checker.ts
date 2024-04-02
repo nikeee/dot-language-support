@@ -1,28 +1,28 @@
 import {
-	SyntaxNode,
-	Identifier,
+	type SyntaxNode,
+	type Identifier,
 	SyntaxKind,
-	Graph,
-	EdgeStatement,
-	SyntaxNodeArray,
-	EdgeRhs,
-	EdgeOp,
-	SourceFile,
-	DiagnosticMessage,
+	type Graph,
+	type EdgeStatement,
+	type SyntaxNodeArray,
+	type EdgeRhs,
+	type EdgeOp,
+	type SourceFile,
+	type DiagnosticMessage,
 	SyntaxNodeFlags,
 	CheckError,
 	DiagnosticCategory,
 	ErrorSource,
-	CheckErrorCode,
-	SubGraphStatement,
-	NodeId,
-	AttributeStatement,
-	Statement,
-	StatementOf,
-	Token,
-	TextRange,
-	Assignment,
-	TextIdentifier,
+	type CheckErrorCode,
+	type SubGraphStatement,
+	type NodeId,
+	type AttributeStatement,
+	type Statement,
+	type StatementOf,
+	type Token,
+	type TextRange,
+	type Assignment,
+	type TextIdentifier,
 } from "./types.js";
 import { assertNever, getStart } from "./service/util.js";
 import { forEachChild } from "./visitor.js";
@@ -44,7 +44,7 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 	const prevRange = prev.end - prev.pos;
 
 	if (toCheck.pos <= offset && offset <= toCheck.end) {
-		let nrange = toCheck.end - toCheck.pos;
+		const nrange = toCheck.end - toCheck.pos;
 		if (nrange < prevRange) {
 			return toCheck;
 		}
@@ -62,7 +62,7 @@ function rangeContainsOffset(range: TextRange, offset: number, inclusiveEnd: boo
 export function findNodeAtOffset(
 	root: SyntaxNode,
 	offset: number,
-	inclusiveEnd: boolean = false,
+	inclusiveEnd = false,
 ): SyntaxNode | undefined {
 	// Wow, I don't think this actually works. But it seems to.
 

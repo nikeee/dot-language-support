@@ -91,7 +91,7 @@ export class DefaultScanner implements Scanner {
 	public text: string;
 	public onError: ErrorCallback | null;
 
-	public setText(newText?: string, start: number = 0, length?: number): void {
+	public setText(newText?: string, start = 0, length?: number): void {
 		this.text = newText || "";
 		this.end = length === undefined ? this.text.length : start + length;
 		this.setTextPos(start || 0);
@@ -111,7 +111,7 @@ export class DefaultScanner implements Scanner {
 		this.tokenFlags = TokenFlags.None;
 	}
 
-	public scan(skipTrivia: boolean = true): SyntaxKind {
+	public scan(skipTrivia = true): SyntaxKind {
 		this.startPos = this.pos;
 		this.tokenFlags = TokenFlags.None;
 		this.isUnterminated = false;
@@ -324,7 +324,7 @@ export class DefaultScanner implements Scanner {
 		sub: ScanError,
 		category: DiagnosticCategory = DiagnosticCategory.Error,
 		errPos: number = this.pos,
-		length: number = 0,
+		length = 0,
 	): void {
 		const cb = this.onError;
 		if (cb) {
@@ -400,7 +400,7 @@ export class DefaultScanner implements Scanner {
 		const htmlOpen = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
-		let start = this.pos;
+		const start = this.pos;
 
 		let subTagsLevel = 0;
 		while (true) {
@@ -438,7 +438,7 @@ export class DefaultScanner implements Scanner {
 		const quote = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
-		let start = this.pos;
+		const start = this.pos;
 		let hasBackslash = false;
 		while (true) {
 			if (this.pos >= this.end) {

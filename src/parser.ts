@@ -1,59 +1,59 @@
-import { Scanner, DefaultScanner, getTokenAsText } from "./scanner.js";
+import { type Scanner, DefaultScanner, getTokenAsText } from "./scanner.js";
 import { assertNever } from "./service/util.js";
 import {
 	SyntaxKind,
-	SourceFile,
-	Graph,
-	Identifier,
-	TextIdentifier,
-	StringLiteral,
-	HtmlIdentifier,
-	Statement,
-	NodeId,
-	CompassPortDeclaration,
-	NormalPortDeclaration,
-	PortDeclaration,
-	SyntaxNode,
-	SyntaxNodeArray,
-	MutableSyntaxNodeArray,
-	Token,
-	AttributeStatement,
-	SubGraphStatement,
-	AttributeContainer,
-	Assignment,
-	AssignmentSeparator,
-	IdEqualsIdStatement,
-	NodeStatement,
-	EdgeStatement,
-	EdgeRhs,
-	NumericIdentifier,
-	QuotedTextIdentifier,
-	DiagnosticMessage,
+	type SourceFile,
+	type Graph,
+	type Identifier,
+	type TextIdentifier,
+	type StringLiteral,
+	type HtmlIdentifier,
+	type Statement,
+	type NodeId,
+	type CompassPortDeclaration,
+	type NormalPortDeclaration,
+	type PortDeclaration,
+	type SyntaxNode,
+	type SyntaxNodeArray,
+	type MutableSyntaxNodeArray,
+	type Token,
+	type AttributeStatement,
+	type SubGraphStatement,
+	type AttributeContainer,
+	type Assignment,
+	type AssignmentSeparator,
+	type IdEqualsIdStatement,
+	type NodeStatement,
+	type EdgeStatement,
+	type EdgeRhs,
+	type NumericIdentifier,
+	type QuotedTextIdentifier,
+	type DiagnosticMessage,
 	DiagnosticCategory,
-	ErrorCode,
+	type ErrorCode,
 	ErrorSource,
 	ParseError,
-	ScanError,
+	type ScanError,
 	SyntaxNodeFlags,
-	SubGraph,
+	type SubGraph,
 } from "./types";
 
 export enum ParsingContext {
 	None = 0,
-	StatementList,
-	AttributeContainerList,
-	AssignmentList,
-	EdgeRhsList,
-	QuotedTextIdentifierConcatenation,
+	StatementList = 1,
+	AttributeContainerList = 2,
+	AssignmentList = 3,
+	EdgeRhsList = 4,
+	QuotedTextIdentifierConcatenation = 5,
 
-	Count, // Number of parsing contexts
+	Count = 6, // Number of parsing contexts
 }
 
 export class Parser {
 	currentToken: SyntaxKind = SyntaxKind.Unknown;
 	nodeCount: number;
 	identifiers: Set<string>;
-	identifierCount: number = 0;
+	identifierCount = 0;
 	sourceText: string;
 	scanner: Scanner = new DefaultScanner();
 	currentNodeHasError: boolean;
@@ -149,7 +149,7 @@ export class Parser {
 	}
 	private parseIdentifier(): Identifier {
 		let result;
-		let escapedIdTexts = new Array<string>();
+		const escapedIdTexts = new Array<string>();
 		switch (this.token()) {
 			case SyntaxKind.TextIdentifier:
 				result = this.parseTextIdentifier();
@@ -548,7 +548,7 @@ export class Parser {
 		const subGraphStart = subGraph !== undefined ? subGraph.pos : undefined;
 		const node = this.createNode(SyntaxKind.SubGraph, subGraphStart) as SubGraph;
 
-		let identifier =
+		const identifier =
 			subGraph !== undefined && this.isIdentifier() ? this.parseIdentifier() : undefined;
 
 		node.id = identifier;

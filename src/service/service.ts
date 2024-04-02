@@ -2,7 +2,7 @@ import type * as lst from "vscode-languageserver-types";
 import type { ColorInformation, Color, ColorPresentation } from "vscode-languageserver-types";
 import type { TextDocument } from "vscode-languageserver-textdocument";
 import { Parser } from "../index.js";
-import { SourceFile, Omit } from "../types.js";
+import type { SourceFile, Omit } from "../types.js";
 import { bindSourceFile } from "../binder.js";
 import { hover } from "./hover.js";
 import { validateDocument } from "./validation.js";

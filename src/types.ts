@@ -20,19 +20,19 @@ export interface CheckErrorCode {
 }
 
 export const enum ParseError {
-	ExpectationFailed,
-	TrailingData,
-	FailedListParsing,
+	ExpectationFailed = 0,
+	TrailingData = 1,
+	FailedListParsing = 2,
 }
 
 export const enum ScanError {
-	ExpectationFailed,
-	Unterminated,
+	ExpectationFailed = 0,
+	Unterminated = 1,
 }
 
 export const enum CheckError {
-	InvalidEdgeOperation,
-	InvalidShapeName,
+	InvalidEdgeOperation = 0,
+	InvalidShapeName = 1,
 }
 
 export interface DiagnosticMessage {
@@ -232,71 +232,71 @@ export interface TextRange {
 }
 
 export /* const */ enum SyntaxKind {
-	Unknown,
-	EndOfFileToken,
-	NewLineTrivia,
-	WhitespaceTrivia,
+	Unknown = 0,
+	EndOfFileToken = 1,
+	NewLineTrivia = 2,
+	WhitespaceTrivia = 3,
 
-	HashCommentTrivia,
-	SingleLineCommentTrivia,
-	MultiLineCommentTrivia,
+	HashCommentTrivia = 4,
+	SingleLineCommentTrivia = 5,
+	MultiLineCommentTrivia = 6,
 
-	CommaToken,
-	SemicolonToken,
-	PlusToken,
-	OpenBraceToken,
-	CloseBraceToken,
-	OpenBracketToken,
-	CloseBracketToken,
-	ColonToken,
-	EqualsToken,
-	LessThan,
-	GreaterThan,
+	CommaToken = 7,
+	SemicolonToken = 8,
+	PlusToken = 9,
+	OpenBraceToken = 10,
+	CloseBraceToken = 11,
+	OpenBracketToken = 12,
+	CloseBracketToken = 13,
+	ColonToken = 14,
+	EqualsToken = 15,
+	LessThan = 16,
+	GreaterThan = 17,
 
-	CompassNorthToken,
-	CompassNorthEastToken,
-	CompassEastToken,
-	CompassSouthEastToken,
-	CompassSouthToken,
-	CompassSouthWestToken,
-	CompassWestToken,
-	CompassNorthWestToken,
-	CompassCenterToken,
-	UnderscoreToken,
+	CompassNorthToken = 18,
+	CompassNorthEastToken = 19,
+	CompassEastToken = 20,
+	CompassSouthEastToken = 21,
+	CompassSouthToken = 22,
+	CompassSouthWestToken = 23,
+	CompassWestToken = 24,
+	CompassNorthWestToken = 25,
+	CompassCenterToken = 26,
+	UnderscoreToken = 27,
 
-	StringLiteral,
+	StringLiteral = 28,
 
-	HtmlIdentifier,
-	TextIdentifier,
-	QuotedTextIdentifier, // Contains multiple "QuotedTextIdentifier" for concatenation with +
-	NumericIdentifier,
+	HtmlIdentifier = 29,
+	TextIdentifier = 30,
+	QuotedTextIdentifier = 31, // Contains multiple "QuotedTextIdentifier" for concatenation with +
+	NumericIdentifier = 32,
 
-	GraphKeyword,
-	DigraphKeyword,
-	NodeKeyword,
-	EdgeKeyword,
-	SubgraphKeyword,
-	StrictKeyword,
+	GraphKeyword = 33,
+	DigraphKeyword = 34,
+	NodeKeyword = 35,
+	EdgeKeyword = 36,
+	SubgraphKeyword = 37,
+	StrictKeyword = 38,
 
-	DirectedEdgeOp,
-	UndirectedEdgeOp,
+	DirectedEdgeOp = 39,
+	UndirectedEdgeOp = 40,
 
-	DirectedGraph,
-	UndirectedGraph,
-	NodeStatement,
-	EdgeStatement,
-	AttributeStatement,
-	IdEqualsIdStatement,
-	SubGraph,
-	SubGraphStatement,
-	EdgeRhs,
-	AttributeContainer,
-	Assignment,
-	NormalPortDeclaration,
-	CompassPortDeclaration,
-	NodeId,
+	DirectedGraph = 41,
+	UndirectedGraph = 42,
+	NodeStatement = 43,
+	EdgeStatement = 44,
+	AttributeStatement = 45,
+	IdEqualsIdStatement = 46,
+	SubGraph = 47,
+	SubGraphStatement = 48,
+	EdgeRhs = 49,
+	AttributeContainer = 50,
+	Assignment = 51,
+	NormalPortDeclaration = 52,
+	CompassPortDeclaration = 53,
+	NodeId = 54,
 
-	Count, // Number of items in this enum
+	Count = 55, // Number of items in this enum
 
 	FirstNode = DirectedGraph,
 	CompassBegin = CompassNorthToken,

@@ -4,8 +4,8 @@ import type {
 	Range,
 	Color,
 } from "vscode-languageserver-types";
-import { SourceFile, ColorTable } from "../types.js";
-import { DocumentLike } from "../index.js";
+import type { SourceFile, ColorTable } from "../types.js";
+import type { DocumentLike } from "../index.js";
 import { syntaxNodeToRange } from "./util.js";
 import * as languageFacts from "./languageFacts.js";
 
@@ -63,7 +63,7 @@ function getColorFromName(name: string): ColorInformation["color"] | undefined {
 function getHexCodeColor(colorCode: string) {
 	const hexCode = colorCode.charAt(0) === "#" ? colorCode.substring(1) : colorCode;
 
-	const colorInt = parseInt(hexCode, 16);
+	const colorInt = Number.parseInt(hexCode, 16);
 	return {
 		red: ((colorInt >> 16) & 0xff) / 255.0,
 		green: ((colorInt >> 8) & 0xff) / 255.0,

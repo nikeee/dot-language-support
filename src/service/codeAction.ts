@@ -1,20 +1,20 @@
 import type * as lst from "vscode-languageserver-types";
 import {
-	DocumentLike,
-	SourceFile,
-	DiagnosticMessage,
+	type DocumentLike,
+	type SourceFile,
+	type DiagnosticMessage,
 	ErrorSource,
-	CheckErrorCode,
-	ParseErrorCode,
-	ScanErrorCode,
+	type CheckErrorCode,
+	type ParseErrorCode,
+	type ScanErrorCode,
 	CheckError,
 	SyntaxKind,
-	CommandApplication,
-	Graph,
+	type CommandApplication,
+	type Graph,
 	forEachChild,
 	isIdentifierNode,
-	SyntaxNode,
-	EdgeStatement,
+	type SyntaxNode,
+	type EdgeStatement,
 } from "../index.js";
 import { assertNever, getStart } from "./util.js";
 import {
@@ -33,7 +33,7 @@ import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOth
 import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
 import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
 import {
-	ExecutableCommand,
+	type ExecutableCommand,
 	getOppositeKind,
 	getOppositeEdgeOp,
 	getAllowedOp,

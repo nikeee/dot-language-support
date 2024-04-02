@@ -1,7 +1,7 @@
-import * as lst from "vscode-languageserver-types";
+import type * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction.js";
-import { ExecutableCommand } from "./common.js";
-import {
+import type { ExecutableCommand } from "./common.js";
+import type {
 	DocumentLike,
 	SourceFile,
 	CommandApplication,

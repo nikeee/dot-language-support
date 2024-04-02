@@ -1,15 +1,15 @@
 import * as lst from "vscode-languageserver-types";
 import {
-	SourceFile,
+	type SourceFile,
 	SyntaxNodeFlags,
 	SyntaxKind,
-	Assignment,
-	SymbolTable,
-	AttributeContainer,
+	type Assignment,
+	type SymbolTable,
+	type AttributeContainer,
 } from "../types.js";
 import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker.js";
 import { escapeIdentifierText } from "./util.js";
-import { isIdentifierNode, DocumentLike } from "../index.js";
+import { isIdentifierNode, type DocumentLike } from "../index.js";
 import * as languageFacts from "./languageFacts.js";
 
 // TODO: Rewrite pattern matching + completion

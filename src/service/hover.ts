@@ -1,19 +1,19 @@
 import type * as lst from "vscode-languageserver-types";
 import {
 	SyntaxKind,
-	Graph,
-	SubGraphStatement,
-	SyntaxNode,
-	Assignment,
-	SourceFile,
-	IdEqualsIdStatement,
-	SubGraph,
-	EdgeRhs,
-	EdgeStatement,
-	EdgeSourceOrTarget,
+	type Graph,
+	type SubGraphStatement,
+	type SyntaxNode,
+	type Assignment,
+	type SourceFile,
+	type IdEqualsIdStatement,
+	type SubGraph,
+	type EdgeRhs,
+	type EdgeStatement,
+	type EdgeSourceOrTarget,
 } from "../types.js";
 import { getIdentifierText, findNodeAtOffset } from "../checker.js";
-import { DocumentLike, NodeStatement } from "../index.js";
+import type { DocumentLike, NodeStatement } from "../index.js";
 import { isIdentifierNode } from "../parser.js";
 import { syntaxNodeToRange } from "./util.js";
 import { getEdgeStr } from "./command/common.js";
