@@ -80,24 +80,24 @@ export type ErrorCallback = (
 ) => void;
 
 export class DefaultScanner implements Scanner {
-	public end: number;
-	public pos: number;
-	public startPos: number;
-	public tokenPos: number;
-	public token: SyntaxKind;
-	public tokenValue: string | undefined;
-	public tokenFlags: TokenFlags;
-	public isUnterminated: boolean;
-	public text: string;
-	public onError: ErrorCallback | null;
+	end: number;
+	pos: number;
+	startPos: number;
+	tokenPos: number;
+	token: SyntaxKind;
+	tokenValue: string | undefined;
+	tokenFlags: TokenFlags;
+	isUnterminated: boolean;
+	text: string;
+	onError: ErrorCallback | null;
 
-	public setText(newText?: string, start = 0, length?: number): void {
+	setText(newText?: string, start = 0, length?: number): void {
 		this.text = newText || "";
 		this.end = length === undefined ? this.text.length : start + length;
 		this.#setTextPos(start || 0);
 	}
 
-	public setErrorCallback(cb: ErrorCallback | null) {
+	setErrorCallback(cb: ErrorCallback | null) {
 		this.onError = cb;
 	}
 
@@ -111,7 +111,7 @@ export class DefaultScanner implements Scanner {
 		this.tokenFlags = TokenFlags.None;
 	}
 
-	public scan(skipTrivia = true): SyntaxKind {
+	scan(skipTrivia = true): SyntaxKind {
 		this.startPos = this.pos;
 		this.tokenFlags = TokenFlags.None;
 		this.isUnterminated = false;
@@ -543,11 +543,11 @@ export class DefaultScanner implements Scanner {
 		return (this.token = SyntaxKind.TextIdentifier);
 	}
 
-	public lookAhead<T extends SyntaxKind>(callback: () => T): T {
+	lookAhead<T extends SyntaxKind>(callback: () => T): T {
 		return this.#speculationHelper(callback, /*isLookahead*/ true);
 	}
 
-	public tryScan<T extends SyntaxKind>(callback: () => T): T {
+	tryScan<T extends SyntaxKind>(callback: () => T): T {
 		return this.#speculationHelper(callback, /*isLookahead*/ false);
 	}
 

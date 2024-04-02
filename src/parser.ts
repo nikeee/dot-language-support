@@ -89,7 +89,7 @@ export class Parser {
 		return sourceText.split(/\r?\n/);
 	}
 
-	public parse(sourceText: string): SourceFile {
+	parse(sourceText: string): SourceFile {
 		this.sourceText = sourceText;
 		this.scanner.setText(this.sourceText);
 
