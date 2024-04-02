@@ -172,7 +172,11 @@ export class Parser {
 				result = this.createMissingNode<TextIdentifier>(SyntaxKind.TextIdentifier);
 				break;
 		}
-		escapedIdTexts.forEach(i => this.registerIdentifier(i));
+
+		for (const i of escapedIdTexts) {
+			this.registerIdentifier(i);
+		}
+
 		return result;
 	}
 

@@ -240,7 +240,9 @@ function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeR
 			: undefined;
 
 	if (wrongEdges && wrongEdges.length > 0) {
-		wrongEdges.forEach(e => (e.operation.flags |= SyntaxNodeFlags.ContainsErrors));
+		for (const edge of wrongEdges) {
+			edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+		}
 		return wrongEdges;
 	}
 	return undefined;
@@ -259,7 +261,9 @@ function createEdgeViolationDiagnostics(
 	const category = DiagnosticCategory.Error;
 
 	// Add flags in side-effected forEach instead of map() below
-	violators.forEach(edge => (edge.operation.flags |= SyntaxNodeFlags.ContainsErrors));
+	for (const edge of violators) {
+		edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+	}
 
 	return violators.map(edge => {
 		const start = getStart(file, edge.operation);
