@@ -3,7 +3,7 @@ export function createMapFromTemplate<T>(template: Record<string, T>): Map<strin
 	// Copies keys/values from template. Note that for..in will not throw if
 	// template is undefined, and instead will just exit the loop.
 	for (const key in template) {
-		if (template.hasOwnProperty(key)) {
+		if (key in template) {
 			map.set(key, template[key]);
 		}
 	}

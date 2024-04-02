@@ -42,7 +42,7 @@ export function create(
 export function execute(
 	doc: DocumentLike,
 	_sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): CommandApplication | undefined {
 	if (!isChangeAllOtherEdgeOpsAndFixGraphCommand(cmd)) return undefined;
 
@@ -69,7 +69,7 @@ export function execute(
 }
 
 function isChangeAllOtherEdgeOpsAndFixGraphCommand(
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): cmd is ChangeAllOtherEdgeOpsAndFixGraphCommand {
 	return (
 		cmd.command === CommandIds.ConvertGraphType && !!cmd.arguments && cmd.arguments.length === 4

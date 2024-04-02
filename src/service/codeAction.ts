@@ -320,7 +320,7 @@ export const enum CommandIds {
 type CommandHandler = (
 	doc: DocumentLike,
 	sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ) => CommandApplication | undefined;
 
 interface CommandHandlers {
@@ -341,7 +341,7 @@ export function getAvailableCommands() {
 export function executeCommand(
 	doc: DocumentLike,
 	sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): CommandApplication | undefined {
 	const handler = commandHandlers[cmd.command];
 	return handler === undefined ? undefined : handler(doc, sourceFile, cmd);

@@ -33,7 +33,7 @@ export function create(statements: EdgeStatement[], below: boolean): Consolidate
 export function execute(
 	doc: DocumentLike,
 	sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): CommandApplication | undefined {
 	if (!isConsolidateDescendantsCommand(cmd)) return undefined; // Invalid arguments
 
@@ -118,7 +118,7 @@ export function execute(
 }
 
 function isConsolidateDescendantsCommand(
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): cmd is ConsolidateDescendantsCommand {
 	return (
 		cmd.command === CommandIds.ConsolidateDescendants &&

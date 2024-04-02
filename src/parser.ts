@@ -78,7 +78,8 @@ export class Parser {
 	}
 
 	private nextToken(): SyntaxKind {
-		return (this.currentToken = this.scanner.scan(true));
+		this.currentToken = this.scanner.scan(true);
+		return this.currentToken;
 	}
 	private token(): SyntaxKind {
 		return this.currentToken;

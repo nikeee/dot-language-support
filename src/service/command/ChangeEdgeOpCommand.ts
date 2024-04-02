@@ -27,7 +27,7 @@ export function create(
 export function execute(
 	doc: DocumentLike,
 	_sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): CommandApplication | undefined {
 	if (!isChangeEdgeOpCommand(cmd)) return undefined; // Invalid arguments
 
@@ -46,6 +46,6 @@ export function execute(
 	};
 }
 
-function isChangeEdgeOpCommand(cmd: ExecutableCommand): cmd is ChangeEdgeOpCommand {
+function isChangeEdgeOpCommand(cmd: ExecutableCommand<unknown[]>): cmd is ChangeEdgeOpCommand {
 	return cmd.command === CommandIds.ChangeEdgeOp && !!cmd.arguments && cmd.arguments.length === 3;
 }

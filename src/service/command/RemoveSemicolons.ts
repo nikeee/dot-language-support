@@ -20,7 +20,7 @@ export function create(): RemoveSemicolonsCommand {
 export function execute(
 	doc: DocumentLike,
 	sourceFile: SourceFile,
-	cmd: ExecutableCommand,
+	cmd: ExecutableCommand<unknown[]>,
 ): CommandApplication | undefined {
 	if (!isRemoveSemicolonsCommand(cmd)) return undefined;
 
@@ -45,7 +45,9 @@ export function execute(
 	};
 }
 
-function isRemoveSemicolonsCommand(cmd: ExecutableCommand): cmd is RemoveSemicolonsCommand {
+function isRemoveSemicolonsCommand(
+	cmd: ExecutableCommand<unknown[]>,
+): cmd is RemoveSemicolonsCommand {
 	return (
 		cmd.command === CommandIds.RemoveSemicolons &&
 		(!cmd.arguments || cmd.arguments.length === 0 || cmd.arguments.every(e => e === undefined))

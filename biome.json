@@ -17,7 +17,11 @@
 		"rules": {
 			"recommended": true,
 			"suspicious": {
-				"noConstEnum": "off"
+				"noConstEnum": "off",
+				"noDebugger": "off"
+			},
+			"correctness": {
+				"noVoidTypeReturn": "off"
 			}
 		}
 	},
@@ -25,5 +29,22 @@
 		"formatter": {
 			"arrowParentheses": "asNeeded"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"include": [
+				"src/scanner.ts"
+			],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noAssignInExpressions": "off"
+					},
+					"style": {
+						"noParameterAssign": "off"
+					}
+				}
+			}
+		}
+	]
 }

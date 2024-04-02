@@ -230,9 +230,11 @@ export class DefaultScanner implements Scanner {
 
 					switch (nextChar) {
 						case CharacterCodes.minus: // --
-							return (this.pos += 2), (this.token = SyntaxKind.UndirectedEdgeOp);
+							this.pos += 2;
+							return (this.token = SyntaxKind.UndirectedEdgeOp);
 						case CharacterCodes.greaterThan: // ->
-							return (this.pos += 2), (this.token = SyntaxKind.DirectedEdgeOp);
+							this.pos += 2;
+							return (this.token = SyntaxKind.DirectedEdgeOp);
 
 						case CharacterCodes._0:
 						case CharacterCodes._1:
@@ -247,13 +249,14 @@ export class DefaultScanner implements Scanner {
 						case CharacterCodes.dot:
 							this.tokenValue = this.scanNumber();
 							return (this.token = SyntaxKind.NumericIdentifier);
-						default:
+						default: {
 							const chr = this.text.charAt(this.pos + 1);
 							this.error(
 								`Unexpected "${chr}". Did you mean to define an edge? Depending on the type of graph you are defining, use "->" or "--".`,
 								ScanError.ExpectationFailed,
 							);
 							break;
+						}
 					}
 					this.pos++;
 					break;
@@ -424,10 +427,9 @@ export class DefaultScanner implements Scanner {
 				if (subTagsLevel === 0) {
 					result += this.text.substring(start, this.pos);
 					break;
-				} else {
-					--subTagsLevel;
-					continue;
 				}
+				--subTagsLevel;
+				continue;
 			}
 			this.pos++;
 		}
@@ -460,7 +462,8 @@ export class DefaultScanner implements Scanner {
 						result += this.text.substring(start, this.pos);
 						this.pos++;
 						break;
-					} else if (isLineBreak(ch)) {
+					}
+					if (isLineBreak(ch)) {
 						result += this.text.substring(start, this.pos);
 						this.tokenFlags |= TokenFlags.Unterminated;
 						this.isUnterminated = true;

@@ -11,9 +11,9 @@ export interface Offset {
 	end: number;
 }
 
-export type ExecutableCommand = {
+export type ExecutableCommand<TArgs> = {
 	command: CommandIds;
-	arguments?: any[];
+	arguments?: TArgs;
 };
 
 export type EdgeOpStr = "--" | "->";
