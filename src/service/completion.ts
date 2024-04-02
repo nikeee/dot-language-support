@@ -66,7 +66,7 @@ export function getCompletions(
 
 	if (
 		node.kind === SyntaxKind.AttributeContainer ||
-		(node.kind == SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
+		(node.kind === SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}

@@ -95,7 +95,7 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 	const invalidShapes = checkShapeLabelValues(root);
 
 	const invalidEdgeDiagnostics =
-		invalidEdgeRhses == undefined || invalidEdgeRhses.length === 0
+		invalidEdgeRhses === undefined || invalidEdgeRhses.length === 0
 			? []
 			: createEdgeViolationDiagnostics(file, expectedEdgeOp, invalidEdgeRhses);
 

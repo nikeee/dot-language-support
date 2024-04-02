@@ -319,7 +319,7 @@ export class Parser {
 				node.subject = this.parseTokenNode();
 
 				// node.attributes is not optional because we have to have an opening bracket
-				if (this.token() == SyntaxKind.OpenBracketToken) {
+				if (this.token() === SyntaxKind.OpenBracketToken) {
 					node.attributes = this.parseList(ParsingContext.AttributeContainerList, () =>
 						this.parseAttributeContainer(),
 					);
@@ -372,7 +372,7 @@ export class Parser {
 		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		this.nextToken();
-		return this.token() == SyntaxKind.EqualsToken;
+		return this.token() === SyntaxKind.EqualsToken;
 	}
 
 	private parseIdEqualsIdStatement(): IdEqualsIdStatement {
