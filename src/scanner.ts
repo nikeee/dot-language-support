@@ -94,14 +94,14 @@ export class DefaultScanner implements Scanner {
 	public setText(newText?: string, start = 0, length?: number): void {
 		this.text = newText || "";
 		this.end = length === undefined ? this.text.length : start + length;
-		this.setTextPos(start || 0);
+		this.#setTextPos(start || 0);
 	}
 
 	public setErrorCallback(cb: ErrorCallback | null) {
 		this.onError = cb;
 	}
 
-	private setTextPos(textPos: number) {
+	#setTextPos(textPos: number) {
 		console.assert(textPos >= 0);
 		this.pos = textPos;
 		this.startPos = textPos;
@@ -153,13 +153,13 @@ export class DefaultScanner implements Scanner {
 					}
 					while (
 						this.pos < this.end &&
-						this.isWhiteSpaceSingleLine(this.text.charCodeAt(this.pos))
+						this.#isWhiteSpaceSingleLine(this.text.charCodeAt(this.pos))
 					)
 						this.pos++;
 					return (this.token = SyntaxKind.WhitespaceTrivia);
 
 				case CharacterCodes.hash: {
-					const content = this.scanHashCommentTrivia(skipTrivia);
+					const content = this.#scanHashCommentTrivia(skipTrivia);
 
 					// Skip rest of line
 					if (skipTrivia) continue;
@@ -172,14 +172,15 @@ export class DefaultScanner implements Scanner {
 
 						switch (nextChar) {
 							case CharacterCodes.slash: {
-								const commentContent = this.scanSingleLineCommentTrivia(skipTrivia);
+								const commentContent =
+									this.#scanSingleLineCommentTrivia(skipTrivia);
 								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
 								return (this.token = SyntaxKind.SingleLineCommentTrivia);
 							}
 							case CharacterCodes.asterisk: {
-								const commentContent = this.scanMultiLineCommentTrivia(skipTrivia);
+								const commentContent = this.#scanMultiLineCommentTrivia(skipTrivia);
 								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
@@ -187,7 +188,7 @@ export class DefaultScanner implements Scanner {
 							}
 						}
 					}
-					this.error(
+					this.#error(
 						'Unexpected "/". Did you mean to start a comment like "/*" or "//"? If you wanted to use it as an identifier, put it in double quotes.',
 						ScanError.ExpectationFailed,
 					);
@@ -223,7 +224,7 @@ export class DefaultScanner implements Scanner {
 				case CharacterCodes._8:
 				case CharacterCodes._9:
 				case CharacterCodes.dot:
-					this.tokenValue = this.scanNumber();
+					this.tokenValue = this.#scanNumber();
 					return (this.token = SyntaxKind.NumericIdentifier);
 				case CharacterCodes.minus: {
 					const nextChar = this.text.charCodeAt(this.pos + 1);
@@ -247,11 +248,11 @@ export class DefaultScanner implements Scanner {
 						case CharacterCodes._8:
 						case CharacterCodes._9:
 						case CharacterCodes.dot:
-							this.tokenValue = this.scanNumber();
+							this.tokenValue = this.#scanNumber();
 							return (this.token = SyntaxKind.NumericIdentifier);
 						default: {
 							const chr = this.text.charAt(this.pos + 1);
-							this.error(
+							this.#error(
 								`Unexpected "${chr}". Did you mean to define an edge? Depending on the type of graph you are defining, use "->" or "--".`,
 								ScanError.ExpectationFailed,
 							);
@@ -277,10 +278,10 @@ export class DefaultScanner implements Scanner {
 					this.pos++;
 					return (this.token = SyntaxKind.CommaToken);
 				case CharacterCodes.lessThan:
-					this.tokenValue = this.scanHtml();
+					this.tokenValue = this.#scanHtml();
 					return (this.token = SyntaxKind.HtmlIdentifier);
 				case CharacterCodes.doubleQuote:
-					this.tokenValue = this.scanString();
+					this.tokenValue = this.#scanString();
 					return (this.token = SyntaxKind.StringLiteral);
 				default: {
 					if (isIdentifierStart(ch)) {
@@ -293,15 +294,15 @@ export class DefaultScanner implements Scanner {
 
 						const value = this.text.substring(this.tokenPos, this.pos);
 						this.tokenValue = value;
-						return (this.token = this.getIdentifierToken(value));
+						return (this.token = this.#getIdentifierToken(value));
 					}
-					if (this.isWhiteSpaceSingleLine(ch)) {
+					if (this.#isWhiteSpaceSingleLine(ch)) {
 						this.pos++;
 						continue;
 					}
 
 					const chr = this.text.charAt(this.pos);
-					this.error(
+					this.#error(
 						`Unexpected "${chr}". Did you mean to start an identifier? Node names cannot start with "${chr}".`,
 						ScanError.ExpectationFailed,
 					);
@@ -314,15 +315,15 @@ export class DefaultScanner implements Scanner {
 		}
 	}
 
-	private error(message: string, sub: ScanError, category?: DiagnosticCategory): void;
-	private error(
+	#error(message: string, sub: ScanError, category?: DiagnosticCategory): void;
+	#error(
 		message: string,
 		sub: ScanError,
 		errPos: number,
 		length: number,
 		category?: DiagnosticCategory,
 	): void;
-	private error(
+	#error(
 		message: string,
 		sub: ScanError,
 		category: DiagnosticCategory = DiagnosticCategory.Error,
@@ -339,7 +340,7 @@ export class DefaultScanner implements Scanner {
 		}
 	}
 
-	private isWhiteSpaceSingleLine(ch: number) {
+	#isWhiteSpaceSingleLine(ch: number) {
 		// Note: nextLine is in the Zs space, and should be considered to be a whitespace.
 		// It is explicitly not a line-break as it isn't in the exact set specified by EcmaScript.
 		return (
@@ -358,7 +359,7 @@ export class DefaultScanner implements Scanner {
 		);
 	}
 
-	private isAtMultiLineCommentEnd(pos: number): boolean {
+	#isAtMultiLineCommentEnd(pos: number): boolean {
 		return (
 			pos + 1 < this.end &&
 			this.text.charCodeAt(pos) === CharacterCodes.asterisk &&
@@ -366,7 +367,7 @@ export class DefaultScanner implements Scanner {
 		);
 	}
 
-	private scanHashCommentTrivia(skip: boolean): string | undefined {
+	#scanHashCommentTrivia(skip: boolean): string | undefined {
 		++this.pos;
 		const start = this.pos;
 		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos))) this.pos++;
@@ -376,7 +377,7 @@ export class DefaultScanner implements Scanner {
 		return skip ? undefined : this.text.substring(start, this.pos);
 	}
 
-	private scanSingleLineCommentTrivia(skip: boolean): string | undefined {
+	#scanSingleLineCommentTrivia(skip: boolean): string | undefined {
 		this.pos += 2;
 		const start = this.pos;
 		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos))) this.pos++;
@@ -386,20 +387,20 @@ export class DefaultScanner implements Scanner {
 		return skip ? undefined : this.text.substring(start, this.pos);
 	}
 
-	private scanMultiLineCommentTrivia(skip: boolean): string | undefined {
+	#scanMultiLineCommentTrivia(skip: boolean): string | undefined {
 		this.pos += 2;
 		const start = this.pos;
-		while (this.pos < this.end && !this.isAtMultiLineCommentEnd(this.pos)) this.pos++;
+		while (this.pos < this.end && !this.#isAtMultiLineCommentEnd(this.pos)) this.pos++;
 
 		const commentEnd = this.pos;
-		if (this.isAtMultiLineCommentEnd(this.pos)) {
+		if (this.#isAtMultiLineCommentEnd(this.pos)) {
 			this.pos += 2;
 		}
 
 		return skip ? undefined : this.text.substring(start, commentEnd);
 	}
 
-	private scanHtml(): string {
+	#scanHtml(): string {
 		const htmlOpen = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
@@ -411,7 +412,7 @@ export class DefaultScanner implements Scanner {
 				result += this.text.substring(start, this.pos);
 				this.tokenFlags |= TokenFlags.Unterminated;
 				this.isUnterminated = true;
-				this.error("Unterminated html literal", ScanError.Unterminated);
+				this.#error("Unterminated html literal", ScanError.Unterminated);
 				break;
 			}
 			const ch = this.text.charCodeAt(this.pos);
@@ -436,7 +437,7 @@ export class DefaultScanner implements Scanner {
 		return result;
 	}
 
-	private scanString(allowEscapes = true): string {
+	#scanString(allowEscapes = true): string {
 		const quote = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
@@ -447,7 +448,7 @@ export class DefaultScanner implements Scanner {
 				result += this.text.substring(start, this.pos);
 				this.tokenFlags |= TokenFlags.Unterminated;
 				this.isUnterminated = true;
-				this.error("Unterminated string", ScanError.Unterminated);
+				this.#error("Unterminated string", ScanError.Unterminated);
 				break;
 			}
 			const ch = this.text.charCodeAt(this.pos);
@@ -467,7 +468,7 @@ export class DefaultScanner implements Scanner {
 						result += this.text.substring(start, this.pos);
 						this.tokenFlags |= TokenFlags.Unterminated;
 						this.isUnterminated = true;
-						this.error("Unterminated string", ScanError.Unterminated);
+						this.#error("Unterminated string", ScanError.Unterminated);
 						break;
 					}
 				}
@@ -479,7 +480,7 @@ export class DefaultScanner implements Scanner {
 		return removedEscapes;
 	}
 
-	private scanNumber(): string {
+	#scanNumber(): string {
 		let result = "";
 		let hadDot = false;
 		let hadMinus = false;
@@ -522,7 +523,7 @@ export class DefaultScanner implements Scanner {
 		}
 	}
 
-	private getIdentifierToken(tokenValue: string): SyntaxKind {
+	#getIdentifierToken(tokenValue: string): SyntaxKind {
 		// Reserved words are between 4 and 8 characters long and are case insensitive
 		const len = tokenValue.length;
 		if (len >= 4 && len <= 8) {
@@ -543,14 +544,14 @@ export class DefaultScanner implements Scanner {
 	}
 
 	public lookAhead<T extends SyntaxKind>(callback: () => T): T {
-		return this.speculationHelper(callback, /*isLookahead*/ true);
+		return this.#speculationHelper(callback, /*isLookahead*/ true);
 	}
 
 	public tryScan<T extends SyntaxKind>(callback: () => T): T {
-		return this.speculationHelper(callback, /*isLookahead*/ false);
+		return this.#speculationHelper(callback, /*isLookahead*/ false);
 	}
 
-	private speculationHelper<T>(callback: () => T, isLookahead: boolean): T {
+	#speculationHelper<T>(callback: () => T, isLookahead: boolean): T {
 		const savePos = this.pos;
 		const saveStartPos = this.startPos;
 		const saveTokenPos = this.tokenPos;
