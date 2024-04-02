@@ -8,6 +8,7 @@
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "scripts": {
+    "ci": "biome ci ./src",
     "test": "tsc --noEmit && vitest run",
     "test:coverage": "vitest run --coverage",
     "clean": "rimraf lib",
@@ -33,6 +34,7 @@
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.6.3",
     "@vitest/coverage-v8": "^1.2.2",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
