@@ -63,7 +63,6 @@ export const shapes = Object.freeze([
 	"lpromoter",
 ]);
 
-
 const edgeAttributes = Object.freeze([
 	"URL",
 	"arrowhead",
@@ -181,7 +180,7 @@ const nodeAttributes = Object.freeze([
 	"xlabel",
 	"xlp",
 	"z",
-])
+]);
 
 const graphAttributes = Object.freeze([
 	"Damping",
@@ -316,12 +315,9 @@ const clusterAttributes = Object.freeze([
 	"tooltip",
 ]);
 
-export const attributes = Array.from(new Set([
-	...nodeAttributes,
-	...edgeAttributes,
-	...graphAttributes,
-	...clusterAttributes,
-])).sort();
+export const attributes = Array.from(
+	new Set([...nodeAttributes, ...edgeAttributes, ...graphAttributes, ...clusterAttributes]),
+).sort();
 
 /*
 export function getDocsUrl(attribute: string) {

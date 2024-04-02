@@ -4,18 +4,21 @@ import { isIdentifierNode, type DocumentLike } from "../index.js";
 import { findNodeAtOffset } from "../checker.js";
 import { syntaxNodesToRanges, syntaxNodeToRange } from "./util.js";
 
-export function findReferences(doc: DocumentLike, sourceFile: SourceFile, position: Position, context: ReferenceContext): Location[] {
+export function findReferences(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	position: Position,
+	context: ReferenceContext,
+): Location[] {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";
 
 	const g = sourceFile.graph;
-	if (!g)
-		return [];
+	if (!g) return [];
 
 	const offset = doc.offsetAt(position);
 
 	const node = findNodeAtOffset(g, offset);
-	if (!node)
-		return [];
+	if (!node) return [];
 
 	if (isIdentifierNode(node)) {
 		const nodeSymbol = node.symbol;
@@ -31,10 +34,7 @@ export function findReferences(doc: DocumentLike, sourceFile: SourceFile, positi
 			if (nodeSymbol.firstMention === node) {
 				symbolRefs = refs;
 			} else {
-				symbolRefs = [
-					nodeSymbol.firstMention,
-					...refs.filter(r => r !== node),
-				];
+				symbolRefs = [nodeSymbol.firstMention, ...refs.filter(r => r !== node)];
 			}
 		}
 
@@ -52,19 +52,21 @@ export function findReferences(doc: DocumentLike, sourceFile: SourceFile, positi
 	return [];
 }
 
-export function findDefinition(doc: DocumentLike, sourceFile: SourceFile, position: Position): Location | undefined {
+export function findDefinition(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	position: Position,
+): Location | undefined {
 	if (!sourceFile.symbols) throw "sourceFile is not bound";
 
 	// TODO: If it is not a node identifier, there is no "definition", since it must be an assignment
 
 	const g = sourceFile.graph;
-	if (!g)
-		return undefined;
+	if (!g) return undefined;
 
 	const offset = doc.offsetAt(position);
 	const node = findNodeAtOffset(g, offset);
-	if (!node)
-		return undefined;
+	if (!node) return undefined;
 
 	if (isIdentifierNode(node)) {
 		const nodeSymbol = node.symbol;
@@ -75,8 +77,7 @@ export function findDefinition(doc: DocumentLike, sourceFile: SourceFile, positi
 		// let symbolRefs: SyntaxNode[];
 
 		const firstMention = nodeSymbol.firstMention;
-		if (!firstMention)
-			return undefined;
+		if (!firstMention) return undefined;
 
 		// make range values from SyntaxNodes
 		const range = syntaxNodeToRange(doc, sourceFile, firstMention);

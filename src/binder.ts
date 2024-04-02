@@ -12,7 +12,8 @@ import {
 	QuotedTextIdentifier,
 	EdgeRhs,
 	AttributeContainer,
-	Assignment, NormalPortDeclaration,
+	Assignment,
+	NormalPortDeclaration,
 	CompassPortDeclaration,
 	NodeId,
 	SymbolTable,
@@ -38,15 +39,13 @@ export function bindSourceFile(file: SourceFile) {
 }
 
 function createBinder(): Binder {
-
 	let parent: SyntaxNode | undefined = undefined;
 	let symbolTable: SymbolTable | undefined = undefined;
 	let colorTable: ColorTable | undefined = undefined;
 	let graphContext: GraphContext = GraphContext.None;
 
 	function bind(node: SyntaxNode): void {
-		if (!node)
-			return;
+		if (!node) return;
 
 		const saveParent = parent;
 		const saveContext = graphContext;
@@ -94,13 +93,11 @@ function createBinder(): Binder {
 			case SyntaxKind.NodeId:
 				return bindNodeId(node as NodeId);
 			default:
-				if (node.kind >= SyntaxKind.FirstNode)
-					throw "TODO";
+				if (node.kind >= SyntaxKind.FirstNode) throw "TODO";
 		}
 	}
 
 	function bindGraph(node: Graph) {
-
 		if (node.strict) {
 			graphContext |= GraphContext.Strict;
 		}
@@ -113,7 +110,10 @@ function createBinder(): Binder {
 				break;
 		}
 
-		if (node.id) { ensureGlobalSymbol(node.id); bind(node.id); };
+		if (node.id) {
+			ensureGlobalSymbol(node.id);
+			bind(node.id);
+		}
 		if (node.strict) bind(node.strict);
 		bindChildren(node.statements);
 	}
@@ -141,7 +141,9 @@ function createBinder(): Binder {
 	}
 
 	function bindSubGraph(node: SubGraph) {
-		if (node.id) { /* ensureSymbol(node.id); */ bind(node.id); };
+		if (node.id) {
+			/* ensureSymbol(node.id); */ bind(node.id);
+		}
 		bindChildren(node.statements);
 	}
 
@@ -190,10 +192,9 @@ function createBinder(): Binder {
 	}
 
 	function bindAssignment(node: Assignment) {
-
 		const attrContainer = node.parent as AttributeContainer;
 		console.assert(!!attrContainer);
-		const superParentStatement = attrContainer.parent as Statement
+		const superParentStatement = attrContainer.parent as Statement;
 		console.assert(!!superParentStatement);
 
 		bind(node.leftId);
@@ -216,8 +217,7 @@ function createBinder(): Binder {
 				break;
 		}
 
-		if (carrierIdentifier)
-			ensureMemberSymbol(node.leftId, carrierIdentifier);
+		if (carrierIdentifier) ensureMemberSymbol(node.leftId, carrierIdentifier);
 
 		bind(node.rightId); // TODO: What to do with rightId? Also add it to the symbol table? Or create a value table?
 
@@ -254,8 +254,7 @@ function createBinder(): Binder {
 	}
 
 	function bindChildren(nodes: SyntaxNodeArray<SyntaxNode>): void {
-		for (const n of nodes)
-			bind(n);
+		for (const n of nodes) bind(n);
 	}
 
 	function createSymbolTable(): SymbolTable {
@@ -274,8 +273,7 @@ function createBinder(): Binder {
 			if (carrierSymbol === undefined) throw "carrierSymbol is undefined";
 
 			let symbols = carrierSymbol.members;
-			if (symbols === undefined)
-				carrierSymbol.members = symbols = createSymbolTable();
+			if (symbols === undefined) carrierSymbol.members = symbols = createSymbolTable();
 
 			ensureSymbolOnTable(name, node, symbols);
 			return;
@@ -300,17 +298,14 @@ function createBinder(): Binder {
 	}
 
 	function ensureSymbolOnTable(name: string, node: SyntaxNode, symbols: SymbolTable) {
-		if (!name)
-			return;
+		if (!name) return;
 		let sym = symbols.get(name);
 		if (sym === undefined) {
 			sym = createSymbol(name, node);
 			symbols.set(name, sym);
 		} else {
-			if (!sym.references)
-				sym.references = [node];
-			else
-				sym.references.push(node);
+			if (!sym.references) sym.references = [node];
+			else sym.references.push(node);
 		}
 		node.symbol = sym;
 	}
@@ -360,12 +355,9 @@ function createBinder(): Binder {
 			symbolTable = createSymbolTable();
 			colorTable = createColorTable();
 			const { graph } = file;
-			if (graph)
-				bind(graph);
+			if (graph) bind(graph);
 			file.symbols = symbolTable;
 			file.colors = colorTable;
 		},
 	};
 }
-
-

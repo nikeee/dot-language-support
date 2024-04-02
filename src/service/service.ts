@@ -29,17 +29,49 @@ export interface LanguageService {
 	parseDocument(doc: TextDocument | string): SourceFile;
 	validateDocument(doc: DocumentLike, sourceFile: SourceFile): lst.Diagnostic[];
 	hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Hover | undefined;
-	findReferences(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, context: lst.ReferenceContext): lst.Location[];
-	findDefinition(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Location | undefined;
-	renameSymbol(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position, newName: string): lst.WorkspaceEdit | undefined;
+	findReferences(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		position: lst.Position,
+		context: lst.ReferenceContext,
+	): lst.Location[];
+	findDefinition(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		position: lst.Position,
+	): lst.Location | undefined;
+	renameSymbol(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		position: lst.Position,
+		newName: string,
+	): lst.WorkspaceEdit | undefined;
 
-	getCompletions(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.CompletionItem[];
+	getCompletions(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		position: lst.Position,
+	): lst.CompletionItem[];
 
 	getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): ColorInformation[] | undefined;
-	getColorRepresentations(doc: DocumentLike, sourceFile: SourceFile, color: Color, range: lst.Range): ColorPresentation[] | undefined;
+	getColorRepresentations(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		color: Color,
+		range: lst.Range,
+	): ColorPresentation[] | undefined;
 
-	getCodeActions(doc: DocumentLike, sourceFile: SourceFile, range: lst.Range, context: lst.CodeActionContext): lst.Command[] | undefined;
-	executeCommand(doc: DocumentLike, sourceFile: SourceFile, command: Omit<lst.Command, "title">): CommandApplication | undefined;
+	getCodeActions(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		range: lst.Range,
+		context: lst.CodeActionContext,
+	): lst.Command[] | undefined;
+	executeCommand(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		command: Omit<lst.Command, "title">,
+	): CommandApplication | undefined;
 	getAvailableCommands(): string[];
 
 	// TODO: Prettier API

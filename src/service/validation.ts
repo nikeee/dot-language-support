@@ -18,8 +18,7 @@ function convertDiagnostic(document: DocumentLike, source: DiagnosticMessage): l
 
 export function validateDocument(doc: DocumentLike, sourceFile: SourceFile): lst.Diagnostic[] {
 	const diagnostics = sourceFile.diagnostics;
-	if (!diagnostics || diagnostics.length <= 0)
-		return [];
+	if (!diagnostics || diagnostics.length <= 0) return [];
 
 	return diagnostics.map(d => convertDiagnostic(doc, d));
 }

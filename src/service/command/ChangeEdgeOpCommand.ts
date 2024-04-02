@@ -8,7 +8,12 @@ export interface ChangeEdgeOpCommand extends lst.Command {
 	arguments: [number, number, EdgeOpStr];
 }
 
-export function create(startOffset: number, endOffset: number, changeTo: EdgeType, changeFrom: EdgeType): ChangeEdgeOpCommand {
+export function create(
+	startOffset: number,
+	endOffset: number,
+	changeTo: EdgeType,
+	changeFrom: EdgeType,
+): ChangeEdgeOpCommand {
 	const from = getEdgeStr(changeFrom);
 	const to = getEdgeStr(changeTo);
 
@@ -19,9 +24,12 @@ export function create(startOffset: number, endOffset: number, changeTo: EdgeTyp
 	};
 }
 
-export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
-	if (!isChangeEdgeOpCommand(cmd))
-		return undefined; // Invalid arguments
+export function execute(
+	doc: DocumentLike,
+	_sourceFile: SourceFile,
+	cmd: ExecutableCommand,
+): CommandApplication | undefined {
+	if (!isChangeEdgeOpCommand(cmd)) return undefined; // Invalid arguments
 
 	const [startOffset, endOffset, changeTo] = cmd.arguments;
 
@@ -32,11 +40,9 @@ export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: Executa
 		label: `Change of invalid edge to "${changeTo}"'"`,
 		edit: {
 			changes: {
-				[doc.uri]: [
-					lst.TextEdit.replace(lst.Range.create(startPos, endPos), changeTo),
-				],
-			}
-		}
+				[doc.uri]: [lst.TextEdit.replace(lst.Range.create(startPos, endPos), changeTo)],
+			},
+		},
 	};
 }
 

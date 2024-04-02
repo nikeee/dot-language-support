@@ -18,7 +18,7 @@ function main() {
 	checkSourceFile(sf);
 	const doc = TextDocument.create("inmemory://model.json", "DOT", 0, text);
 
-/*
+	/*
 	const h = hover(doc, sf, doc.positionAt(15));
 	console.dir(h);
 */
@@ -28,7 +28,6 @@ function main() {
 	const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 	console.dir(completions);
-
 }
 
 main();

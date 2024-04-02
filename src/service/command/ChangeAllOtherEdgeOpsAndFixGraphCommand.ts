@@ -1,6 +1,16 @@
 import * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction.js";
-import { GraphTypeStr, Offset, EdgeOpStr, createChangeToEdit, ExecutableCommand, getEdgeStr, EdgeType, GraphType, getGraphKeywordStr } from "./common.js";
+import {
+	GraphTypeStr,
+	Offset,
+	EdgeOpStr,
+	createChangeToEdit,
+	ExecutableCommand,
+	getEdgeStr,
+	EdgeType,
+	GraphType,
+	getGraphKeywordStr,
+} from "./common.js";
 import { DocumentLike, SourceFile, CommandApplication } from "../../index.js";
 
 export interface ChangeAllOtherEdgeOpsAndFixGraphCommand extends lst.Command {
@@ -8,12 +18,18 @@ export interface ChangeAllOtherEdgeOpsAndFixGraphCommand extends lst.Command {
 	arguments: [Offset[], EdgeOpStr, Offset, GraphTypeStr];
 }
 
-export function create(edgeOffsets: Offset[], changeEdgesTo: EdgeType, graphOffset: Offset, changeFromGraph: GraphType, changeGraphTo: GraphType): ChangeAllOtherEdgeOpsAndFixGraphCommand {
-
+export function create(
+	edgeOffsets: Offset[],
+	changeEdgesTo: EdgeType,
+	graphOffset: Offset,
+	changeFromGraph: GraphType,
+	changeGraphTo: GraphType,
+): ChangeAllOtherEdgeOpsAndFixGraphCommand {
 	const toGraph = getGraphKeywordStr(changeGraphTo);
-	const title = changeGraphTo === changeFromGraph
-		? `Fix all edges to match ${toGraph}`
-		: `Convert ${getGraphKeywordStr(changeFromGraph)} to ${toGraph}`;
+	const title =
+		changeGraphTo === changeFromGraph
+			? `Fix all edges to match ${toGraph}`
+			: `Convert ${getGraphKeywordStr(changeFromGraph)} to ${toGraph}`;
 
 	const edgeStr = getEdgeStr(changeEdgesTo);
 	return {
@@ -23,9 +39,12 @@ export function create(edgeOffsets: Offset[], changeEdgesTo: EdgeType, graphOffs
 	};
 }
 
-export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
-	if (!isChangeAllOtherEdgeOpsAndFixGraphCommand(cmd))
-		return undefined;
+export function execute(
+	doc: DocumentLike,
+	_sourceFile: SourceFile,
+	cmd: ExecutableCommand,
+): CommandApplication | undefined {
+	if (!isChangeAllOtherEdgeOpsAndFixGraphCommand(cmd)) return undefined;
 
 	const [edgeOffsets, changeEdgeTo, graphOffset, changeGraphTo] = cmd.arguments;
 
@@ -44,11 +63,15 @@ export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: Executa
 		edit: {
 			changes: {
 				[doc.uri]: edits,
-			}
-		}
+			},
+		},
 	};
 }
 
-function isChangeAllOtherEdgeOpsAndFixGraphCommand(cmd: ExecutableCommand): cmd is ChangeAllOtherEdgeOpsAndFixGraphCommand {
-	return cmd.command === CommandIds.ConvertGraphType && !!cmd.arguments && cmd.arguments.length === 4;
+function isChangeAllOtherEdgeOpsAndFixGraphCommand(
+	cmd: ExecutableCommand,
+): cmd is ChangeAllOtherEdgeOpsAndFixGraphCommand {
+	return (
+		cmd.command === CommandIds.ConvertGraphType && !!cmd.arguments && cmd.arguments.length === 4
+	);
 }

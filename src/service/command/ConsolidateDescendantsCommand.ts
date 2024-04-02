@@ -1,7 +1,14 @@
 import * as lst from "vscode-languageserver-types";
 import { CommandIds } from "../codeAction.js";
 import { ExecutableCommand } from "./common.js";
-import { DocumentLike, SourceFile, CommandApplication, EdgeStatement, NodeId, SyntaxNode } from "../../index.js";
+import {
+	DocumentLike,
+	SourceFile,
+	CommandApplication,
+	EdgeStatement,
+	NodeId,
+	SyntaxNode,
+} from "../../index.js";
 import { getIdentifierText, findNodeAtOffset } from "../../checker.js";
 import { getStart } from "../util.js";
 
@@ -23,16 +30,20 @@ export function create(statements: EdgeStatement[], below: boolean): Consolidate
 	};
 }
 
-export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
-	if (!isConsolidateDescendantsCommand(cmd))
-		return undefined; // Invalid arguments
+export function execute(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	cmd: ExecutableCommand,
+): CommandApplication | undefined {
+	if (!isConsolidateDescendantsCommand(cmd)) return undefined; // Invalid arguments
 
 	const g = sourceFile.graph;
-	if (!g)
-		return undefined;
+	if (!g) return undefined;
 
 	const candidateIndexes = cmd.arguments as number[];
-	const candidates = candidateIndexes.map(i => ((findNodeAtOffset(g, i) as SyntaxNode).parent as SyntaxNode).parent as EdgeStatement);
+	const candidates = candidateIndexes.map(
+		i => ((findNodeAtOffset(g, i) as SyntaxNode).parent as SyntaxNode).parent as EdgeStatement,
+	);
 
 	const first = candidates.shift() as EdgeStatement;
 	const from = getIdentifierText((first.source as NodeId).id);
@@ -42,26 +53,27 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 	const firstRightTargetStart = getStart(sourceFile, firstRight.target);
 	const firstRightTargetEnd = firstRight.target.end;
 
-	const contents = [
-		sourceFile.content.substring(firstRightTargetStart, firstRightTargetEnd)
-	];
+	const contents = [sourceFile.content.substring(firstRightTargetStart, firstRightTargetEnd)];
 
 	for (const descendant of candidates) {
 		// descendant.
 		const rightItem = descendant.rhs[0];
 		const rightItemTarget = rightItem.target;
 
-		const rightItemTargetStart = rightItemTarget.pos // getStart(sourceFile, rightItemTarget);
+		const rightItemTargetStart = rightItemTarget.pos; // getStart(sourceFile, rightItemTarget);
 
 		const rightItemTargetEnd = rightItem.target.end;
-		const rightItemContent = sourceFile.content.substring(rightItemTargetStart, rightItemTargetEnd);
+		const rightItemContent = sourceFile.content.substring(
+			rightItemTargetStart,
+			rightItemTargetEnd,
+		);
 
 		edits.push({
 			newText: "",
 			range: {
 				start: doc.positionAt(descendant.pos),
 				end: doc.positionAt(rightItemTargetStart),
-			}
+			},
 		}); // Remove stuff before item
 
 		edits.push({
@@ -69,7 +81,7 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 			range: {
 				start: doc.positionAt(rightItemTargetStart),
 				end: doc.positionAt(rightItemTargetEnd),
-			}
+			},
 		}); // Remove item itself
 
 		if (descendant.terminator !== undefined) {
@@ -78,7 +90,7 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 				range: {
 					start: doc.positionAt(getStart(sourceFile, descendant.terminator)),
 					end: doc.positionAt(descendant.terminator.end),
-				}
+				},
 			}); // Remove terminator of node id
 		}
 
@@ -92,7 +104,7 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 		range: {
 			start: doc.positionAt(firstRightTargetStart),
 			end: doc.positionAt(firstRightTargetEnd),
-		}
+		},
 	}); // Replace old target with new subgraph
 
 	return {
@@ -100,11 +112,17 @@ export function execute(doc: DocumentLike, sourceFile: SourceFile, cmd: Executab
 		edit: {
 			changes: {
 				[doc.uri]: edits,
-			}
-		}
+			},
+		},
 	};
 }
 
-function isConsolidateDescendantsCommand(cmd: ExecutableCommand): cmd is ConsolidateDescendantsCommand {
-	return cmd.command === CommandIds.ConsolidateDescendants && !!cmd.arguments && cmd.arguments.length > 1;
+function isConsolidateDescendantsCommand(
+	cmd: ExecutableCommand,
+): cmd is ConsolidateDescendantsCommand {
+	return (
+		cmd.command === CommandIds.ConsolidateDescendants &&
+		!!cmd.arguments &&
+		cmd.arguments.length > 1
+	);
 }
