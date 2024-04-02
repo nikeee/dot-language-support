@@ -146,7 +146,8 @@ function getGeneralRefactorings(
 
 							if (hasVisitedNodeModifier) {
 								return;
-							} else if (hasVisitedStatement) {
+							}
+							if (hasVisitedStatement) {
 								// If we have visited the clicked statement AND...
 								if (
 									isAttrStatement(statement) || // we have encountered a semantic-changing AttrStatement

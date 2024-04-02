@@ -148,7 +148,7 @@ export class Parser {
 		return this.finishNode(node);
 	}
 	private parseIdentifier(): Identifier {
-		let result;
+		let result: Identifier;
 		const escapedIdTexts = new Array<string>();
 		switch (this.token()) {
 			case SyntaxKind.TextIdentifier:
@@ -257,7 +257,7 @@ export class Parser {
 				return this.parseAttributeStatement();
 
 			case SyntaxKind.OpenBraceToken:
-			case SyntaxKind.SubgraphKeyword:
+			case SyntaxKind.SubgraphKeyword: {
 				// [ subgraph [ ID ] ] '{' stmt_list '}'
 				// -> subgraph can start with "subgraph" or "{"
 
@@ -288,7 +288,7 @@ export class Parser {
 				) as SubGraphStatement;
 				subgraphStatement.subgraph = subgraph;
 				return this.finishNode(subgraphStatement);
-
+			}
 			default: {
 				if (!this.isIdentifier) debugger;
 
@@ -868,8 +868,12 @@ export class Parser {
 				: `"${getTokenAsText(this.token())}"`;
 
 		const expected = expectedKinds.map(k => {
-			if (isIdentifier(k)) return "identifier";
-			else if (k === SyntaxKind.EndOfFileToken) return "end of file";
+			if (isIdentifier(k)) {
+				return "identifier";
+			}
+			if (k === SyntaxKind.EndOfFileToken) {
+				return "end of file";
+			}
 			return `"${getTokenAsText(k)}"`;
 		});
 
