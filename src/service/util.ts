@@ -1,7 +1,7 @@
 import type { Range } from "vscode-languageserver-types";
-import { SourceFile, SyntaxNode, SyntaxKind } from "../types.js";
-import { skipTrivia, isIdentifierStart } from "../scanner.js";
 import type { DocumentLike } from "../index.js";
+import { isIdentifierStart, skipTrivia } from "../scanner.js";
+import { type SourceFile, SyntaxKind, type SyntaxNode } from "../types.js";
 
 export function getStart(sourceFile: SourceFile, node: SyntaxNode) {
 	return getTokenPosOfNode(sourceFile, node);
@@ -10,8 +10,7 @@ export function getStart(sourceFile: SourceFile, node: SyntaxNode) {
 function getTokenPosOfNode(sourceFile: SourceFile, node: SyntaxNode): number {
 	// Missing nodes have the same start pos as end pos.
 	// Skipping trivia would lead us to the next token.
-	if (nodeIsMissing(node))
-		return node.pos;
+	if (nodeIsMissing(node)) return node.pos;
 
 	return skipTrivia(sourceFile.content, node.pos);
 }
@@ -21,7 +20,11 @@ function nodeIsMissing(node: SyntaxNode) {
 		: node.pos === node.end && node.pos >= 0 && node.kind !== SyntaxKind.EndOfFileToken;
 }
 
-export function syntaxNodesToRanges(doc: DocumentLike, sourceFile: SourceFile, nodes: SyntaxNode[]): Range[] {
+export function syntaxNodesToRanges(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	nodes: SyntaxNode[],
+): Range[] {
 	return nodes.map(node => syntaxNodeToRange(doc, sourceFile, node));
 }
 
@@ -34,23 +37,19 @@ export function syntaxNodeToRange(doc: DocumentLike, sourceFile: SourceFile, nod
 }
 
 export function escapeIdentifierText(text: string): string {
-	if (text === "")
-		return quote("");
-	if (text.includes("\"") || text.includes("\n")) {
-		const esc = text
-			.replace(/"/, "\\\"")
-			.replace(/\n/, "\\\n");
+	if (text === "") return quote("");
+	if (text.includes('"') || text.includes("\n")) {
+		const esc = text.replace(/"/, '\\"').replace(/\n/, "\\\n");
 		return quote(esc);
 	}
 
 	const ch = text.charCodeAt(0);
-	if (!isIdentifierStart(ch) || text.includes(" "))
-		return quote(text);
+	if (!isIdentifierStart(ch) || text.includes(" ")) return quote(text);
 	return text;
 }
 
-const quote = (s: string) => "\"" + s + "\"";
+const quote = (s: string) => `"${s}"`;
 
 export function assertNever(v: never): never {
-	throw new Error("Should not have reached this. Value: " + (v ?? ""));
+	throw new Error(`Should not have reached this. Value: ${v ?? ""}`);
 }

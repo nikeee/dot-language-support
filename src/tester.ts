@@ -1,7 +1,7 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { Parser } from "./parser.js";
 import { bindSourceFile } from "./binder.js";
 import { checkSourceFile } from "./checker.js";
+import { Parser } from "./parser.js";
 import { getCompletions } from "./service/completion.js";
 // import { Scanner, DefaultScanner } from "./scanner.js";
 // import { hover } from "./service/hover.js";
@@ -18,7 +18,7 @@ function main() {
 	checkSourceFile(sf);
 	const doc = TextDocument.create("inmemory://model.json", "DOT", 0, text);
 
-/*
+	/*
 	const h = hover(doc, sf, doc.positionAt(15));
 	console.dir(h);
 */
@@ -28,7 +28,6 @@ function main() {
 	const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 	console.dir(completions);
-
 }
 
 main();

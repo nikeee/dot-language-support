@@ -1,22 +1,35 @@
 import type * as lst from "vscode-languageserver-types";
-import { SyntaxKind, Graph, SubGraphStatement, SyntaxNode, Assignment, SourceFile, IdEqualsIdStatement, SubGraph, EdgeRhs, EdgeStatement, EdgeSourceOrTarget } from "../types.js";
-import { getIdentifierText, findNodeAtOffset } from "../checker.js";
-import { DocumentLike, NodeStatement } from "../index.js";
+import { findNodeAtOffset, getIdentifierText } from "../checker.js";
+import type { DocumentLike, NodeStatement } from "../index.js";
 import { isIdentifierNode } from "../parser.js";
-import { syntaxNodeToRange } from "./util.js";
+import {
+	type Assignment,
+	type EdgeRhs,
+	type EdgeSourceOrTarget,
+	type EdgeStatement,
+	type Graph,
+	type IdEqualsIdStatement,
+	type SourceFile,
+	type SubGraph,
+	type SubGraphStatement,
+	SyntaxKind,
+	type SyntaxNode,
+} from "../types.js";
 import { getEdgeStr } from "./command/common.js";
+import { syntaxNodeToRange } from "./util.js";
 
-
-export function hover(doc: DocumentLike, sourceFile: SourceFile, position: lst.Position): lst.Hover | undefined {
+export function hover(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	position: lst.Position,
+): lst.Hover | undefined {
 	const offset = doc.offsetAt(position);
 
 	const g = sourceFile.graph;
-	if (!g)
-		return undefined;
+	if (!g) return undefined;
 
 	const node = findNodeAtOffset(g, offset);
-	if (node === undefined)
-		return undefined;
+	if (node === undefined) return undefined;
 
 	return getNodeHover(doc, sourceFile, node);
 }
@@ -48,15 +61,22 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		if (parent) {
 			switch (parent.kind) {
 				case SyntaxKind.NodeId: {
-
 					// See https://github.com/nikeee/dot-language-support/issues/83
 					if (n.symbol?.references) {
 						const nodeIdentifierRefs = n.symbol?.references;
-						const labelMentions = nodeIdentifierRefs.map(e => e.symbol?.members?.get("label")?.firstMention.parent as IdEqualsIdStatement | null | undefined);
+						const labelMentions = nodeIdentifierRefs.map(
+							e =>
+								e.symbol?.members?.get("label")?.firstMention.parent as
+									| IdEqualsIdStatement
+									| null
+									| undefined,
+						);
 						for (let i = labelMentions.length; i >= 0; i--) {
 							const s = labelMentions[i];
 							if (s?.rightId) {
-								return `(node) ${getIdentifierText(n)}: ${getIdentifierText(s.rightId)}`;
+								return `(node) ${getIdentifierText(n)}: ${getIdentifierText(
+									s.rightId,
+								)}`;
 							}
 						}
 					} else if (parent.parent?.kind === SyntaxKind.NodeStatement) {
@@ -78,17 +98,13 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 				case SyntaxKind.UndirectedGraph:
 					return getGraphHover(parent as Graph);
 				case SyntaxKind.SubGraphStatement: {
-					const sgs = (parent as SubGraphStatement);
+					const sgs = parent as SubGraphStatement;
 					const sg = sgs.subgraph;
-					return !!sg.id
-						? `(sub graph) ${getIdentifierText(sg.id)}`
-						: `(sub graph)`;
+					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
 				}
 				case SyntaxKind.SubGraph: {
-					const sg = (parent as SubGraph);
-					return !!sg.id
-						? `(sub graph) ${getIdentifierText(sg.id)}`
-						: `(sub graph)`;
+					const sg = parent as SubGraph;
+					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
 				}
 				case SyntaxKind.IdEqualsIdStatement: {
 					const idEqId = parent as IdEqualsIdStatement;
@@ -103,9 +119,7 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		}
 
 		const fallback = SyntaxKind[n.kind];
-		return fallback
-			? "(" + fallback.toLowerCase() + ")"
-			: undefined;
+		return fallback ? `(${fallback.toLowerCase()})` : undefined;
 	}
 
 	switch (n.kind) {
@@ -133,31 +147,30 @@ function getGraphHover(g: Graph): string {
 	const direction = g.kind === SyntaxKind.DirectedGraph ? "directed" : "undirected";
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
-	return !!graphId
-		? `(${strict}${direction} graph) ${(getIdentifierText(graphId))}`
+	return graphId
+		? `(${strict}${direction} graph) ${getIdentifierText(graphId)}`
 		: `(${strict}${direction} graph)`;
 }
 
 function getEdgeHover(n: EdgeRhs) {
 	const p = n.parent as EdgeStatement;
-	if (!p || p.rhs.length === 0)
-		return undefined;
+	if (!p || p.rhs.length === 0) return undefined;
 
 	let source: EdgeSourceOrTarget | undefined = undefined;
 	for (const curr of p.rhs) {
-		if (curr === n)
-			break;
+		if (curr === n) break;
 		source = curr.target;
 	}
 
-	if (source === undefined)
-		source = p.source;
+	if (source === undefined) source = p.source;
 
 	const edgeOpStr = getEdgeStr(n.operation.kind);
 
 	return source === undefined
 		? undefined
-		: `(edge) ${getEdgeSourceOrTargetText(source)} ${edgeOpStr} ${getEdgeSourceOrTargetText(n.target)}`;
+		: `(edge) ${getEdgeSourceOrTargetText(source)} ${edgeOpStr} ${getEdgeSourceOrTargetText(
+				n.target,
+			)}`;
 }
 
 function getEdgeSourceOrTargetText(n: EdgeSourceOrTarget): string {

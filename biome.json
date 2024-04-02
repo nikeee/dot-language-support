@@ -1,0 +1,50 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.5.0/schema.json",
+	"formatter": {
+		"enabled": true,
+		"indentWidth": 4,
+		"indentStyle": "tab",
+		"lineWidth": 100
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"defaultBranch": "master",
+		"root": "."
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noConstEnum": "off",
+				"noDebugger": "off"
+			},
+			"correctness": {
+				"noVoidTypeReturn": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded"
+		}
+	},
+	"overrides": [
+		{
+			"include": [
+				"src/scanner.ts"
+			],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noAssignInExpressions": "off"
+					},
+					"style": {
+						"noParameterAssign": "off"
+					}
+				}
+			}
+		}
+	]
+}

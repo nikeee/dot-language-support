@@ -1,32 +1,32 @@
-import {
-	SyntaxNode,
-	Identifier,
-	SyntaxKind,
-	Graph,
-	EdgeStatement,
-	SyntaxNodeArray,
-	EdgeRhs,
-	EdgeOp,
-	SourceFile,
-	DiagnosticMessage,
-	SyntaxNodeFlags,
-	CheckError,
-	DiagnosticCategory,
-	ErrorSource,
-	CheckErrorCode,
-	SubGraphStatement,
-	NodeId,
-	AttributeStatement,
-	Statement,
-	StatementOf,
-	Token,
-	TextRange,
-	Assignment,
-	TextIdentifier,
-} from "./types.js";
-import { assertNever, getStart } from "./service/util.js";
-import { forEachChild } from "./visitor.js";
 import { shapes as validShapes } from "./service/languageFacts.js";
+import { assertNever, getStart } from "./service/util.js";
+import {
+	type Assignment,
+	type AttributeStatement,
+	CheckError,
+	type CheckErrorCode,
+	DiagnosticCategory,
+	type DiagnosticMessage,
+	type EdgeOp,
+	type EdgeRhs,
+	type EdgeStatement,
+	ErrorSource,
+	type Graph,
+	type Identifier,
+	type NodeId,
+	type SourceFile,
+	type Statement,
+	type StatementOf,
+	type SubGraphStatement,
+	SyntaxKind,
+	type SyntaxNode,
+	type SyntaxNodeArray,
+	SyntaxNodeFlags,
+	type TextIdentifier,
+	type TextRange,
+	type Token,
+} from "./types.js";
+import { forEachChild } from "./visitor.js";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;
@@ -44,7 +44,7 @@ function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode):
 	const prevRange = prev.end - prev.pos;
 
 	if (toCheck.pos <= offset && offset <= toCheck.end) {
-		let nrange = toCheck.end - toCheck.pos;
+		const nrange = toCheck.end - toCheck.pos;
 		if (nrange < prevRange) {
 			return toCheck;
 		}
@@ -59,17 +59,22 @@ function rangeContainsOffset(range: TextRange, offset: number, inclusiveEnd: boo
 }
 
 // TODO: inclusiveEnd seems a hack to me. We shoudl remove that later.
-export function findNodeAtOffset(root: SyntaxNode, offset: number, inclusiveEnd: boolean = false): SyntaxNode | undefined {
+export function findNodeAtOffset(
+	root: SyntaxNode,
+	offset: number,
+	inclusiveEnd = false,
+): SyntaxNode | undefined {
 	// Wow, I don't think this actually works. But it seems to.
 
 	// TODO: Fix this, this methods throws sometimes
 
-	if (root.pos === offset && root.pos === root.end)
-		return root;
+	if (root.pos === offset && root.pos === root.end) return root;
 
 	// Check if the current checked contains the passed offset
 	if (rangeContainsOffset(root, offset, inclusiveEnd)) {
-		const narrowerChild = forEachChild(root, child => findNodeAtOffset(child, offset, inclusiveEnd));
+		const narrowerChild = forEachChild(root, child =>
+			findNodeAtOffset(child, offset, inclusiveEnd),
+		);
 
 		return narrowerChild ? narrowerChild : root;
 	}
@@ -89,9 +94,10 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 
 	const invalidShapes = checkShapeLabelValues(root);
 
-	const invalidEdgeDiagnostics = invalidEdgeRhses == undefined || invalidEdgeRhses.length === 0
-		? []
-		: createEdgeViolationDiagnostics(file, expectedEdgeOp, invalidEdgeRhses);
+	const invalidEdgeDiagnostics =
+		invalidEdgeRhses === undefined || invalidEdgeRhses.length === 0
+			? []
+			: createEdgeViolationDiagnostics(file, expectedEdgeOp, invalidEdgeRhses);
 
 	return [...invalidEdgeDiagnostics, ...invalidShapes];
 }
@@ -112,17 +118,20 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 
 	forEachAssignmentTransitive(root, assignment => {
 		const { leftId, rightId } = assignment;
-		if (leftId.kind !== SyntaxKind.TextIdentifier || rightId.kind !== SyntaxKind.TextIdentifier) {
+		if (
+			leftId.kind !== SyntaxKind.TextIdentifier ||
+			rightId.kind !== SyntaxKind.TextIdentifier
+		) {
 			return;
 		}
 
-		const leftText = (leftId as TextIdentifier).text.trim()
+		const leftText = (leftId as TextIdentifier).text.trim();
 
 		if (leftText.toLocaleLowerCase() !== "shape") {
 			return;
 		}
 
-		const rightText = (rightId as TextIdentifier).text.trim()
+		const rightText = (rightId as TextIdentifier).text.trim();
 		const shapeCandidate = rightText.toLowerCase();
 		if (validShapes.includes(shapeCandidate)) {
 			return;
@@ -153,14 +162,12 @@ export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 				// allEdges.push.apply(allEdges, child.rhs);
 				// Since TypeScript 3.2, the apply call is checked aswell. child.rhs is no genuine EdgeRhs[] (it contains additional data)
 				// So we're pushing the items one-by-one here.
-				for (const edgeRhs of child.rhs)
-					allEdges.push(edgeRhs);
+				for (const edgeRhs of child.rhs) allEdges.push(edgeRhs);
 			}
 		}
 
 		const childEdges = findAllEdges(child);
-		if (childEdges && childEdges.length > 0)
-			allEdges.push.apply(allEdges, childEdges);
+		if (childEdges && childEdges.length > 0) allEdges.push.apply(allEdges, childEdges);
 	});
 
 	return allEdges;
@@ -173,20 +180,25 @@ export function findOptionalSemicolons(node: SyntaxNode): Token<SyntaxKind.Semic
 }
 
 function isStatement(node: SyntaxNode): node is Statement {
-	return node.kind === SyntaxKind.SubGraphStatement
-		|| node.kind === SyntaxKind.EdgeStatement
-		|| node.kind === SyntaxKind.NodeStatement
-		|| node.kind === SyntaxKind.IdEqualsIdStatement
-		|| node.kind === SyntaxKind.AttributeStatement;
+	return (
+		node.kind === SyntaxKind.SubGraphStatement ||
+		node.kind === SyntaxKind.EdgeStatement ||
+		node.kind === SyntaxKind.NodeStatement ||
+		node.kind === SyntaxKind.IdEqualsIdStatement ||
+		node.kind === SyntaxKind.AttributeStatement
+	);
 }
 
-export function findAllStatements<T extends Statement["kind"]>(node: SyntaxNode, kind?: T): StatementOf<T>[] {
+export function findAllStatements<T extends Statement["kind"]>(
+	node: SyntaxNode,
+	kind?: T,
+): StatementOf<T>[] {
 	const allStatements: StatementOf<T>[] = [];
 
 	forEachChild(node, child => {
 		// If no kind is provided and the child is a statement
 		// ...or the child.kind is the requested kind
-		if ((kind === undefined && isStatement(child)) || (child.kind === kind)) {
+		if ((kind === undefined && isStatement(child)) || child.kind === kind) {
 			allStatements.push(child as StatementOf<T>);
 		}
 
@@ -222,18 +234,25 @@ export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeRhs[] | undefined {
 	const edges = findAllEdges(node);
 
-	const wrongEdges = edges && edges.length > 0
-		? edges.filter(e => e.operation.kind !== expectedEdgeOp)
-		: undefined;
+	const wrongEdges =
+		edges && edges.length > 0
+			? edges.filter(e => e.operation.kind !== expectedEdgeOp)
+			: undefined;
 
 	if (wrongEdges && wrongEdges.length > 0) {
-		wrongEdges.forEach(e => e.operation.flags |= SyntaxNodeFlags.ContainsErrors);
+		for (const edge of wrongEdges) {
+			edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+		}
 		return wrongEdges;
 	}
 	return undefined;
 }
 
-function createEdgeViolationDiagnostics(file: SourceFile, expectedEdgeOp: EdgeOp["kind"], violators: EdgeRhs[]): DiagnosticMessage[] {
+function createEdgeViolationDiagnostics(
+	file: SourceFile,
+	expectedEdgeOp: EdgeOp["kind"],
+	violators: EdgeRhs[],
+): DiagnosticMessage[] {
 	const op = expectedEdgeOp === SyntaxKind.UndirectedEdgeOp ? "--" : "->";
 	const graphType = expectedEdgeOp === SyntaxKind.UndirectedEdgeOp ? "undirected" : "directed";
 
@@ -242,7 +261,9 @@ function createEdgeViolationDiagnostics(file: SourceFile, expectedEdgeOp: EdgeOp
 	const category = DiagnosticCategory.Error;
 
 	// Add flags in side-effected forEach instead of map() below
-	violators.forEach(edge => edge.operation.flags |= SyntaxNodeFlags.ContainsErrors);
+	for (const edge of violators) {
+		edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+	}
 
 	return violators.map(edge => {
 		const start = getStart(file, edge.operation);
@@ -261,8 +282,7 @@ function createEdgeViolationDiagnostics(file: SourceFile, expectedEdgeOp: EdgeOp
 function getInvalidEdgeRhs(allowedOp: EdgeOp["kind"], edges: SyntaxNodeArray<EdgeRhs>): EdgeRhs[] {
 	const res = [];
 	for (const e of edges) {
-		if (e.operation.kind !== allowedOp)
-			res.push(e);
+		if (e.operation.kind !== allowedOp) res.push(e);
 	}
 	return res;
 }
@@ -283,9 +303,11 @@ export function isNodeId(node: SyntaxNode): node is NodeId {
 	return node.kind === SyntaxKind.NodeId;
 }
 export function edgeStatementHasAttributes(es: EdgeStatement) {
-	return es.attributes
-		&& es.attributes.length > 0
-		&& es.attributes.some(a => a.assignments && a.assignments.length > 0);
+	return (
+		es.attributes &&
+		es.attributes.length > 0 &&
+		es.attributes.some(a => a.assignments && a.assignments.length > 0)
+	);
 }
 
 export function getIdentifierText(n: Identifier): string {

@@ -1,66 +1,65 @@
-import { Scanner, DefaultScanner, getTokenAsText } from "./scanner.js";
+import { DefaultScanner, type Scanner, getTokenAsText } from "./scanner.js";
 import { assertNever } from "./service/util.js";
 import {
-	SyntaxKind,
-	SourceFile,
-	Graph,
-	Identifier,
-	TextIdentifier,
-	StringLiteral,
-	HtmlIdentifier,
-	Statement,
-	NodeId,
-	CompassPortDeclaration,
-	NormalPortDeclaration,
-	PortDeclaration,
-	SyntaxNode,
-	SyntaxNodeArray,
-	MutableSyntaxNodeArray,
-	Token,
-	AttributeStatement,
-	SubGraphStatement,
-	AttributeContainer,
-	Assignment,
-	AssignmentSeparator,
-	IdEqualsIdStatement,
-	NodeStatement,
-	EdgeStatement,
-	EdgeRhs,
-	NumericIdentifier,
-	QuotedTextIdentifier,
-	DiagnosticMessage,
+	type Assignment,
+	type AssignmentSeparator,
+	type AttributeContainer,
+	type AttributeStatement,
+	type CompassPortDeclaration,
 	DiagnosticCategory,
-	ErrorCode,
+	type DiagnosticMessage,
+	type EdgeRhs,
+	type EdgeStatement,
+	type ErrorCode,
 	ErrorSource,
+	type Graph,
+	type HtmlIdentifier,
+	type IdEqualsIdStatement,
+	type Identifier,
+	type MutableSyntaxNodeArray,
+	type NodeId,
+	type NodeStatement,
+	type NormalPortDeclaration,
+	type NumericIdentifier,
 	ParseError,
-	ScanError,
+	type PortDeclaration,
+	type QuotedTextIdentifier,
+	type ScanError,
+	type SourceFile,
+	type Statement,
+	type StringLiteral,
+	type SubGraph,
+	type SubGraphStatement,
+	SyntaxKind,
+	type SyntaxNode,
+	type SyntaxNodeArray,
 	SyntaxNodeFlags,
-	SubGraph,
+	type TextIdentifier,
+	type Token,
 } from "./types";
 
 export enum ParsingContext {
 	None = 0,
-	StatementList,
-	AttributeContainerList,
-	AssignmentList,
-	EdgeRhsList,
-	QuotedTextIdentifierConcatenation,
+	StatementList = 1,
+	AttributeContainerList = 2,
+	AssignmentList = 3,
+	EdgeRhsList = 4,
+	QuotedTextIdentifierConcatenation = 5,
 
-	Count, // Number of parsing contexts
+	Count = 6, // Number of parsing contexts
 }
 
 export class Parser {
 	currentToken: SyntaxKind = SyntaxKind.Unknown;
 	nodeCount: number;
 	identifiers: Set<string>;
-	identifierCount: number = 0;
+	identifierCount = 0;
 	sourceText: string;
 	scanner: Scanner = new DefaultScanner();
 	currentNodeHasError: boolean;
 	currentContext: ParsingContext;
 
 	diagnostics: DiagnosticMessage[]; // TODO
-
 
 	constructor() {
 		this.resetState();
@@ -79,7 +78,8 @@ export class Parser {
 	}
 
 	private nextToken(): SyntaxKind {
-		return this.currentToken = this.scanner.scan(true);
+		this.currentToken = this.scanner.scan(true);
+		return this.currentToken;
 	}
 	private token(): SyntaxKind {
 		return this.currentToken;
@@ -98,7 +98,6 @@ export class Parser {
 
 		let graph = undefined;
 		if (this.token() !== SyntaxKind.EndOfFileToken) {
-
 			// Parsing root node
 			graph = this.parseGraph();
 
@@ -107,7 +106,7 @@ export class Parser {
 					this.scanner.tokenPos,
 					this.scanner.text.length - 1,
 					"Content after the end of a graph declaration is invalid.",
-					{ source: ErrorSource.Parse, sub: ParseError.TrailingData }
+					{ source: ErrorSource.Parse, sub: ParseError.TrailingData },
 				);
 			}
 		}
@@ -126,10 +125,14 @@ export class Parser {
 	private parseGraph(): Graph {
 		const strictToken = this.parseOptionalToken(SyntaxKind.StrictKeyword);
 
-		const keyword = this.parseExpectedTokenOneOf(SyntaxKind.DigraphKeyword, [SyntaxKind.DigraphKeyword, SyntaxKind.GraphKeyword]);
-		const kind = keyword === undefined || keyword.kind === SyntaxKind.DigraphKeyword
-			? SyntaxKind.DirectedGraph
-			: SyntaxKind.UndirectedGraph;
+		const keyword = this.parseExpectedTokenOneOf(SyntaxKind.DigraphKeyword, [
+			SyntaxKind.DigraphKeyword,
+			SyntaxKind.GraphKeyword,
+		]);
+		const kind =
+			keyword === undefined || keyword.kind === SyntaxKind.DigraphKeyword
+				? SyntaxKind.DirectedGraph
+				: SyntaxKind.UndirectedGraph;
 
 		const graphStart = strictToken ? strictToken.pos : keyword.pos;
 		const node = this.createNode(kind, graphStart) as Graph;
@@ -146,8 +149,8 @@ export class Parser {
 		return this.finishNode(node);
 	}
 	private parseIdentifier(): Identifier {
-		let result;
-		let escapedIdTexts = new Array<string>();
+		let result: Identifier;
+		const escapedIdTexts = new Array<string>();
 		switch (this.token()) {
 			case SyntaxKind.TextIdentifier:
 				result = this.parseTextIdentifier();
@@ -170,15 +173,18 @@ export class Parser {
 				result = this.createMissingNode<TextIdentifier>(SyntaxKind.TextIdentifier);
 				break;
 		}
-		escapedIdTexts.forEach(i => this.registerIdentifier(i));
+
+		for (const i of escapedIdTexts) {
+			this.registerIdentifier(i);
+		}
+
 		return result;
 	}
 
 	private registerIdentifier(id: string): void {
 		this.identifierCount++;
 		const has = this.identifiers.has(id);
-		if (!has)
-			this.identifiers.add(id);
+		if (!has) this.identifiers.add(id);
 		// return id;
 	}
 
@@ -195,7 +201,11 @@ export class Parser {
 	private parseQuotedTextIdentifierConcatenation(): QuotedTextIdentifier {
 		const node = this.createNode(SyntaxKind.QuotedTextIdentifier) as QuotedTextIdentifier;
 
-		node.values = this.parseList(ParsingContext.QuotedTextIdentifierConcatenation, () => this.parseQuotedTextIdentifier(), /* at least one */ true);
+		node.values = this.parseList(
+			ParsingContext.QuotedTextIdentifierConcatenation,
+			() => this.parseQuotedTextIdentifier(),
+			/* at least one */ true,
+		);
 
 		return this.finishNode(node);
 	}
@@ -205,8 +215,7 @@ export class Parser {
 		// Quoted strings can be concatenated
 		// If we have a + as the next token and the token after that is a quoted string
 		// -> consume plus token, so the rest can be handled by the list parsing
-		if (this.token() === SyntaxKind.PlusToken)
-			this.nextToken();
+		if (this.token() === SyntaxKind.PlusToken) this.nextToken();
 
 		const text = this.scanner.tokenValue;
 		this.nextToken();
@@ -249,7 +258,7 @@ export class Parser {
 				return this.parseAttributeStatement();
 
 			case SyntaxKind.OpenBraceToken:
-			case SyntaxKind.SubgraphKeyword:
+			case SyntaxKind.SubgraphKeyword: {
 				// [ subgraph [ ID ] ] '{' stmt_list '}'
 				// -> subgraph can start with "subgraph" or "{"
 
@@ -259,24 +268,30 @@ export class Parser {
 				// If the sub graph has been terminated, we cannot have an edge op following
 
 				if (this.token() === SyntaxKind.SemicolonToken) {
-					const subgraphStatement = this.createNode(SyntaxKind.SubGraphStatement, subgraph.pos) as SubGraphStatement;
+					const subgraphStatement = this.createNode(
+						SyntaxKind.SubGraphStatement,
+						subgraph.pos,
+					) as SubGraphStatement;
 					subgraphStatement.subgraph = subgraph;
-					subgraphStatement.terminator = this.parseExpectedToken(SyntaxKind.SemicolonToken);
+					subgraphStatement.terminator = this.parseExpectedToken(
+						SyntaxKind.SemicolonToken,
+					);
 					return this.finishNode(subgraphStatement);
 				}
 
 				// if there was an edge op, we actually have an EdgeStatement, not a SubGraphStatement
 				// TODO: May refactor to use lookAhead
-				if (this.isEdgeOp())
-					return this.parseEdgeStatement(subgraph);
+				if (this.isEdgeOp()) return this.parseEdgeStatement(subgraph);
 
-				const subgraphStatement = this.createNode(SyntaxKind.SubGraphStatement, subgraph.pos) as SubGraphStatement;
+				const subgraphStatement = this.createNode(
+					SyntaxKind.SubGraphStatement,
+					subgraph.pos,
+				) as SubGraphStatement;
 				subgraphStatement.subgraph = subgraph;
 				return this.finishNode(subgraphStatement);
-
+			}
 			default: {
-				if (!this.isIdentifier)
-					debugger;
+				if (!this.isIdentifier) debugger;
 
 				// if (this.isIdentifier()) {
 
@@ -290,11 +305,9 @@ export class Parser {
 
 				// If the parsed node statement has been terminated or attributes assigned
 				// -> there cannot be a following edge op
-				if (ns.terminator !== undefined || ns.attributes.length !== 0)
-					return ns;
+				if (ns.terminator !== undefined || ns.attributes.length !== 0) return ns;
 
-				if (this.isEdgeOp())
-					return this.parseEdgeStatement(ns.id);
+				if (this.isEdgeOp()) return this.parseEdgeStatement(ns.id);
 
 				return ns;
 				// }
@@ -306,45 +319,50 @@ export class Parser {
 		switch (this.token()) {
 			case SyntaxKind.GraphKeyword:
 			case SyntaxKind.NodeKeyword:
-			case SyntaxKind.EdgeKeyword:
-				{
-					const node = this.createNode(SyntaxKind.AttributeStatement) as AttributeStatement;
-					node.subject = this.parseTokenNode();
+			case SyntaxKind.EdgeKeyword: {
+				const node = this.createNode(SyntaxKind.AttributeStatement) as AttributeStatement;
+				node.subject = this.parseTokenNode();
 
-					// node.attributes is not optional because we have to have an opening bracket
-					if (this.token() == SyntaxKind.OpenBracketToken) {
-						node.attributes = this.parseList(ParsingContext.AttributeContainerList, () => this.parseAttributeContainer());
-					} else {
-						// TODO: Is this correct?
+				// node.attributes is not optional because we have to have an opening bracket
+				if (this.token() === SyntaxKind.OpenBracketToken) {
+					node.attributes = this.parseList(ParsingContext.AttributeContainerList, () =>
+						this.parseAttributeContainer(),
+					);
+				} else {
+					// TODO: Is this correct?
 
-						this.reportExpectedError([SyntaxKind.OpenBracketToken]);
+					this.reportExpectedError([SyntaxKind.OpenBracketToken]);
 
-						// TODO: Set error flag
-						const missingStatement = this.createMissingNode<AttributeStatement>(SyntaxKind.AttributeStatement);
-						missingStatement.attributes = this.createNodeArray(
-							[this.createMissingNode(SyntaxKind.AttributeContainer)],
-							this.scanner.tokenPos,
-							this.scanner.tokenPos,
-						);
-					}
-
-					node.terminator = this.parseOptionalToken(SyntaxKind.SemicolonToken);
-					return this.finishNode(node);
+					// TODO: Set error flag
+					const missingStatement = this.createMissingNode<AttributeStatement>(
+						SyntaxKind.AttributeStatement,
+					);
+					missingStatement.attributes = this.createNodeArray(
+						[this.createMissingNode(SyntaxKind.AttributeContainer)],
+						this.scanner.tokenPos,
+						this.scanner.tokenPos,
+					);
 				}
-			default: throw "This should never happen"
+
+				node.terminator = this.parseOptionalToken(SyntaxKind.SemicolonToken);
+				return this.finishNode(node);
+			}
+			default:
+				throw "This should never happen";
 		}
 	}
 
 	private parseAttributeContainer(): AttributeContainer {
-		if (this.token() !== SyntaxKind.OpenBracketToken)
-			debugger; //console.assert(this.token() === SyntaxKind.OpenBracketToken);
+		if (this.token() !== SyntaxKind.OpenBracketToken) debugger; //console.assert(this.token() === SyntaxKind.OpenBracketToken);
 
 		const node = this.createNode(SyntaxKind.AttributeContainer) as AttributeContainer;
 
 		node.openBracket = this.parseExpectedToken(SyntaxKind.OpenBracketToken);
 
 		if (this.isIdentifier() && this.lookAhead(() => this.isAssignmentStart())) {
-			node.assignments = this.parseList(ParsingContext.AssignmentList, () => this.parseAssignment());
+			node.assignments = this.parseList(ParsingContext.AssignmentList, () =>
+				this.parseAssignment(),
+			);
 		} else {
 			// The container can also be empty, we want to create an empty array here; TODO: Why?
 			node.assignments = this.createEmptyArray();
@@ -356,24 +374,24 @@ export class Parser {
 	}
 
 	private isAssignmentStart(): boolean {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		this.nextToken();
-		return this.token() == SyntaxKind.EqualsToken;
+		return this.token() === SyntaxKind.EqualsToken;
 	}
 
 	private parseIdEqualsIdStatement(): IdEqualsIdStatement {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		const leftIdentifier = this.parseIdentifier();
 
-		const node = this.createNode(SyntaxKind.IdEqualsIdStatement, leftIdentifier.pos) as IdEqualsIdStatement;
+		const node = this.createNode(
+			SyntaxKind.IdEqualsIdStatement,
+			leftIdentifier.pos,
+		) as IdEqualsIdStatement;
 		node.leftId = leftIdentifier;
 
-		if (this.token() !== SyntaxKind.EqualsToken)
-			debugger; //console.assert(this.token() === SyntaxKind.EqualsToken);
+		if (this.token() !== SyntaxKind.EqualsToken) debugger; //console.assert(this.token() === SyntaxKind.EqualsToken);
 
 		/* node.equalsToken = */ this.parseExpectedToken(SyntaxKind.EqualsToken);
 
@@ -385,8 +403,7 @@ export class Parser {
 	}
 
 	private isIdEqualsIdStatement(): boolean {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		// TODO: May re-use isAssignmentStart
 		this.nextToken();
@@ -394,15 +411,16 @@ export class Parser {
 	}
 
 	private parseNodeStatement(): NodeStatement {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.createNode(SyntaxKind.NodeStatement) as NodeStatement;
 
 		node.id = this.parseNodeId();
 
 		if (this.token() === SyntaxKind.OpenBracketToken) {
-			node.attributes = this.parseList(ParsingContext.AttributeContainerList, () => this.parseAttributeContainer());
+			node.attributes = this.parseList(ParsingContext.AttributeContainerList, () =>
+				this.parseAttributeContainer(),
+			);
 		} else {
 			// The container can also be empty, we want to create an empty array here; TODO: Why?
 			node.attributes = this.createEmptyArray();
@@ -414,11 +432,12 @@ export class Parser {
 	}
 
 	private parseEdgeStatement(precedingItem: SubGraph | NodeId): EdgeStatement {
-		console.assert(precedingItem.kind === SyntaxKind.SubGraph || precedingItem.kind === SyntaxKind.NodeId);
+		console.assert(
+			precedingItem.kind === SyntaxKind.SubGraph || precedingItem.kind === SyntaxKind.NodeId,
+		);
 		console.assert(precedingItem.pos !== undefined);
 
-		if (!this.isEdgeOp())
-			debugger; // console.assert(this.isEdgeOp());
+		if (!this.isEdgeOp()) debugger; // console.assert(this.isEdgeOp());
 
 		const node = this.createNode(SyntaxKind.EdgeStatement, precedingItem.pos) as EdgeStatement;
 		node.source = precedingItem;
@@ -428,7 +447,9 @@ export class Parser {
 
 		// Check if we have some following attributes
 		if (this.token() === SyntaxKind.OpenBracketToken) {
-			node.attributes = this.parseList(ParsingContext.AttributeContainerList, () => this.parseAttributeContainer());
+			node.attributes = this.parseList(ParsingContext.AttributeContainerList, () =>
+				this.parseAttributeContainer(),
+			);
 		} else {
 			// The container can also be empty, we want to create an empty array here; TODO: Why?
 			node.attributes = this.createEmptyArray();
@@ -442,8 +463,13 @@ export class Parser {
 	private parseEdgeRhs(): EdgeRhs {
 		const node = this.createNode(SyntaxKind.EdgeRhs) as EdgeRhs;
 
-		const op = this.parseExpectedTokenOneOf(SyntaxKind.DirectedEdgeOp, [SyntaxKind.DirectedEdgeOp, SyntaxKind.UndirectedEdgeOp]);
-		node.operation = op as (Token<SyntaxKind.DirectedEdgeOp> | Token<SyntaxKind.UndirectedEdgeOp>);
+		const op = this.parseExpectedTokenOneOf(SyntaxKind.DirectedEdgeOp, [
+			SyntaxKind.DirectedEdgeOp,
+			SyntaxKind.UndirectedEdgeOp,
+		]);
+		node.operation = op as
+			| Token<SyntaxKind.DirectedEdgeOp>
+			| Token<SyntaxKind.UndirectedEdgeOp>;
 
 		switch (this.token()) {
 			case SyntaxKind.SubgraphKeyword:
@@ -460,8 +486,9 @@ export class Parser {
 		return this.finishNode(node);
 	}
 
-	private createMissingNode<T extends SyntaxNode>(kind: T["kind"] /* , reportAtCurrentPosition: boolean, diagnosticMessage: DiagnosticMessage, arg0?: any */): T {
-
+	private createMissingNode<T extends SyntaxNode>(
+		kind: T["kind"] /* , reportAtCurrentPosition: boolean, diagnosticMessage: DiagnosticMessage, arg0?: any */,
+	): T {
 		// if (reportAtCurrentPosition) {
 		// 	this.parseErrorAtPosition(scanner.getStartPos(), 0, diagnosticMessage, arg0);
 		// } else {
@@ -494,9 +521,7 @@ export class Parser {
 	}
 
 	private parseAssignment(): Assignment {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
-
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.createNode(SyntaxKind.Assignment) as Assignment;
 
@@ -506,7 +531,9 @@ export class Parser {
 
 		node.rightId = this.parseIdentifier();
 
-		let terminator: AssignmentSeparator | undefined = this.parseOptionalToken(SyntaxKind.CommaToken);
+		let terminator: AssignmentSeparator | undefined = this.parseOptionalToken(
+			SyntaxKind.CommaToken,
+		);
 		if (terminator === undefined)
 			terminator = this.parseOptionalToken(SyntaxKind.SemicolonToken);
 		node.terminator = terminator;
@@ -516,16 +543,18 @@ export class Parser {
 
 	private parseSubGraph(): SubGraph {
 		// subgraph : [ subgraph [ ID ] ] '{' stmt_list '}'
-		console.assert(this.token() === SyntaxKind.SubgraphKeyword || this.token() === SyntaxKind.OpenBraceToken);
+		console.assert(
+			this.token() === SyntaxKind.SubgraphKeyword ||
+				this.token() === SyntaxKind.OpenBraceToken,
+		);
 
 		const subGraph = this.parseOptionalToken(SyntaxKind.SubgraphKeyword);
 
 		const subGraphStart = subGraph !== undefined ? subGraph.pos : undefined;
 		const node = this.createNode(SyntaxKind.SubGraph, subGraphStart) as SubGraph;
 
-		let identifier = subGraph !== undefined && this.isIdentifier()
-			? this.parseIdentifier()
-			: undefined;
+		const identifier =
+			subGraph !== undefined && this.isIdentifier() ? this.parseIdentifier() : undefined;
 
 		node.id = identifier;
 
@@ -539,16 +568,14 @@ export class Parser {
 	}
 
 	private parseNodeId(): NodeId {
-		if (!this.isIdentifier)
-			debugger; // console.assert(this.isIdentifier());
+		if (!this.isIdentifier) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.createNode(SyntaxKind.NodeId) as NodeId;
 
 		node.id = this.parseIdentifier();
 
-		node.port = this.token() === SyntaxKind.ColonToken
-			? this.parsePortDeclaration()
-			: undefined;
+		node.port =
+			this.token() === SyntaxKind.ColonToken ? this.parsePortDeclaration() : undefined;
 
 		return this.finishNode(node);
 	}
@@ -572,9 +599,8 @@ export class Parser {
 
 		node.colon = this.parseTokenNode();
 		node.id = this.parseIdentifier();
-		node.compassPt = this.token() === SyntaxKind.ColonToken
-			? this.parseCompassPortDeclaration()
-			: undefined;
+		node.compassPt =
+			this.token() === SyntaxKind.ColonToken ? this.parseCompassPortDeclaration() : undefined;
 
 		return this.finishNode(node);
 	}
@@ -582,22 +608,24 @@ export class Parser {
 	private parsePortDeclaration(): PortDeclaration {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
-		if (this.lookAhead(() => this.isCompassPort()))
-			return this.parseCompassPortDeclaration()
+		if (this.lookAhead(() => this.isCompassPort())) return this.parseCompassPortDeclaration();
 		return this.parseNormalPortDeclaration();
 	}
 
 	private isCompassPort() {
 		console.assert(this.token() === SyntaxKind.ColonToken);
 
-		if (this.token() !== SyntaxKind.ColonToken)
-			return false;
+		if (this.token() !== SyntaxKind.ColonToken) return false;
 
 		this.nextToken();
 		return this.isCompassPortKind(this.token());
 	}
 
-	private parseList<T extends SyntaxNode>(context: ParsingContext, parseElement: () => T, atLeastOne = false): SyntaxNodeArray<T> {
+	private parseList<T extends SyntaxNode>(
+		context: ParsingContext,
+		parseElement: () => T,
+		atLeastOne = false,
+	): SyntaxNodeArray<T> {
 		const saveParsingContext = this.currentContext;
 		this.currentContext |= 1 << context;
 
@@ -612,8 +640,7 @@ export class Parser {
 				isListTerminated = this.isListTerminator(context);
 				continue;
 			}
-			if (this.abortListParsing(context))
-				break;
+			if (this.abortListParsing(context)) break;
 		}
 		this.currentContext = saveParsingContext;
 		return this.createNodeArray(elements, startPos);
@@ -630,7 +657,7 @@ export class Parser {
 			case ParsingContext.QuotedTextIdentifierConcatenation:
 				return "Quoted identifier expected";
 			case ParsingContext.AttributeContainerList:
-				return "Attribute marker expected." // TODO: Was besseres finden
+				return "Attribute marker expected."; // TODO: Was besseres finden
 			case ParsingContext.None:
 				return "Wat, no parsing context";
 			case ParsingContext.Count:
@@ -643,7 +670,10 @@ export class Parser {
 	private isInSomeParsingContext(): boolean {
 		for (let ctx = 0; ctx < ParsingContext.Count; ctx++) {
 			if (this.currentContext & (1 << ctx)) {
-				if (this.isListElement(ctx, /*inErrorRecovery*/ true) || this.isListTerminator(ctx)) {
+				if (
+					this.isListElement(ctx, /*inErrorRecovery*/ true) ||
+					this.isListTerminator(ctx)
+				) {
 					return true;
 				}
 			}
@@ -653,7 +683,10 @@ export class Parser {
 	}
 
 	private abortListParsing(context: ParsingContext) {
-		this.parseErrorAtCurrentToken(this.getContextParseError(context), ParseError.FailedListParsing);
+		this.parseErrorAtCurrentToken(
+			this.getContextParseError(context),
+			ParseError.FailedListParsing,
+		);
 
 		if (this.isInSomeParsingContext()) {
 			return true;
@@ -670,20 +703,27 @@ export class Parser {
 			case ParsingContext.AttributeContainerList:
 				return this.token() === SyntaxKind.OpenBracketToken;
 			case ParsingContext.EdgeRhsList:
-				return this.token() === SyntaxKind.DirectedEdgeOp
-					|| this.token() === SyntaxKind.UndirectedEdgeOp;
+				return (
+					this.token() === SyntaxKind.DirectedEdgeOp ||
+					this.token() === SyntaxKind.UndirectedEdgeOp
+				);
 			case ParsingContext.QuotedTextIdentifierConcatenation:
 				// TODO: This may be wrong because the plus is only allowed to occur after a plusToken
-				return this.token() === SyntaxKind.StringLiteral
-					|| this.token() === SyntaxKind.PlusToken;
+				return (
+					this.token() === SyntaxKind.StringLiteral ||
+					this.token() === SyntaxKind.PlusToken
+				);
 			case ParsingContext.StatementList:
-				return this.isIdentifier()
-					|| this.token() === SyntaxKind.SubgraphKeyword
-					|| this.token() === SyntaxKind.OpenBraceToken
-					|| this.token() === SyntaxKind.GraphKeyword
-					|| this.token() === SyntaxKind.EdgeKeyword
-					|| this.token() === SyntaxKind.NodeKeyword;
-			default: throw "This should never happen";
+				return (
+					this.isIdentifier() ||
+					this.token() === SyntaxKind.SubgraphKeyword ||
+					this.token() === SyntaxKind.OpenBraceToken ||
+					this.token() === SyntaxKind.GraphKeyword ||
+					this.token() === SyntaxKind.EdgeKeyword ||
+					this.token() === SyntaxKind.NodeKeyword
+				);
+			default:
+				throw "This should never happen";
 		}
 	}
 
@@ -691,8 +731,7 @@ export class Parser {
 		const token = this.token();
 
 		// The we reached the end of the file, the list must be terminated
-		if (token === SyntaxKind.EndOfFileToken)
-			return true;
+		if (token === SyntaxKind.EndOfFileToken) return true;
 
 		switch (context) {
 			case ParsingContext.StatementList:
@@ -712,7 +751,8 @@ export class Parser {
 				// Quoted strings are concatenated as long as there is a + following
 				return token !== SyntaxKind.PlusToken;
 
-			default: throw "Unsupported parsing context";
+			default:
+				throw "Unsupported parsing context";
 		}
 	}
 
@@ -746,19 +786,22 @@ export class Parser {
 		// TODO: Change to return a partial of the desired node
 		this.nodeCount++;
 		const p = pos !== undefined && pos >= 0 ? pos : this.scanner.startPos;
-		if (isNodeKind(kind) || kind === SyntaxKind.Unknown)
-			return newNode(kind, p, p);
-		return isIdentifier(kind)
-			? newIdentifier(kind, p, p)
-			: newToken(kind, p, p);
+		if (isNodeKind(kind) || kind === SyntaxKind.Unknown) return newNode(kind, p, p);
+		return isIdentifier(kind) ? newIdentifier(kind, p, p) : newToken(kind, p, p);
 	}
 
-	private createNodeArray<T extends SyntaxNode>(elements: T[], pos: number, end?: number): SyntaxNodeArray<T> {
+	private createNodeArray<T extends SyntaxNode>(
+		elements: T[],
+		pos: number,
+		end?: number,
+	): SyntaxNodeArray<T> {
 		// Since the element list of a node array is typically created by starting with an empty array and
 		// repeatedly calling push(), the list may not have the optimal memory layout. We invoke slice() for
 		// small arrays (1 to 4 elements) to give the VM a chance to allocate an optimal representation.
 		const length = elements.length;
-		const array = <MutableSyntaxNodeArray<T>>(length >= 1 && length <= 4 ? elements.slice() : elements);
+		const array = <MutableSyntaxNodeArray<T>>(
+			(length >= 1 && length <= 4 ? elements.slice() : elements)
+		);
 		array.pos = pos;
 		array.end = end === undefined ? this.scanner.startPos : end;
 		return array;
@@ -771,7 +814,9 @@ export class Parser {
 	}
 
 	private getLastError(diagnostics: DiagnosticMessage[]) {
-		return diagnostics && diagnostics.length > 0 ? diagnostics[diagnostics.length - 1] : undefined;
+		return diagnostics && diagnostics.length > 0
+			? diagnostics[diagnostics.length - 1]
+			: undefined;
 	}
 
 	private parseErrorAtPosition(start: number, end: number, message: string, code: ErrorCode) {
@@ -801,7 +846,12 @@ export class Parser {
 		return this.parseErrorAtPosition(this.scanner.tokenPos, this.scanner.pos, message, error);
 	}
 
-	private scanError(message: string, _category: DiagnosticCategory, sub: ScanError, length: number) {
+	private scanError(
+		message: string,
+		_category: DiagnosticCategory,
+		sub: ScanError,
+		length: number,
+	) {
 		const errorPos = this.scanner.pos;
 		const err = {
 			source: ErrorSource.Scan as ErrorSource.Scan,
@@ -819,19 +869,22 @@ export class Parser {
 				: `"${getTokenAsText(this.token())}"`;
 
 		const expected = expectedKinds.map(k => {
-			if (isIdentifier(k))
+			if (isIdentifier(k)) {
 				return "identifier";
-			else if (k === SyntaxKind.EndOfFileToken)
+			}
+			if (k === SyntaxKind.EndOfFileToken) {
 				return "end of file";
+			}
 			return `"${getTokenAsText(k)}"`;
 		});
 
 		const lastExpected = expected.pop();
 		const expectedJoined = expected.join(", ");
 
-		const msg = expected.length > 0
-			? `Expected ${expectedJoined} or ${lastExpected} but found ${found} instead.`
-			: `Expected ${lastExpected} but found ${found} instead.`;
+		const msg =
+			expected.length > 0
+				? `Expected ${expectedJoined} or ${lastExpected} but found ${found} instead.`
+				: `Expected ${lastExpected} but found ${found} instead.`;
 
 		// Report specific message if provided with one.  Otherwise, report generic fallback message.
 		//if (diagnostic) {
@@ -879,10 +932,11 @@ export class Parser {
 		return this.createMissingNode(fallback) as Token<T>;
 	}
 
-	private parseExpectedToken<T extends SyntaxKind>(kind: T /*, diagnostic?: Diagnostic */): Token<T> {
+	private parseExpectedToken<T extends SyntaxKind>(
+		kind: T /*, diagnostic?: Diagnostic */,
+	): Token<T> {
 		const tokenNode = this.parseOptionalToken(kind);
-		if (tokenNode !== undefined)
-			return tokenNode;
+		if (tokenNode !== undefined) return tokenNode;
 
 		this.reportExpectedError([kind]);
 		return this.createMissingNode(kind) as Token<T>;
@@ -891,8 +945,7 @@ export class Parser {
 	private parseExpected<T extends SyntaxKind>(kind: T /*, diagnostic?: Diagnostic */): boolean {
 		const res = this.parseOptional(kind);
 
-		if (!res)
-			this.reportExpectedError([kind]);
+		if (!res) this.reportExpectedError([kind]);
 		return res;
 	}
 
@@ -935,7 +988,10 @@ export class Parser {
 		return kind >= SyntaxKind.CompassCenterToken && kind <= SyntaxKind.CompassEnd;
 	}
 
-	private speculationHelper(callback: () => SyntaxKind | boolean, isLookAhead: boolean): SyntaxKind | boolean {
+	private speculationHelper(
+		callback: () => SyntaxKind | boolean,
+		isLookAhead: boolean,
+	): SyntaxKind | boolean {
 		// Keep track of the state we'll need to rollback to if lookahead fails (or if the
 		// caller asked us to always reset our state).
 		const saveToken = this.token();
@@ -987,7 +1043,6 @@ function newNode(kind: SyntaxKind, pos: number, end: number): SyntaxNode {
 		pos,
 		parent: undefined,
 	};
-
 }
 const newIdentifier = newNode;
 const newToken = newNode;
@@ -997,10 +1052,12 @@ function isNodeKind(kind: SyntaxKind) {
 }
 
 export function isIdentifier(kind: SyntaxKind) {
-	return kind === SyntaxKind.HtmlIdentifier
-		|| kind === SyntaxKind.NumericIdentifier
-		|| kind === SyntaxKind.TextIdentifier
-		|| kind === SyntaxKind.QuotedTextIdentifier;
+	return (
+		kind === SyntaxKind.HtmlIdentifier ||
+		kind === SyntaxKind.NumericIdentifier ||
+		kind === SyntaxKind.TextIdentifier ||
+		kind === SyntaxKind.QuotedTextIdentifier
+	);
 	// || kind === SyntaxKind.StringLiteral // TODO: Is this needed?
 }
 

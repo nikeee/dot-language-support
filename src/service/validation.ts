@@ -1,7 +1,7 @@
-import * as lst from "vscode-languageserver-types";
-import { DiagnosticMessage, SourceFile } from "../types.js";
-import { formatError, diagnosicSource } from "../error.js";
-import { DocumentLike } from "../index.js";
+import type * as lst from "vscode-languageserver-types";
+import { diagnosicSource, formatError } from "../error.js";
+import type { DocumentLike } from "../index.js";
+import type { DiagnosticMessage, SourceFile } from "../types.js";
 
 function convertDiagnostic(document: DocumentLike, source: DiagnosticMessage): lst.Diagnostic {
 	return {
@@ -18,8 +18,7 @@ function convertDiagnostic(document: DocumentLike, source: DiagnosticMessage): l
 
 export function validateDocument(doc: DocumentLike, sourceFile: SourceFile): lst.Diagnostic[] {
 	const diagnostics = sourceFile.diagnostics;
-	if (!diagnostics || diagnostics.length <= 0)
-		return [];
+	if (!diagnostics || diagnostics.length <= 0) return [];
 
 	return diagnostics.map(d => convertDiagnostic(doc, d));
 }

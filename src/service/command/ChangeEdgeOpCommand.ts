@@ -1,14 +1,19 @@
 import * as lst from "vscode-languageserver-types";
+import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
 import { CommandIds } from "../codeAction.js";
-import { EdgeOpStr, ExecutableCommand, getEdgeStr, EdgeType } from "./common.js";
-import { DocumentLike, SourceFile, CommandApplication } from "../../index.js";
+import { type EdgeOpStr, type EdgeType, type ExecutableCommand, getEdgeStr } from "./common.js";
 
 export interface ChangeEdgeOpCommand extends lst.Command {
 	command: CommandIds.ChangeEdgeOp;
 	arguments: [number, number, EdgeOpStr];
 }
 
-export function create(startOffset: number, endOffset: number, changeTo: EdgeType, changeFrom: EdgeType): ChangeEdgeOpCommand {
+export function create(
+	startOffset: number,
+	endOffset: number,
+	changeTo: EdgeType,
+	changeFrom: EdgeType,
+): ChangeEdgeOpCommand {
 	const from = getEdgeStr(changeFrom);
 	const to = getEdgeStr(changeTo);
 
@@ -19,9 +24,12 @@ export function create(startOffset: number, endOffset: number, changeTo: EdgeTyp
 	};
 }
 
-export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: ExecutableCommand): CommandApplication | undefined {
-	if (!isChangeEdgeOpCommand(cmd))
-		return undefined; // Invalid arguments
+export function execute(
+	doc: DocumentLike,
+	_sourceFile: SourceFile,
+	cmd: ExecutableCommand<unknown[]>,
+): CommandApplication | undefined {
+	if (!isChangeEdgeOpCommand(cmd)) return undefined; // Invalid arguments
 
 	const [startOffset, endOffset, changeTo] = cmd.arguments;
 
@@ -32,14 +40,12 @@ export function execute(doc: DocumentLike, _sourceFile: SourceFile, cmd: Executa
 		label: `Change of invalid edge to "${changeTo}"'"`,
 		edit: {
 			changes: {
-				[doc.uri]: [
-					lst.TextEdit.replace(lst.Range.create(startPos, endPos), changeTo),
-				],
-			}
-		}
+				[doc.uri]: [lst.TextEdit.replace(lst.Range.create(startPos, endPos), changeTo)],
+			},
+		},
 	};
 }
 
-function isChangeEdgeOpCommand(cmd: ExecutableCommand): cmd is ChangeEdgeOpCommand {
+function isChangeEdgeOpCommand(cmd: ExecutableCommand<unknown[]>): cmd is ChangeEdgeOpCommand {
 	return cmd.command === CommandIds.ChangeEdgeOp && !!cmd.arguments && cmd.arguments.length === 3;
 }

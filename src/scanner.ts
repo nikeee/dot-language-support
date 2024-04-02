@@ -1,6 +1,6 @@
 import { createMapFromTemplate } from "./core.js";
-import { SyntaxKind, CharacterCodes, TokenFlags, DiagnosticCategory, ScanError } from "./types.js";
 import { assertNever } from "./service/util.js";
+import { CharacterCodes, DiagnosticCategory, ScanError, SyntaxKind, TokenFlags } from "./types.js";
 
 export interface Scanner {
 	readonly end: number;
@@ -21,22 +21,22 @@ export interface Scanner {
 }
 
 const textToToken = createMapFromTemplate({
-	"digraph": SyntaxKind.DigraphKeyword,
-	"graph": SyntaxKind.GraphKeyword,
-	"edge": SyntaxKind.EdgeKeyword,
-	"node": SyntaxKind.NodeKeyword,
-	"strict": SyntaxKind.StrictKeyword,
-	"subgraph": SyntaxKind.SubgraphKeyword,
+	digraph: SyntaxKind.DigraphKeyword,
+	graph: SyntaxKind.GraphKeyword,
+	edge: SyntaxKind.EdgeKeyword,
+	node: SyntaxKind.NodeKeyword,
+	strict: SyntaxKind.StrictKeyword,
+	subgraph: SyntaxKind.SubgraphKeyword,
 
-	"n": SyntaxKind.CompassNorthToken,
-	"ne": SyntaxKind.CompassNorthEastToken,
-	"e": SyntaxKind.CompassEastToken,
-	"se": SyntaxKind.CompassSouthEastToken,
-	"s": SyntaxKind.CompassSouthToken,
-	"sw": SyntaxKind.CompassSouthWestToken,
-	"w": SyntaxKind.CompassWestToken,
-	"nw": SyntaxKind.CompassNorthWestToken,
-	"c": SyntaxKind.CompassCenterToken,
+	n: SyntaxKind.CompassNorthToken,
+	ne: SyntaxKind.CompassNorthEastToken,
+	e: SyntaxKind.CompassEastToken,
+	se: SyntaxKind.CompassSouthEastToken,
+	s: SyntaxKind.CompassSouthToken,
+	sw: SyntaxKind.CompassSouthWestToken,
+	w: SyntaxKind.CompassWestToken,
+	nw: SyntaxKind.CompassNorthWestToken,
+	c: SyntaxKind.CompassCenterToken,
 
 	"+": SyntaxKind.PlusToken,
 	"=": SyntaxKind.EqualsToken,
@@ -48,7 +48,7 @@ const textToToken = createMapFromTemplate({
 	"]": SyntaxKind.CloseBracketToken,
 	";": SyntaxKind.SemicolonToken,
 	":": SyntaxKind.ColonToken,
-	"_": SyntaxKind.UnderscoreToken,
+	_: SyntaxKind.UnderscoreToken,
 	",": SyntaxKind.CommaToken,
 	"<": SyntaxKind.LessThan,
 	">": SyntaxKind.GreaterThan,
@@ -72,7 +72,12 @@ export function getTextAsToken(token: string): SyntaxKind | undefined {
 	return textToToken.get(token);
 }
 
-export type ErrorCallback = (message: string, category: DiagnosticCategory, sub: ScanError, length: number) => void;
+export type ErrorCallback = (
+	message: string,
+	category: DiagnosticCategory,
+	sub: ScanError,
+	length: number,
+) => void;
 
 export class DefaultScanner implements Scanner {
 	public end: number;
@@ -86,7 +91,7 @@ export class DefaultScanner implements Scanner {
 	public text: string;
 	public onError: ErrorCallback | null;
 
-	public setText(newText?: string, start: number = 0, length?: number): void {
+	public setText(newText?: string, start = 0, length?: number): void {
 		this.text = newText || "";
 		this.end = length === undefined ? this.text.length : start + length;
 		this.setTextPos(start || 0);
@@ -106,7 +111,7 @@ export class DefaultScanner implements Scanner {
 		this.tokenFlags = TokenFlags.None;
 	}
 
-	public scan(skipTrivia: boolean = true): SyntaxKind {
+	public scan(skipTrivia = true): SyntaxKind {
 		this.startPos = this.pos;
 		this.tokenFlags = TokenFlags.None;
 		this.isUnterminated = false;
@@ -114,7 +119,7 @@ export class DefaultScanner implements Scanner {
 		while (true) {
 			this.tokenPos = this.pos;
 			if (this.pos >= this.end) {
-				return this.token = SyntaxKind.EndOfFileToken;
+				return (this.token = SyntaxKind.EndOfFileToken);
 			}
 
 			let ch = this.text.charCodeAt(this.pos);
@@ -128,15 +133,16 @@ export class DefaultScanner implements Scanner {
 						continue;
 					}
 					// consume both CR and LF
-					if (ch === CharacterCodes.carriageReturn
-						&& this.pos + 1 < this.end
-						&& this.text.charCodeAt(this.pos + 1) === CharacterCodes.lineFeed
+					if (
+						ch === CharacterCodes.carriageReturn &&
+						this.pos + 1 < this.end &&
+						this.text.charCodeAt(this.pos + 1) === CharacterCodes.lineFeed
 					) {
 						this.pos += 2;
 					} else {
 						this.pos++;
 					}
-					return this.token = SyntaxKind.NewLineTrivia;
+					return (this.token = SyntaxKind.NewLineTrivia);
 				case CharacterCodes.tab:
 				case CharacterCodes.verticalTab:
 				case CharacterCodes.formFeed:
@@ -145,18 +151,20 @@ export class DefaultScanner implements Scanner {
 						this.pos++;
 						continue;
 					}
-					while (this.pos < this.end && this.isWhiteSpaceSingleLine(this.text.charCodeAt(this.pos)))
+					while (
+						this.pos < this.end &&
+						this.isWhiteSpaceSingleLine(this.text.charCodeAt(this.pos))
+					)
 						this.pos++;
-					return this.token = SyntaxKind.WhitespaceTrivia;
+					return (this.token = SyntaxKind.WhitespaceTrivia);
 
 				case CharacterCodes.hash: {
 					const content = this.scanHashCommentTrivia(skipTrivia);
 
 					// Skip rest of line
-					if (skipTrivia)
-						continue;
+					if (skipTrivia) continue;
 					this.tokenValue = content;
-					return this.token = SyntaxKind.HashCommentTrivia;
+					return (this.token = SyntaxKind.HashCommentTrivia);
 				}
 				case CharacterCodes.slash: {
 					if (this.pos + 1 < this.end) {
@@ -165,19 +173,17 @@ export class DefaultScanner implements Scanner {
 						switch (nextChar) {
 							case CharacterCodes.slash: {
 								const commentContent = this.scanSingleLineCommentTrivia(skipTrivia);
-								if (skipTrivia)
-									continue;
+								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
-								return this.token = SyntaxKind.SingleLineCommentTrivia;
+								return (this.token = SyntaxKind.SingleLineCommentTrivia);
 							}
 							case CharacterCodes.asterisk: {
 								const commentContent = this.scanMultiLineCommentTrivia(skipTrivia);
-								if (skipTrivia)
-									continue;
+								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
-								return this.token = SyntaxKind.MultiLineCommentTrivia;
+								return (this.token = SyntaxKind.MultiLineCommentTrivia);
 							}
 						}
 					}
@@ -190,22 +196,22 @@ export class DefaultScanner implements Scanner {
 				}
 				case CharacterCodes.openBrace:
 					this.pos++;
-					return this.token = SyntaxKind.OpenBraceToken;
+					return (this.token = SyntaxKind.OpenBraceToken);
 				case CharacterCodes.closeBrace:
 					this.pos++;
-					return this.token = SyntaxKind.CloseBraceToken;
+					return (this.token = SyntaxKind.CloseBraceToken);
 				case CharacterCodes.openBracket:
 					this.pos++;
-					return this.token = SyntaxKind.OpenBracketToken;
+					return (this.token = SyntaxKind.OpenBracketToken);
 				case CharacterCodes.closeBracket:
 					this.pos++;
-					return this.token = SyntaxKind.CloseBracketToken;
+					return (this.token = SyntaxKind.CloseBracketToken);
 				case CharacterCodes.plus:
 					this.pos++;
-					return this.token = SyntaxKind.PlusToken;
+					return (this.token = SyntaxKind.PlusToken);
 				case CharacterCodes.equals:
 					this.pos++;
-					return this.token = SyntaxKind.EqualsToken;
+					return (this.token = SyntaxKind.EqualsToken);
 				case CharacterCodes._0:
 				case CharacterCodes._1:
 				case CharacterCodes._2:
@@ -218,16 +224,17 @@ export class DefaultScanner implements Scanner {
 				case CharacterCodes._9:
 				case CharacterCodes.dot:
 					this.tokenValue = this.scanNumber();
-					return this.token = SyntaxKind.NumericIdentifier;
+					return (this.token = SyntaxKind.NumericIdentifier);
 				case CharacterCodes.minus: {
-
 					const nextChar = this.text.charCodeAt(this.pos + 1);
 
 					switch (nextChar) {
 						case CharacterCodes.minus: // --
-							return this.pos += 2, this.token = SyntaxKind.UndirectedEdgeOp;
+							this.pos += 2;
+							return (this.token = SyntaxKind.UndirectedEdgeOp);
 						case CharacterCodes.greaterThan: // ->
-							return this.pos += 2, this.token = SyntaxKind.DirectedEdgeOp;
+							this.pos += 2;
+							return (this.token = SyntaxKind.DirectedEdgeOp);
 
 						case CharacterCodes._0:
 						case CharacterCodes._1:
@@ -241,14 +248,15 @@ export class DefaultScanner implements Scanner {
 						case CharacterCodes._9:
 						case CharacterCodes.dot:
 							this.tokenValue = this.scanNumber();
-							return this.token = SyntaxKind.NumericIdentifier;
-						default:
+							return (this.token = SyntaxKind.NumericIdentifier);
+						default: {
 							const chr = this.text.charAt(this.pos + 1);
 							this.error(
 								`Unexpected "${chr}". Did you mean to define an edge? Depending on the type of graph you are defining, use "->" or "--".`,
 								ScanError.ExpectationFailed,
 							);
 							break;
+						}
 					}
 					this.pos++;
 					break;
@@ -258,55 +266,69 @@ export class DefaultScanner implements Scanner {
 				// TODO: Remove UnderscoreToken
 				case CharacterCodes._:
 					this.pos++;
-					return this.token = SyntaxKind.UnderscoreToken;
+					return (this.token = SyntaxKind.UnderscoreToken);
 				case CharacterCodes.semicolon:
 					this.pos++;
-					return this.token = SyntaxKind.SemicolonToken;
+					return (this.token = SyntaxKind.SemicolonToken);
 				case CharacterCodes.colon:
 					this.pos++;
-					return this.token = SyntaxKind.ColonToken;
+					return (this.token = SyntaxKind.ColonToken);
 				case CharacterCodes.comma:
 					this.pos++;
-					return this.token = SyntaxKind.CommaToken;
+					return (this.token = SyntaxKind.CommaToken);
 				case CharacterCodes.lessThan:
 					this.tokenValue = this.scanHtml();
-					return this.token = SyntaxKind.HtmlIdentifier;
+					return (this.token = SyntaxKind.HtmlIdentifier);
 				case CharacterCodes.doubleQuote:
 					this.tokenValue = this.scanString();
-					return this.token = SyntaxKind.StringLiteral;
-				default:
-					{
-						if (isIdentifierStart(ch)) {
-							this.pos++;
-							while (this.pos < this.end && isIdentifierPart(ch = this.text.charCodeAt(this.pos)))
-								this.pos++;
-
-							const value = this.text.substring(this.tokenPos, this.pos);
-							this.tokenValue = value;
-							return this.token = this.getIdentifierToken(value);
-						}
-						if (this.isWhiteSpaceSingleLine(ch)) {
-							this.pos++;
-							continue;
-						}
-
-						const chr = this.text.charAt(this.pos);
-						this.error(
-							`Unexpected "${chr}". Did you mean to start an identifier? Node names cannot start with "${chr}".`,
-							ScanError.ExpectationFailed,
-						);
-						// debugger;
+					return (this.token = SyntaxKind.StringLiteral);
+				default: {
+					if (isIdentifierStart(ch)) {
 						this.pos++;
-						break;
-						// return this.token = SyntaxKind.Unknown;
+						while (
+							this.pos < this.end &&
+							isIdentifierPart((ch = this.text.charCodeAt(this.pos)))
+						)
+							this.pos++;
+
+						const value = this.text.substring(this.tokenPos, this.pos);
+						this.tokenValue = value;
+						return (this.token = this.getIdentifierToken(value));
 					}
+					if (this.isWhiteSpaceSingleLine(ch)) {
+						this.pos++;
+						continue;
+					}
+
+					const chr = this.text.charAt(this.pos);
+					this.error(
+						`Unexpected "${chr}". Did you mean to start an identifier? Node names cannot start with "${chr}".`,
+						ScanError.ExpectationFailed,
+					);
+					// debugger;
+					this.pos++;
+					break;
+					// return this.token = SyntaxKind.Unknown;
+				}
 			}
 		}
 	}
 
 	private error(message: string, sub: ScanError, category?: DiagnosticCategory): void;
-	private error(message: string, sub: ScanError, errPos: number, length: number, category?: DiagnosticCategory): void;
-	private error(message: string, sub: ScanError, category: DiagnosticCategory = DiagnosticCategory.Error, errPos: number = this.pos, length: number = 0): void {
+	private error(
+		message: string,
+		sub: ScanError,
+		errPos: number,
+		length: number,
+		category?: DiagnosticCategory,
+	): void;
+	private error(
+		message: string,
+		sub: ScanError,
+		category: DiagnosticCategory = DiagnosticCategory.Error,
+		errPos: number = this.pos,
+		length = 0,
+	): void {
 		const cb = this.onError;
 		if (cb) {
 			const posSave = this.pos;
@@ -320,31 +342,34 @@ export class DefaultScanner implements Scanner {
 	private isWhiteSpaceSingleLine(ch: number) {
 		// Note: nextLine is in the Zs space, and should be considered to be a whitespace.
 		// It is explicitly not a line-break as it isn't in the exact set specified by EcmaScript.
-		return ch === CharacterCodes.space ||
+		return (
+			ch === CharacterCodes.space ||
 			ch === CharacterCodes.tab ||
 			ch === CharacterCodes.verticalTab ||
 			ch === CharacterCodes.formFeed ||
 			ch === CharacterCodes.nonBreakingSpace ||
 			ch === CharacterCodes.nextLine ||
 			ch === CharacterCodes.ogham ||
-			ch >= CharacterCodes.enQuad && ch <= CharacterCodes.zeroWidthSpace ||
+			(ch >= CharacterCodes.enQuad && ch <= CharacterCodes.zeroWidthSpace) ||
 			ch === CharacterCodes.narrowNoBreakSpace ||
 			ch === CharacterCodes.mathematicalSpace ||
 			ch === CharacterCodes.ideographicSpace ||
-			ch === CharacterCodes.byteOrderMark;
+			ch === CharacterCodes.byteOrderMark
+		);
 	}
 
 	private isAtMultiLineCommentEnd(pos: number): boolean {
-		return pos + 1 < this.end
-			&& this.text.charCodeAt(pos) === CharacterCodes.asterisk
-			&& this.text.charCodeAt(pos + 1) === CharacterCodes.slash;
+		return (
+			pos + 1 < this.end &&
+			this.text.charCodeAt(pos) === CharacterCodes.asterisk &&
+			this.text.charCodeAt(pos + 1) === CharacterCodes.slash
+		);
 	}
 
 	private scanHashCommentTrivia(skip: boolean): string | undefined {
 		++this.pos;
 		const start = this.pos;
-		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos)))
-			this.pos++;
+		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos))) this.pos++;
 
 		// line breaks are consumed by the scanner, so we need to handle the comment trailing
 
@@ -354,8 +379,7 @@ export class DefaultScanner implements Scanner {
 	private scanSingleLineCommentTrivia(skip: boolean): string | undefined {
 		this.pos += 2;
 		const start = this.pos;
-		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos)))
-			this.pos++;
+		while (this.pos < this.end && !isLineBreak(this.text.charCodeAt(this.pos))) this.pos++;
 
 		// line breaks are consumed by the scanner, so we need to handle the comment trailing
 
@@ -365,8 +389,7 @@ export class DefaultScanner implements Scanner {
 	private scanMultiLineCommentTrivia(skip: boolean): string | undefined {
 		this.pos += 2;
 		const start = this.pos;
-		while (this.pos < this.end && !this.isAtMultiLineCommentEnd(this.pos))
-			this.pos++;
+		while (this.pos < this.end && !this.isAtMultiLineCommentEnd(this.pos)) this.pos++;
 
 		const commentEnd = this.pos;
 		if (this.isAtMultiLineCommentEnd(this.pos)) {
@@ -380,7 +403,7 @@ export class DefaultScanner implements Scanner {
 		const htmlOpen = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
-		let start = this.pos;
+		const start = this.pos;
 
 		let subTagsLevel = 0;
 		while (true) {
@@ -405,10 +428,8 @@ export class DefaultScanner implements Scanner {
 					result += this.text.substring(start, this.pos);
 					break;
 				}
-				else {
-					--subTagsLevel;
-					continue;
-				}
+				--subTagsLevel;
+				continue;
 			}
 			this.pos++;
 		}
@@ -419,7 +440,7 @@ export class DefaultScanner implements Scanner {
 		const quote = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
-		let start = this.pos;
+		const start = this.pos;
 		let hasBackslash = false;
 		while (true) {
 			if (this.pos >= this.end) {
@@ -441,7 +462,8 @@ export class DefaultScanner implements Scanner {
 						result += this.text.substring(start, this.pos);
 						this.pos++;
 						break;
-					} else if (isLineBreak(ch)) {
+					}
+					if (isLineBreak(ch)) {
 						result += this.text.substring(start, this.pos);
 						this.tokenFlags |= TokenFlags.Unterminated;
 						this.isUnterminated = true;
@@ -453,9 +475,7 @@ export class DefaultScanner implements Scanner {
 
 			this.pos++;
 		}
-		const removedEscapes = result
-			.replace(/\\"/g, '"')
-			.replace(/\\(\r?\n)/g, '$1');
+		const removedEscapes = result.replace(/\\"/g, '"').replace(/\\(\r?\n)/g, "$1");
 		return removedEscapes;
 	}
 
@@ -508,8 +528,8 @@ export class DefaultScanner implements Scanner {
 		if (len >= 4 && len <= 8) {
 			const ch = tokenValue.charCodeAt(0);
 			if (
-				(ch >= CharacterCodes.a && ch <= CharacterCodes.z)
-				|| (ch >= CharacterCodes.A && ch <= CharacterCodes.Z)
+				(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
+				(ch >= CharacterCodes.A && ch <= CharacterCodes.Z)
 			) {
 				const lowerCaseToken = tokenValue.toLowerCase();
 				const t = textToToken.get(lowerCaseToken);
@@ -519,7 +539,7 @@ export class DefaultScanner implements Scanner {
 				}
 			}
 		}
-		return this.token = SyntaxKind.TextIdentifier;
+		return (this.token = SyntaxKind.TextIdentifier);
 	}
 
 	public lookAhead<T extends SyntaxKind>(callback: () => T): T {
@@ -554,8 +574,11 @@ export class DefaultScanner implements Scanner {
 	}
 }
 
-
-type Identifier = SyntaxKind.HtmlIdentifier | SyntaxKind.TextIdentifier | SyntaxKind.StringLiteral | SyntaxKind.NumericIdentifier;
+type Identifier =
+	| SyntaxKind.HtmlIdentifier
+	| SyntaxKind.TextIdentifier
+	| SyntaxKind.StringLiteral
+	| SyntaxKind.NumericIdentifier;
 
 // TODO: Clean this up
 /**
@@ -568,34 +591,43 @@ type Identifier = SyntaxKind.HtmlIdentifier | SyntaxKind.TextIdentifier | Syntax
 function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 	switch (idType) {
 		case SyntaxKind.TextIdentifier:
-			return ch === CharacterCodes._
-				|| CharacterCodes.A <= ch && ch <= CharacterCodes.Z
-				|| CharacterCodes.a <= ch && ch <= CharacterCodes.z
-				|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9;
+			return (
+				ch === CharacterCodes._ ||
+				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
+				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
+				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+			);
 		case SyntaxKind.HtmlIdentifier:
 			// TODO: This may not be all char codes
-			return ch === CharacterCodes._
-				|| ch === CharacterCodes.lessThan
-				|| ch === CharacterCodes.equals
-				|| ch === CharacterCodes.doubleQuote
-				|| CharacterCodes.A <= ch && ch <= CharacterCodes.Z
-				|| CharacterCodes.a <= ch && ch <= CharacterCodes.z
-				|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9;
+			return (
+				ch === CharacterCodes._ ||
+				ch === CharacterCodes.lessThan ||
+				ch === CharacterCodes.equals ||
+				ch === CharacterCodes.doubleQuote ||
+				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
+				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
+				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+			);
 		case SyntaxKind.StringLiteral:
 			// TODO: This may not be all char codes
-			return ch === CharacterCodes._
-				|| ch === CharacterCodes.backslash
-				|| ch === CharacterCodes.lessThan
-				|| ch === CharacterCodes.equals
-				|| ch === CharacterCodes.doubleQuote
-				|| CharacterCodes.A <= ch && ch <= CharacterCodes.Z
-				|| CharacterCodes.a <= ch && ch <= CharacterCodes.z
-				|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9;
+			return (
+				ch === CharacterCodes._ ||
+				ch === CharacterCodes.backslash ||
+				ch === CharacterCodes.lessThan ||
+				ch === CharacterCodes.equals ||
+				ch === CharacterCodes.doubleQuote ||
+				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
+				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
+				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+			);
 		case SyntaxKind.NumericIdentifier:
-			return ch === CharacterCodes.minus
-				|| ch === CharacterCodes.dot
-				|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9;
-		default: return assertNever(idType);
+			return (
+				ch === CharacterCodes.minus ||
+				ch === CharacterCodes.dot ||
+				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+			);
+		default:
+			return assertNever(idType);
 	}
 }
 
@@ -606,18 +638,20 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
  * string starts: 'a'-'z', 'A'-'Z', '_'
  */
 function getIdentifierStart(ch: number): Identifier | undefined {
-	if (ch === CharacterCodes.lessThan)
-		return SyntaxKind.HtmlIdentifier;
-	if (ch === CharacterCodes.doubleQuote)
-		return SyntaxKind.StringLiteral;
-	if (ch === CharacterCodes._
-		|| CharacterCodes.A <= ch && ch <= CharacterCodes.Z
-		|| CharacterCodes.a <= ch && ch <= CharacterCodes.z)
+	if (ch === CharacterCodes.lessThan) return SyntaxKind.HtmlIdentifier;
+	if (ch === CharacterCodes.doubleQuote) return SyntaxKind.StringLiteral;
+	if (
+		ch === CharacterCodes._ ||
+		(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
+		(CharacterCodes.a <= ch && ch <= CharacterCodes.z)
+	)
 		return SyntaxKind.TextIdentifier;
 
-	if (ch === CharacterCodes.minus
-		|| ch === CharacterCodes.dot
-		|| CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+	if (
+		ch === CharacterCodes.minus ||
+		ch === CharacterCodes.dot ||
+		(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+	)
 		return SyntaxKind.NumericIdentifier;
 
 	return undefined;
@@ -625,33 +659,34 @@ function getIdentifierStart(ch: number): Identifier | undefined {
 
 export function isIdentifierStart(ch: number): boolean {
 	// TODO: Check Identifiers
-	return ch >= CharacterCodes.A && ch <= CharacterCodes.Z
-		|| ch >= CharacterCodes.a && ch <= CharacterCodes.z
-		|| ch >= CharacterCodes._0 && ch <= CharacterCodes._9
-		|| ch === CharacterCodes._
-		|| ch === CharacterCodes.lessThan
-		|| ch === CharacterCodes.doubleQuote
-		;
+	return (
+		(ch >= CharacterCodes.A && ch <= CharacterCodes.Z) ||
+		(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
+		(ch >= CharacterCodes._0 && ch <= CharacterCodes._9) ||
+		ch === CharacterCodes._ ||
+		ch === CharacterCodes.lessThan ||
+		ch === CharacterCodes.doubleQuote
+	);
 }
 
 function isIdentifierPart(ch: number): boolean {
-	return ch >= CharacterCodes.A && ch <= CharacterCodes.Z
-		|| ch >= CharacterCodes.a && ch <= CharacterCodes.z
-		|| ch >= CharacterCodes._0 && ch <= CharacterCodes._9
-		|| ch === CharacterCodes.$
-		|| ch === CharacterCodes._
-		|| ch > CharacterCodes.maxAsciiCharacter;
+	return (
+		(ch >= CharacterCodes.A && ch <= CharacterCodes.Z) ||
+		(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
+		(ch >= CharacterCodes._0 && ch <= CharacterCodes._9) ||
+		ch === CharacterCodes.$ ||
+		ch === CharacterCodes._ ||
+		ch > CharacterCodes.maxAsciiCharacter
+	);
 }
 
-export function skipTrivia(text: string, pos: number, /* stopAtComments = false */): number {
-
+export function skipTrivia(text: string, pos: number /* stopAtComments = false */): number {
 	// When changed, also change the implementation in the scanner
 	while (true) {
 		const ch = text.charCodeAt(pos);
 		switch (ch) {
 			case CharacterCodes.carriageReturn:
-				if (text.charCodeAt(pos + 1) === CharacterCodes.lineFeed)
-					++pos;
+				if (text.charCodeAt(pos + 1) === CharacterCodes.lineFeed) ++pos;
 				continue;
 			case CharacterCodes.lineFeed:
 			case CharacterCodes.tab:
@@ -664,8 +699,7 @@ export function skipTrivia(text: string, pos: number, /* stopAtComments = false 
 				// Skip single line comments started using hash
 				++pos;
 				while (pos < text.length) {
-					if (isLineBreak(text.charCodeAt(pos)))
-						break;
+					if (isLineBreak(text.charCodeAt(pos))) break;
 					++pos;
 				}
 				continue;
@@ -678,8 +712,7 @@ export function skipTrivia(text: string, pos: number, /* stopAtComments = false 
 						case CharacterCodes.slash: {
 							pos += 2;
 							while (pos < text.length) {
-								if (isLineBreak(text.charCodeAt(pos)))
-									break;
+								if (isLineBreak(text.charCodeAt(pos))) break;
 								++pos;
 							}
 							continue;
@@ -687,7 +720,10 @@ export function skipTrivia(text: string, pos: number, /* stopAtComments = false 
 						case CharacterCodes.asterisk: {
 							pos += 2;
 							while (pos < text.length) {
-								if (text.charCodeAt(pos) === CharacterCodes.asterisk && text.charCodeAt(pos + 1) === CharacterCodes.slash) {
+								if (
+									text.charCodeAt(pos) === CharacterCodes.asterisk &&
+									text.charCodeAt(pos + 1) === CharacterCodes.slash
+								) {
 									pos += 2;
 									break;
 								}
@@ -704,6 +740,5 @@ export function skipTrivia(text: string, pos: number, /* stopAtComments = false 
 }
 
 export function isLineBreak(ch: number): boolean {
-	return ch === CharacterCodes.lineFeed
-		|| ch === CharacterCodes.carriageReturn;
+	return ch === CharacterCodes.lineFeed || ch === CharacterCodes.carriageReturn;
 }
