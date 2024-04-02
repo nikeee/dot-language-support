@@ -11,10 +11,10 @@
     "test": "tsc --noEmit && vitest run",
     "test:coverage": "vitest run --coverage",
     "clean": "rimraf lib",
-    "compile:esm": "tsc --target esnext --module esnext --outDir lib/esm",
-    "compile:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
-    "compile": "npm run compile:esm && npm run compile:cjs",
-    "prepare": "npm run clean && npm run compile"
+    "build:esm": "tsc --target esnext --module esnext --outDir lib/esm",
+    "build:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
+    "build": "npm run build:esm && npm run build:cjs",
+    "prepare": "npm run clean && npm run build"
   },
   "keywords": [
     "graphviz",
