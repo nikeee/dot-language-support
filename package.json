@@ -1,6 +1,6 @@
 {
   "name": "dot-language-support",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Parser and language service for graphviz (dot) files",
   "author": "Niklas Mollenhauer",
   "license": "MIT",
