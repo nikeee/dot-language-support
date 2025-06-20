@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.5.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
 	"formatter": {
 		"enabled": true,
 		"indentWidth": 4,
@@ -32,9 +32,7 @@
 	},
 	"overrides": [
 		{
-			"include": [
-				"src/scanner.ts"
-			],
+			"includes": ["**/src/scanner.ts"],
 			"linter": {
 				"rules": {
 					"suspicious": {
