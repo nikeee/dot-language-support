@@ -156,7 +156,7 @@ function getEdgeHover(n: EdgeRhs) {
 	const p = n.parent as EdgeStatement;
 	if (!p || p.rhs.length === 0) return undefined;
 
-	let source: EdgeSourceOrTarget | undefined ;
+	let source: EdgeSourceOrTarget | undefined;
 	for (const curr of p.rhs) {
 		if (curr === n) break;
 		source = curr.target;

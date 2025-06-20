@@ -2,7 +2,7 @@ import type { Location, Position, ReferenceContext } from "vscode-languageserver
 import { findNodeAtOffset } from "../checker.js";
 import { type DocumentLike, isIdentifierNode } from "../index.js";
 import type { SourceFile, SyntaxNode } from "../types.js";
-import { syntaxNodeToRange, syntaxNodesToRanges } from "./util.js";
+import { syntaxNodesToRanges, syntaxNodeToRange } from "./util.js";
 
 export function findReferences(
 	doc: DocumentLike,

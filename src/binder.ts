@@ -39,9 +39,9 @@ export function bindSourceFile(file: SourceFile) {
 }
 
 function createBinder(): Binder {
-	let parent: SyntaxNode | undefined ;
-	let symbolTable: SymbolTable | undefined ;
-	let colorTable: ColorTable | undefined ;
+	let parent: SyntaxNode | undefined;
+	let symbolTable: SymbolTable | undefined;
+	let colorTable: ColorTable | undefined;
 	let graphContext: GraphContext = GraphContext.None;
 
 	function bind(node: SyntaxNode): void {
@@ -201,7 +201,7 @@ function createBinder(): Binder {
 
 		// TODO: This is crap, fix it
 
-		let carrierIdentifier ;
+		let carrierIdentifier;
 		switch (superParentStatement.kind) {
 			case SyntaxKind.NodeStatement:
 				carrierIdentifier = superParentStatement.id.id;

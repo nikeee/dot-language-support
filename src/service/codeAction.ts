@@ -18,25 +18,25 @@ import {
 	type DocumentLike,
 	type EdgeStatement,
 	ErrorSource,
+	forEachChild,
 	type Graph,
+	isIdentifierNode,
 	type ParseErrorCode,
 	type ScanErrorCode,
 	type SourceFile,
 	SyntaxKind,
 	type SyntaxNode,
-	forEachChild,
-	isIdentifierNode,
 } from "../index.js";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
 import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
-import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
 import {
 	type ExecutableCommand,
 	getAllowedOp,
 	getOppositeEdgeOp,
 	getOppositeKind,
 } from "./command/common.js";
+import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
 import { assertNever, getStart } from "./util.js";
 
 export function getCodeActions(

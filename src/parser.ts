@@ -1,4 +1,4 @@
-import { DefaultScanner, type Scanner, getTokenAsText } from "./scanner.js";
+import { DefaultScanner, getTokenAsText, type Scanner } from "./scanner.js";
 import { assertNever } from "./service/util.js";
 import {
 	type Assignment,
@@ -96,7 +96,7 @@ export class Parser {
 		// preparing the scanner
 		this.#nextToken();
 
-		let graph ;
+		let graph;
 		if (this.#token() !== SyntaxKind.EndOfFileToken) {
 			// Parsing root node
 			graph = this.#parseGraph();

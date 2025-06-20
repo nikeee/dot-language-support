@@ -3,6 +3,7 @@ import { bindSourceFile } from "./binder.js";
 import { checkSourceFile } from "./checker.js";
 import { Parser } from "./parser.js";
 import { getCompletions } from "./service/completion.js";
+
 // import { Scanner, DefaultScanner } from "./scanner.js";
 // import { hover } from "./service/hover.js";
 
