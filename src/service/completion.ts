@@ -159,7 +159,7 @@ function getNodeCompletions(
 	symbols: SymbolTable,
 	exlucdedSymbols?: string[],
 ): lst.CompletionItem[] {
-	const res = new Array<lst.CompletionItem>();
+	const res: lst.CompletionItem[] = [];
 	for (const [key, value] of symbols) {
 		if (exlucdedSymbols?.includes(key)) continue;
 

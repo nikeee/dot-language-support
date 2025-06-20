@@ -96,7 +96,7 @@ export class Parser {
 		// preparing the scanner
 		this.#nextToken();
 
-		let graph = undefined;
+		let graph ;
 		if (this.#token() !== SyntaxKind.EndOfFileToken) {
 			// Parsing root node
 			graph = this.#parseGraph();
@@ -152,7 +152,7 @@ export class Parser {
 	}
 	#parseIdentifier(): Identifier {
 		let result: Identifier;
-		const escapedIdTexts = new Array<string>();
+		const escapedIdTexts: string[] = [];
 		switch (this.#token()) {
 			case SyntaxKind.TextIdentifier:
 				result = this.#parseTextIdentifier();
@@ -639,7 +639,7 @@ export class Parser {
 		let isListTerminated = atLeastOne ? false : this.#isListTerminator(context);
 		const startPos = this.scanner.startPos;
 
-		const elements = new Array<T>();
+		const elements: T[] = [];
 		while (!isListTerminated) {
 			if (this.#isListElement(context, false)) {
 				const element = parseElement();
@@ -765,7 +765,7 @@ export class Parser {
 
 	#createEmptyArray<T extends SyntaxNode>(): SyntaxNodeArray<T> {
 		const startPos = this.scanner.startPos;
-		const elements = new Array<T>();
+		const elements: T[] = [];
 		return this.#createNodeArray(elements, startPos);
 	}
 
