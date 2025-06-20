@@ -201,7 +201,7 @@ function createBinder(): Binder {
 
 		// TODO: This is crap, fix it
 
-		let carrierIdentifier;
+		let carrierIdentifier: Identifier | undefined;
 		switch (superParentStatement.kind) {
 			case SyntaxKind.NodeStatement:
 				carrierIdentifier = superParentStatement.id.id;

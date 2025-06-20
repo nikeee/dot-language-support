@@ -96,7 +96,7 @@ export class Parser {
 		// preparing the scanner
 		this.#nextToken();
 
-		let graph;
+		let graph: Graph | undefined;
 		if (this.#token() !== SyntaxKind.EndOfFileToken) {
 			// Parsing root node
 			graph = this.#parseGraph();

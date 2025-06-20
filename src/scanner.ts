@@ -401,7 +401,7 @@ export class DefaultScanner implements Scanner {
 	}
 
 	#scanHtml(): string {
-		const htmlOpen = this.text.charCodeAt(this.pos);
+		// const htmlOpen = this.text.charCodeAt(this.pos);
 		this.pos++;
 		let result = "";
 		const start = this.pos;
@@ -437,6 +437,7 @@ export class DefaultScanner implements Scanner {
 		return result;
 	}
 
+	// biome-ignore lint/correctness/noUnusedFunctionParameters: todo
 	#scanString(allowEscapes = true): string {
 		const quote = this.text.charCodeAt(this.pos);
 		this.pos++;
@@ -589,6 +590,7 @@ type Identifier =
  * - any double-quoted string ("...") possibly containing escaped quotes (\");
  * - an HTML string (<...>).
  */
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 	switch (idType) {
 		case SyntaxKind.TextIdentifier:
@@ -638,6 +640,7 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
  * numeric identifier starts: '-', '.', '0' - '9'
  * string starts: 'a'-'z', 'A'-'Z', '_'
  */
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function getIdentifierStart(ch: number): Identifier | undefined {
 	if (ch === CharacterCodes.lessThan) return SyntaxKind.HtmlIdentifier;
 	if (ch === CharacterCodes.doubleQuote) return SyntaxKind.StringLiteral;

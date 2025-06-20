@@ -40,6 +40,7 @@ export function checkSourceFile(file: SourceFile): void {
 	}
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode): SyntaxNode {
 	const prevRange = prev.end - prev.pos;
 
@@ -279,6 +280,7 @@ function createEdgeViolationDiagnostics(
 	});
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function getInvalidEdgeRhs(allowedOp: EdgeOp["kind"], edges: SyntaxNodeArray<EdgeRhs>): EdgeRhs[] {
 	const res = [];
 	for (const e of edges) {
@@ -296,7 +298,7 @@ export function isEdgeStatement(node: SyntaxNode): node is EdgeStatement {
 export function isSubGraphStatement(node: SyntaxNode): node is SubGraphStatement {
 	return node.kind === SyntaxKind.SubGraphStatement;
 }
-function isGraph(node: SyntaxNode): node is Graph {
+export function isGraph(node: SyntaxNode): node is Graph {
 	return node.kind === SyntaxKind.DirectedGraph || node.kind === SyntaxKind.UndirectedGraph;
 }
 export function isNodeId(node: SyntaxNode): node is NodeId {
