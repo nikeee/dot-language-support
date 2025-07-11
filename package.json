@@ -4,9 +4,10 @@
   "description": "Parser and language service for graphviz (dot) files",
   "author": "Niklas Mollenhauer",
   "license": "MIT",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "ci": "biome ci ./src",
     "test": "tsc --noEmit && vitest run",
@@ -14,11 +15,8 @@
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",
-    "clean": "rimraf lib",
-    "build:esm": "tsc --target esnext --module esnext --outDir lib/esm",
-    "build:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
-    "build": "npm run build:esm && npm run build:cjs",
-    "prepare": "npm run clean && npm run build"
+    "build": "tsup",
+    "prepare": "npm run build"
   },
   "keywords": [
     "graphviz",
@@ -45,6 +43,6 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }
