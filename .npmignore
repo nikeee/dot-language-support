@@ -6,16 +6,17 @@
 *.js.map
 
 tsconfig.json
+biome.json
 
 !*.js
 
-# No CI/Editor-Specific files
+.github/
 .editorconfig
 .vscode/
-.travis.yml
 
 src/
 tests/
 
 LICENSE
 *.md
+CITATION.cff
