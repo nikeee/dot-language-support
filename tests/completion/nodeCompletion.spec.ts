@@ -1,8 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils.js";
-import { getCompletions } from "../../src/service/completion.js";
+import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils.ts";
+import { getCompletions } from "../../src/service/completion.ts";
 
 describe("Node completion", () => {
 

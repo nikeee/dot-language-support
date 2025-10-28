@@ -1,7 +1,7 @@
 import type * as lst from "vscode-languageserver-types";
-import { findNodeAtOffset, getIdentifierText } from "../checker.js";
-import type { DocumentLike, NodeStatement } from "../index.js";
-import { isIdentifierNode } from "../parser.js";
+import { findNodeAtOffset, getIdentifierText } from "../checker.ts";
+import type { DocumentLike, NodeStatement } from "../index.ts";
+import { isIdentifierNode } from "../parser.ts";
 import {
 	type Assignment,
 	type EdgeRhs,
@@ -15,9 +15,9 @@ import {
 	type SyntaxNode,
 	syntaxKind,
 	syntaxKindNames,
-} from "../types.js";
-import { getEdgeStr } from "./command/common.js";
-import { syntaxNodeToRange } from "./util.js";
+} from "../types.ts";
+import { getEdgeStr } from "./command/common.ts";
+import { syntaxNodeToRange } from "./util.ts";
 
 export function hover(
 	doc: DocumentLike,

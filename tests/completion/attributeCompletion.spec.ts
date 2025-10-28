@@ -1,9 +1,9 @@
 import { test, describe } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
-import { getCompletions } from "../../src/service/completion.js";
-import { attributes } from "../../src/service/languageFacts.js";
+import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.ts";
+import { getCompletions } from "../../src/service/completion.ts";
+import { attributes } from "../../src/service/languageFacts.ts";
 
 
 describe("Attribute completion", () => {

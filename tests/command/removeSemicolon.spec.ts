@@ -3,7 +3,7 @@ import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
+import { ensureDocAndSourceFile, ensureGraph } from "../testutils.ts";
 
 import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons";
 import { commandIds, getCodeActions } from "../../src/service/codeAction";

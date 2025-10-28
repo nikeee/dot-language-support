@@ -9,7 +9,7 @@ import {
 	isEdgeStatement,
 	isNodeId,
 	nodeContainsErrors,
-} from "../checker.js";
+} from "../checker.ts";
 import {
 	type CheckErrorCode,
 	type CommandApplication,
@@ -26,18 +26,18 @@ import {
 	type SourceFile,
 	type SyntaxNode,
 	syntaxKind,
-} from "../index.js";
-import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
-import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
-import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
+} from "../index.ts";
+import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.ts";
+import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.ts";
+import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.ts";
 import {
 	type ExecutableCommand,
 	getAllowedOp,
 	getOppositeEdgeOp,
 	getOppositeKind,
-} from "./command/common.js";
-import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
-import { assertNever, getStart } from "./util.js";
+} from "./command/common.ts";
+import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.ts";
+import { assertNever, getStart } from "./util.ts";
 
 export function getCodeActions(
 	doc: DocumentLike,

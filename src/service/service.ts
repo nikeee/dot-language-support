@@ -1,17 +1,17 @@
 import type { TextDocument } from "vscode-languageserver-textdocument";
 import type * as lst from "vscode-languageserver-types";
 import type { Color, ColorInformation, ColorPresentation } from "vscode-languageserver-types";
-import { bindSourceFile } from "../binder.js";
-import { checkSourceFile } from "../checker.js";
-import { Parser } from "../index.js";
-import type { Omit, SourceFile } from "../types.js";
-import { executeCommand, getAvailableCommands, getCodeActions } from "./codeAction.js";
-import { getColorRepresentations, getDocumentColors } from "./colorProvider.js";
-import { getCompletions } from "./completion.js";
-import { hover } from "./hover.js";
-import { findDefinition, findReferences } from "./reference.js";
-import { renameSymbol } from "./rename.js";
-import { validateDocument } from "./validation.js";
+import { bindSourceFile } from "../binder.ts";
+import { checkSourceFile } from "../checker.ts";
+import { Parser } from "../index.ts";
+import type { Omit, SourceFile } from "../types.ts";
+import { executeCommand, getAvailableCommands, getCodeActions } from "./codeAction.ts";
+import { getColorRepresentations, getDocumentColors } from "./colorProvider.ts";
+import { getCompletions } from "./completion.ts";
+import { hover } from "./hover.ts";
+import { findDefinition, findReferences } from "./reference.ts";
+import { renameSymbol } from "./rename.ts";
+import { validateDocument } from "./validation.ts";
 
 export interface DocumentLike {
 	positionAt(offset: number): lst.Position;

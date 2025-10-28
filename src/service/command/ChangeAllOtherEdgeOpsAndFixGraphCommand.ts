@@ -1,6 +1,6 @@
 import type * as lst from "vscode-languageserver-types";
-import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
-import { commandIds } from "../codeAction.js";
+import type { CommandApplication, DocumentLike, SourceFile } from "../../index.ts";
+import { commandIds } from "../codeAction.ts";
 import {
 	createChangeToEdit,
 	type EdgeOpStr,
@@ -11,7 +11,7 @@ import {
 	getEdgeStr,
 	getGraphKeywordStr,
 	type Offset,
-} from "./common.js";
+} from "./common.ts";
 
 export interface ChangeAllOtherEdgeOpsAndFixGraphCommand extends lst.Command {
 	command: typeof commandIds.ConvertGraphType;

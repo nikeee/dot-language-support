@@ -1,6 +1,6 @@
 import { type Position, Range, TextEdit } from "vscode-languageserver-types";
-import { syntaxKind } from "../../index.js";
-import type { CommandIds } from "../codeAction.js";
+import { syntaxKind } from "../../index.ts";
+import type { CommandIds } from "../codeAction.ts";
 
 export function createChangeToEdit(start: Position, end: Position, changeTo: string): TextEdit {
 	return TextEdit.replace(Range.create(start, end), changeTo);

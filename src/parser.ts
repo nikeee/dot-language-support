@@ -1,5 +1,5 @@
-import { DefaultScanner, getTokenAsText, type Scanner } from "./scanner.js";
-import { assertNever } from "./service/util.js";
+import { DefaultScanner, getTokenAsText, type Scanner } from "./scanner.ts";
+import { assertNever } from "./service/util.ts";
 import {
 	type Assignment,
 	type AssignmentSeparator,

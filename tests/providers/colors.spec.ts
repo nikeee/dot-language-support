@@ -1,8 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile } from "../testutils.js";
-import { getDocumentColors } from "../../src/service/colorProvider.js";
+import { ensureDocAndSourceFile } from "../testutils.ts";
+import { getDocumentColors } from "../../src/service/colorProvider.ts";
 
 describe("Reference Finding", () => {
 

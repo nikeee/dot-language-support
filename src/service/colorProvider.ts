@@ -4,10 +4,10 @@ import type {
 	ColorPresentation,
 	Range,
 } from "vscode-languageserver-types";
-import type { DocumentLike } from "../index.js";
-import type { ColorTable, SourceFile } from "../types.js";
-import * as languageFacts from "./languageFacts.js";
-import { syntaxNodeToRange } from "./util.js";
+import type { DocumentLike } from "../index.ts";
+import type { ColorTable, SourceFile } from "../types.ts";
+import * as languageFacts from "./languageFacts.ts";
+import { syntaxNodeToRange } from "./util.ts";
 
 const colorMap = languageFacts.colors as { [i: string]: string | undefined };
 

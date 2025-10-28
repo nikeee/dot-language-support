@@ -16,7 +16,7 @@ import {
 	type SyntaxNode,
 	type SyntaxNodeArray,
 	syntaxKind,
-} from "./types.js";
+} from "./types.ts";
 
 function visitNode<T>(cbNode: (node: SyntaxNode) => T, node?: SyntaxNode): T | undefined {
 	return node && cbNode(node);

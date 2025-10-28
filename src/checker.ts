@@ -1,5 +1,5 @@
-import { shapes as validShapes } from "./service/languageFacts.js";
-import { assertNever, getStart } from "./service/util.js";
+import { shapes as validShapes } from "./service/languageFacts.ts";
+import { assertNever, getStart } from "./service/util.ts";
 import {
 	type Assignment,
 	type AttributeStatement,
@@ -26,8 +26,8 @@ import {
 	type TextIdentifier,
 	type TextRange,
 	type Token,
-} from "./types.js";
-import { forEachChild } from "./visitor.js";
+} from "./types.ts";
+import { forEachChild } from "./visitor.ts";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;

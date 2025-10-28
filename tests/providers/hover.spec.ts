@@ -1,8 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile } from "../testutils.js";
-import { hover } from "../../src/service/hover.js";
+import { ensureDocAndSourceFile } from "../testutils.ts";
+import { hover } from "../../src/service/hover.ts";
 
 describe("Hover Handling", () => {
 
