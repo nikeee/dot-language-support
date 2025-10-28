@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "ci": "biome ci ./src",
-    "test": "tsc --noEmit && vitest run",
+    "test": "tsc && vitest run",
     "test:coverage": "vitest run --coverage",
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
