@@ -3,7 +3,8 @@ import { assertNever, getStart } from "./service/util.js";
 import {
 	type Assignment,
 	type AttributeStatement,
-	CheckError,
+	type CheckError,
+	checkError,
 	type CheckErrorCode,
 	diagnosticCategory,
 	type DiagnosticMessage,
@@ -140,7 +141,7 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 
 		invalidShapes.push({
 			category: diagnosticCategory.Warning,
-			code: createCheckerError(CheckError.InvalidShapeName),
+			code: createCheckerError(checkError.InvalidShapeName),
 			message: `Unknown shape "${rightText}".`,
 			start: rightId.pos,
 			end: rightId.end,
@@ -258,7 +259,7 @@ function createEdgeViolationDiagnostics(
 	const graphType = expectedEdgeOp === SyntaxKind.UndirectedEdgeOp ? "undirected" : "directed";
 
 	const message = `Invalid edge operation, use "${op}" in ${graphType} graph`;
-	const code = createCheckerError(CheckError.InvalidEdgeOperation);
+	const code = createCheckerError(checkError.InvalidEdgeOperation);
 	const category = diagnosticCategory.Error;
 
 	// Add flags in side-effected forEach instead of map() below

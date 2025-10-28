@@ -3,7 +3,7 @@ import { describe, test, expect } from "vitest";
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";
 import { shapes } from "../../src/service/languageFacts.js";
-import { CheckError, DiagnosticCategory, ErrorSource } from "../../src/types.js";
+import { checkError, diagnosticCategory, errorSource } from "../../src/types.js";
 
 describe("Shape completion", () => {
 
@@ -124,8 +124,8 @@ describe("Shape completion", () => {
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
-			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
-			category: DiagnosticCategory.Warning,
+			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+			category: diagnosticCategory.Warning,
 			start: 17,
 			end: 21,
 		}]);
@@ -139,8 +139,8 @@ describe("Shape completion", () => {
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
-			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
-			category: DiagnosticCategory.Warning,
+			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+			category: diagnosticCategory.Warning,
 			start: 20,
 			end: 24,
 		}]);

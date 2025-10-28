@@ -34,10 +34,11 @@ export const scanError = {
 
 export type ScanError = (typeof scanError)[keyof typeof scanError];
 
-export const enum CheckError {
-	InvalidEdgeOperation = 0,
-	InvalidShapeName = 1,
-}
+export const checkError = {
+	InvalidEdgeOperation: 0,
+	InvalidShapeName: 1,
+};
+export type CheckError = (typeof checkError)[keyof typeof checkError];
 
 export interface DiagnosticMessage {
 	message: string;

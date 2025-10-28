@@ -11,7 +11,8 @@ import {
 	nodeContainsErrors,
 } from "../checker.js";
 import {
-	CheckError,
+	type CheckError,
+	checkError,
 	type CheckErrorCode,
 	type CommandApplication,
 	type DiagnosticMessage,
@@ -246,7 +247,7 @@ function getCheckerErrorCommand(
 	console.assert(d.code.source === errorSource.Check);
 	console.assert(code.source === errorSource.Check);
 	switch (code.sub) {
-		case CheckError.InvalidEdgeOperation: {
+		case checkError.InvalidEdgeOperation: {
 			const graph = file.graph;
 			if (!graph) return undefined;
 
@@ -264,7 +265,7 @@ function getCheckerErrorCommand(
 			);
 			return [fixSingleEdge, fixAll, convertToThisWrongType];
 		}
-		case CheckError.InvalidShapeName:
+		case checkError.InvalidShapeName:
 			return undefined; // Fixing spelling errors is not supported
 	}
 }
