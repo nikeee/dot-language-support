@@ -22,7 +22,7 @@ import {
 	type SubGraph,
 	type SubGraphStatement,
 	type SymbolTable,
-	SyntaxKind,
+	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
 	type TypeSymbol,
@@ -63,37 +63,37 @@ function createBinder(): Binder {
 
 	function innerBind(node: SyntaxNode): void {
 		switch (node.kind) {
-			case SyntaxKind.DirectedGraph:
-			case SyntaxKind.UndirectedGraph:
+			case syntaxKind.DirectedGraph:
+			case syntaxKind.UndirectedGraph:
 				return bindGraph(node as Graph);
-			case SyntaxKind.AttributeStatement:
+			case syntaxKind.AttributeStatement:
 				return bindAttributeStatement(node as AttributeStatement);
-			case SyntaxKind.EdgeStatement:
+			case syntaxKind.EdgeStatement:
 				return bindEdgeStatement(node as EdgeStatement);
-			case SyntaxKind.NodeStatement:
+			case syntaxKind.NodeStatement:
 				return bindNodeStatement(node as NodeStatement);
-			case SyntaxKind.SubGraph:
+			case syntaxKind.SubGraph:
 				return bindSubGraph(node as SubGraph);
-			case SyntaxKind.SubGraphStatement:
+			case syntaxKind.SubGraphStatement:
 				return bindSubGraphStatement(node as SubGraphStatement);
-			case SyntaxKind.IdEqualsIdStatement:
+			case syntaxKind.IdEqualsIdStatement:
 				return bindIdEqualsIdStatement(node as IdEqualsIdStatement);
-			case SyntaxKind.QuotedTextIdentifier:
+			case syntaxKind.QuotedTextIdentifier:
 				return bindQuotedTextIdentifier(node as QuotedTextIdentifier);
-			case SyntaxKind.EdgeRhs:
+			case syntaxKind.EdgeRhs:
 				return bindEdgeRhs(node as EdgeRhs);
-			case SyntaxKind.AttributeContainer:
+			case syntaxKind.AttributeContainer:
 				return bindAttributeContainer(node as AttributeContainer);
-			case SyntaxKind.Assignment:
+			case syntaxKind.Assignment:
 				return bindAssignment(node as Assignment);
-			case SyntaxKind.NormalPortDeclaration:
+			case syntaxKind.NormalPortDeclaration:
 				return bindNormalPortDeclaration(node as NormalPortDeclaration);
-			case SyntaxKind.CompassPortDeclaration:
+			case syntaxKind.CompassPortDeclaration:
 				return bindCompassPortDeclaration(node as CompassPortDeclaration);
-			case SyntaxKind.NodeId:
+			case syntaxKind.NodeId:
 				return bindNodeId(node as NodeId);
 			default:
-				if (node.kind >= SyntaxKind.FirstNode) throw "TODO";
+				if (node.kind >= syntaxKind.FirstNode) throw "TODO";
 		}
 	}
 
@@ -102,10 +102,10 @@ function createBinder(): Binder {
 			graphContext |= GraphContext.Strict;
 		}
 		switch (node.kind) {
-			case SyntaxKind.DirectedGraph:
+			case syntaxKind.DirectedGraph:
 				graphContext |= GraphContext.Directed;
 				break;
-			case SyntaxKind.UndirectedGraph:
+			case syntaxKind.UndirectedGraph:
 				graphContext |= GraphContext.Undirected;
 				break;
 		}
@@ -203,16 +203,16 @@ function createBinder(): Binder {
 
 		let carrierIdentifier: Identifier | undefined;
 		switch (superParentStatement.kind) {
-			case SyntaxKind.NodeStatement:
+			case syntaxKind.NodeStatement:
 				carrierIdentifier = superParentStatement.id.id;
 				break;
-			case SyntaxKind.EdgeStatement:
+			case syntaxKind.EdgeStatement:
 				// carrierIdentifier = superParentStatement.source.id;
 				break;
-			case SyntaxKind.SubGraphStatement:
+			case syntaxKind.SubGraphStatement:
 				// carrierIdentifier = superParentStatement.id;
 				break;
-			case SyntaxKind.AttributeStatement:
+			case syntaxKind.AttributeStatement:
 				// carrierIdentifier = superParentStatement.subject;
 				break;
 		}

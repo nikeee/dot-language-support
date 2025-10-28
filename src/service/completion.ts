@@ -6,7 +6,7 @@ import {
 	type AttributeContainer,
 	type SourceFile,
 	type SymbolTable,
-	SyntaxKind,
+	syntaxKind,
 	SyntaxNodeFlags,
 } from "../types.js";
 import * as languageFacts from "./languageFacts.js";
@@ -46,27 +46,27 @@ export function getCompletions(
 	// Hack to fix GitHub issue #17
 	// We have problems handling whitespace when finding a node at a specific offset
 	// So we check if the current cursor is in an AttributeContainer ("   [   ]") and if the cursor is before the end
-	if (node.kind === SyntaxKind.AttributeContainer) {
+	if (node.kind === syntaxKind.AttributeContainer) {
 		const openingBracket = (node as AttributeContainer).openBracket;
 		if (openingBracket.end - 1 > offset - 1) {
 			// - 1 for semantic clarity
 
 			const exclusions =
-				prevOffsetNode?.kind === SyntaxKind.TextIdentifier && prevOffsetNode.symbol
+				prevOffsetNode?.kind === syntaxKind.TextIdentifier && prevOffsetNode.symbol
 					? [prevOffsetNode.symbol.name]
 					: undefined;
 			return getNodeCompletions(symbols, exclusions);
 		}
 	}
 
-	if (node.kind === SyntaxKind.TextIdentifier && parent?.kind === SyntaxKind.NodeId) {
+	if (node.kind === syntaxKind.TextIdentifier && parent?.kind === syntaxKind.NodeId) {
 		const exclusions = node.symbol ? [node.symbol.name] : undefined;
 		return getNodeCompletions(symbols, exclusions);
 	}
 
 	if (
-		node.kind === SyntaxKind.AttributeContainer ||
-		(node.kind === SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
+		node.kind === syntaxKind.AttributeContainer ||
+		(node.kind === syntaxKind.CommaToken && parent?.kind === syntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}
@@ -78,12 +78,10 @@ export function getCompletions(
 		const p = prevNode.parent;
 		if (p) {
 			switch (p.kind) {
-				case SyntaxKind.NodeId: {
+				case syntaxKind.NodeId:
 					return getNodeCompletions(symbols);
-				}
-				case SyntaxKind.Assignment: {
+				case syntaxKind.Assignment:
 					return getAssignmentCompletion(p as Assignment);
-				}
 			}
 		}
 	}
@@ -95,7 +93,7 @@ export function getCompletions(
 		if (!attribute.parent) throw "sourceFile is not bound";
 
 		const parent = attribute.parent;
-		if (parent.kind === SyntaxKind.Assignment) {
+		if (parent.kind === syntaxKind.Assignment) {
 			return getAssignmentCompletion(parent as Assignment);
 		}
 	}
@@ -167,8 +165,8 @@ function getNodeCompletions(
 		const a = value.firstMention.parent;
 		if (a) {
 			switch (a.kind) {
-				case SyntaxKind.DirectedGraph:
-				case SyntaxKind.UndirectedGraph:
+				case syntaxKind.DirectedGraph:
+				case syntaxKind.UndirectedGraph:
 					kind = lst.CompletionItemKind.Class;
 					break;
 			}

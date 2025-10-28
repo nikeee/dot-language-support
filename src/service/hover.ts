@@ -12,7 +12,8 @@ import {
 	type SourceFile,
 	type SubGraph,
 	type SubGraphStatement,
-	SyntaxKind,
+	syntaxKind,
+	syntaxKindNames,
 	type SyntaxNode,
 } from "../types.js";
 import { getEdgeStr } from "./command/common.js";
@@ -60,7 +61,7 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 		const parent = n.parent;
 		if (parent) {
 			switch (parent.kind) {
-				case SyntaxKind.NodeId: {
+				case syntaxKind.NodeId: {
 					// See https://github.com/nikeee/dot-language-support/issues/83
 					if (n.symbol?.references) {
 						const nodeIdentifierRefs = n.symbol?.references;
@@ -79,7 +80,7 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 								)}`;
 							}
 						}
-					} else if (parent.parent?.kind === SyntaxKind.NodeStatement) {
+					} else if (parent.parent?.kind === syntaxKind.NodeStatement) {
 						const label = getAssignedLabel(parent.parent as NodeStatement);
 						if (label) {
 							return `(node) ${getIdentifierText(n)}: ${label}`;
@@ -87,55 +88,55 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 					}
 					return `(node) ${getIdentifierText(n)}`;
 				}
-				case SyntaxKind.Assignment: {
+				case syntaxKind.Assignment: {
 					const assignment = parent as Assignment;
 					const left = getIdentifierText(assignment.leftId);
 					const right = getIdentifierText(assignment.rightId);
 					return `(assignment) \`${left}\` = \`${right}\``;
 				}
-				case SyntaxKind.DirectedGraph:
+				case syntaxKind.DirectedGraph:
 					return getGraphHover(parent as Graph);
-				case SyntaxKind.UndirectedGraph:
+				case syntaxKind.UndirectedGraph:
 					return getGraphHover(parent as Graph);
-				case SyntaxKind.SubGraphStatement: {
+				case syntaxKind.SubGraphStatement: {
 					const sgs = parent as SubGraphStatement;
 					const sg = sgs.subgraph;
 					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
 				}
-				case SyntaxKind.SubGraph: {
+				case syntaxKind.SubGraph: {
 					const sg = parent as SubGraph;
 					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
 				}
-				case SyntaxKind.IdEqualsIdStatement: {
+				case syntaxKind.IdEqualsIdStatement: {
 					const idEqId = parent as IdEqualsIdStatement;
 					const left = getIdentifierText(idEqId.leftId);
 					const right = getIdentifierText(idEqId.rightId);
 					return `(graph property) \`${left}\` = \`${right}\``;
 				}
-				case SyntaxKind.EdgeRhs:
+				case syntaxKind.EdgeRhs:
 					return getEdgeHover(parent as EdgeRhs);
 			}
-			return SyntaxKind[parent.kind];
+			return syntaxKindNames[parent.kind];
 		}
 
-		const fallback = SyntaxKind[n.kind];
+		const fallback = syntaxKindNames[n.kind];
 		return fallback ? `(${fallback.toLowerCase()})` : undefined;
 	}
 
 	switch (n.kind) {
-		case SyntaxKind.GraphKeyword:
-		case SyntaxKind.DigraphKeyword:
-		case SyntaxKind.StrictKeyword:
+		case syntaxKind.GraphKeyword:
+		case syntaxKind.DigraphKeyword:
+		case syntaxKind.StrictKeyword:
 			return getGraphHover(n.parent as Graph);
 
 		// TODO: Why does findNodeAtOffset() return a non-leaf node
 		// Did not expect to need to have this here.
-		case SyntaxKind.DirectedGraph:
-		case SyntaxKind.UndirectedGraph:
+		case syntaxKind.DirectedGraph:
+		case syntaxKind.UndirectedGraph:
 			return getGraphHover(n as Graph);
 
-		case SyntaxKind.DirectedEdgeOp:
-		case SyntaxKind.UndirectedEdgeOp:
+		case syntaxKind.DirectedEdgeOp:
+		case syntaxKind.UndirectedEdgeOp:
 			return getEdgeHover(n.parent as EdgeRhs);
 
 		default:
@@ -144,7 +145,7 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 }
 
 function getGraphHover(g: Graph): string {
-	const direction = g.kind === SyntaxKind.DirectedGraph ? "directed" : "undirected";
+	const direction = g.kind === syntaxKind.DirectedGraph ? "directed" : "undirected";
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
 	return graphId
@@ -174,7 +175,7 @@ function getEdgeHover(n: EdgeRhs) {
 }
 
 function getEdgeSourceOrTargetText(n: EdgeSourceOrTarget): string {
-	return n.kind === SyntaxKind.NodeId
+	return n.kind === syntaxKind.NodeId
 		? getIdentifierText(n.id)
 		: n.id !== undefined
 			? `${getIdentifierText(n.id)}`

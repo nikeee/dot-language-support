@@ -6,7 +6,8 @@ import {
 	diagnosticCategory,
 	type ScanError,
 	scanError,
-	SyntaxKind,
+	type SyntaxKind,
+	syntaxKind,
 	TokenFlags,
 } from "./types.js";
 
@@ -29,37 +30,37 @@ export interface Scanner {
 }
 
 const textToToken = createMapFromTemplate({
-	digraph: SyntaxKind.DigraphKeyword,
-	graph: SyntaxKind.GraphKeyword,
-	edge: SyntaxKind.EdgeKeyword,
-	node: SyntaxKind.NodeKeyword,
-	strict: SyntaxKind.StrictKeyword,
-	subgraph: SyntaxKind.SubgraphKeyword,
+	digraph: syntaxKind.DigraphKeyword,
+	graph: syntaxKind.GraphKeyword,
+	edge: syntaxKind.EdgeKeyword,
+	node: syntaxKind.NodeKeyword,
+	strict: syntaxKind.StrictKeyword,
+	subgraph: syntaxKind.SubgraphKeyword,
 
-	n: SyntaxKind.CompassNorthToken,
-	ne: SyntaxKind.CompassNorthEastToken,
-	e: SyntaxKind.CompassEastToken,
-	se: SyntaxKind.CompassSouthEastToken,
-	s: SyntaxKind.CompassSouthToken,
-	sw: SyntaxKind.CompassSouthWestToken,
-	w: SyntaxKind.CompassWestToken,
-	nw: SyntaxKind.CompassNorthWestToken,
-	c: SyntaxKind.CompassCenterToken,
+	n: syntaxKind.CompassNorthToken,
+	ne: syntaxKind.CompassNorthEastToken,
+	e: syntaxKind.CompassEastToken,
+	se: syntaxKind.CompassSouthEastToken,
+	s: syntaxKind.CompassSouthToken,
+	sw: syntaxKind.CompassSouthWestToken,
+	w: syntaxKind.CompassWestToken,
+	nw: syntaxKind.CompassNorthWestToken,
+	c: syntaxKind.CompassCenterToken,
 
-	"+": SyntaxKind.PlusToken,
-	"=": SyntaxKind.EqualsToken,
-	"->": SyntaxKind.DirectedEdgeOp,
-	"--": SyntaxKind.UndirectedEdgeOp,
-	"{": SyntaxKind.OpenBraceToken,
-	"}": SyntaxKind.CloseBraceToken,
-	"[": SyntaxKind.OpenBracketToken,
-	"]": SyntaxKind.CloseBracketToken,
-	";": SyntaxKind.SemicolonToken,
-	":": SyntaxKind.ColonToken,
-	_: SyntaxKind.UnderscoreToken,
-	",": SyntaxKind.CommaToken,
-	"<": SyntaxKind.LessThan,
-	">": SyntaxKind.GreaterThan,
+	"+": syntaxKind.PlusToken,
+	"=": syntaxKind.EqualsToken,
+	"->": syntaxKind.DirectedEdgeOp,
+	"--": syntaxKind.UndirectedEdgeOp,
+	"{": syntaxKind.OpenBraceToken,
+	"}": syntaxKind.CloseBraceToken,
+	"[": syntaxKind.OpenBracketToken,
+	"]": syntaxKind.CloseBracketToken,
+	";": syntaxKind.SemicolonToken,
+	":": syntaxKind.ColonToken,
+	_: syntaxKind.UnderscoreToken,
+	",": syntaxKind.CommaToken,
+	"<": syntaxKind.LessThan,
+	">": syntaxKind.GreaterThan,
 });
 
 // TODO: Move to utils
@@ -114,7 +115,7 @@ export class DefaultScanner implements Scanner {
 		this.pos = textPos;
 		this.startPos = textPos;
 		this.tokenPos = textPos;
-		this.token = SyntaxKind.Unknown;
+		this.token = syntaxKind.Unknown;
 		this.tokenValue = undefined;
 		this.tokenFlags = TokenFlags.None;
 	}
@@ -127,7 +128,7 @@ export class DefaultScanner implements Scanner {
 		while (true) {
 			this.tokenPos = this.pos;
 			if (this.pos >= this.end) {
-				return (this.token = SyntaxKind.EndOfFileToken);
+				return (this.token = syntaxKind.EndOfFileToken);
 			}
 
 			let ch = this.text.charCodeAt(this.pos);
@@ -150,7 +151,7 @@ export class DefaultScanner implements Scanner {
 					} else {
 						this.pos++;
 					}
-					return (this.token = SyntaxKind.NewLineTrivia);
+					return (this.token = syntaxKind.NewLineTrivia);
 				case CharacterCodes.tab:
 				case CharacterCodes.verticalTab:
 				case CharacterCodes.formFeed:
@@ -164,7 +165,7 @@ export class DefaultScanner implements Scanner {
 						this.#isWhiteSpaceSingleLine(this.text.charCodeAt(this.pos))
 					)
 						this.pos++;
-					return (this.token = SyntaxKind.WhitespaceTrivia);
+					return (this.token = syntaxKind.WhitespaceTrivia);
 
 				case CharacterCodes.hash: {
 					const content = this.#scanHashCommentTrivia(skipTrivia);
@@ -172,7 +173,7 @@ export class DefaultScanner implements Scanner {
 					// Skip rest of line
 					if (skipTrivia) continue;
 					this.tokenValue = content;
-					return (this.token = SyntaxKind.HashCommentTrivia);
+					return (this.token = syntaxKind.HashCommentTrivia);
 				}
 				case CharacterCodes.slash: {
 					if (this.pos + 1 < this.end) {
@@ -185,14 +186,14 @@ export class DefaultScanner implements Scanner {
 								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
-								return (this.token = SyntaxKind.SingleLineCommentTrivia);
+								return (this.token = syntaxKind.SingleLineCommentTrivia);
 							}
 							case CharacterCodes.asterisk: {
 								const commentContent = this.#scanMultiLineCommentTrivia(skipTrivia);
 								if (skipTrivia) continue;
 
 								this.tokenValue = commentContent;
-								return (this.token = SyntaxKind.MultiLineCommentTrivia);
+								return (this.token = syntaxKind.MultiLineCommentTrivia);
 							}
 						}
 					}
@@ -205,22 +206,22 @@ export class DefaultScanner implements Scanner {
 				}
 				case CharacterCodes.openBrace:
 					this.pos++;
-					return (this.token = SyntaxKind.OpenBraceToken);
+					return (this.token = syntaxKind.OpenBraceToken);
 				case CharacterCodes.closeBrace:
 					this.pos++;
-					return (this.token = SyntaxKind.CloseBraceToken);
+					return (this.token = syntaxKind.CloseBraceToken);
 				case CharacterCodes.openBracket:
 					this.pos++;
-					return (this.token = SyntaxKind.OpenBracketToken);
+					return (this.token = syntaxKind.OpenBracketToken);
 				case CharacterCodes.closeBracket:
 					this.pos++;
-					return (this.token = SyntaxKind.CloseBracketToken);
+					return (this.token = syntaxKind.CloseBracketToken);
 				case CharacterCodes.plus:
 					this.pos++;
-					return (this.token = SyntaxKind.PlusToken);
+					return (this.token = syntaxKind.PlusToken);
 				case CharacterCodes.equals:
 					this.pos++;
-					return (this.token = SyntaxKind.EqualsToken);
+					return (this.token = syntaxKind.EqualsToken);
 				case CharacterCodes._0:
 				case CharacterCodes._1:
 				case CharacterCodes._2:
@@ -233,17 +234,17 @@ export class DefaultScanner implements Scanner {
 				case CharacterCodes._9:
 				case CharacterCodes.dot:
 					this.tokenValue = this.#scanNumber();
-					return (this.token = SyntaxKind.NumericIdentifier);
+					return (this.token = syntaxKind.NumericIdentifier);
 				case CharacterCodes.minus: {
 					const nextChar = this.text.charCodeAt(this.pos + 1);
 
 					switch (nextChar) {
 						case CharacterCodes.minus: // --
 							this.pos += 2;
-							return (this.token = SyntaxKind.UndirectedEdgeOp);
+							return (this.token = syntaxKind.UndirectedEdgeOp);
 						case CharacterCodes.greaterThan: // ->
 							this.pos += 2;
-							return (this.token = SyntaxKind.DirectedEdgeOp);
+							return (this.token = syntaxKind.DirectedEdgeOp);
 
 						case CharacterCodes._0:
 						case CharacterCodes._1:
@@ -257,7 +258,7 @@ export class DefaultScanner implements Scanner {
 						case CharacterCodes._9:
 						case CharacterCodes.dot:
 							this.tokenValue = this.#scanNumber();
-							return (this.token = SyntaxKind.NumericIdentifier);
+							return (this.token = syntaxKind.NumericIdentifier);
 						default: {
 							const chr = this.text.charAt(this.pos + 1);
 							this.#error(
@@ -270,27 +271,27 @@ export class DefaultScanner implements Scanner {
 					this.pos++;
 					break;
 					// debugger;
-					//return this.token = SyntaxKind.Unknown;
+					//return this.token = syntaxKind.Unknown;
 				}
 				// TODO: Remove UnderscoreToken
 				case CharacterCodes._:
 					this.pos++;
-					return (this.token = SyntaxKind.UnderscoreToken);
+					return (this.token = syntaxKind.UnderscoreToken);
 				case CharacterCodes.semicolon:
 					this.pos++;
-					return (this.token = SyntaxKind.SemicolonToken);
+					return (this.token = syntaxKind.SemicolonToken);
 				case CharacterCodes.colon:
 					this.pos++;
-					return (this.token = SyntaxKind.ColonToken);
+					return (this.token = syntaxKind.ColonToken);
 				case CharacterCodes.comma:
 					this.pos++;
-					return (this.token = SyntaxKind.CommaToken);
+					return (this.token = syntaxKind.CommaToken);
 				case CharacterCodes.lessThan:
 					this.tokenValue = this.#scanHtml();
-					return (this.token = SyntaxKind.HtmlIdentifier);
+					return (this.token = syntaxKind.HtmlIdentifier);
 				case CharacterCodes.doubleQuote:
 					this.tokenValue = this.#scanString();
-					return (this.token = SyntaxKind.StringLiteral);
+					return (this.token = syntaxKind.StringLiteral);
 				default: {
 					if (isIdentifierStart(ch)) {
 						this.pos++;
@@ -317,7 +318,7 @@ export class DefaultScanner implements Scanner {
 					// debugger;
 					this.pos++;
 					break;
-					// return this.token = SyntaxKind.Unknown;
+					// return this.token = syntaxKind.Unknown;
 				}
 			}
 		}
@@ -542,7 +543,7 @@ export class DefaultScanner implements Scanner {
 				}
 			}
 		}
-		return (this.token = SyntaxKind.TextIdentifier);
+		return (this.token = syntaxKind.TextIdentifier);
 	}
 
 	lookAhead<T extends SyntaxKind>(callback: () => T): T {
@@ -578,10 +579,10 @@ export class DefaultScanner implements Scanner {
 }
 
 type Identifier =
-	| SyntaxKind.HtmlIdentifier
-	| SyntaxKind.TextIdentifier
-	| SyntaxKind.StringLiteral
-	| SyntaxKind.NumericIdentifier;
+	| typeof syntaxKind.HtmlIdentifier
+	| typeof syntaxKind.TextIdentifier
+	| typeof syntaxKind.StringLiteral
+	| typeof syntaxKind.NumericIdentifier;
 
 // TODO: Clean this up
 /**
@@ -594,14 +595,14 @@ type Identifier =
 // biome-ignore lint/correctness/noUnusedVariables: todo
 function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 	switch (idType) {
-		case SyntaxKind.TextIdentifier:
+		case syntaxKind.TextIdentifier:
 			return (
 				ch === CharacterCodes._ ||
 				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
 				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
 				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
 			);
-		case SyntaxKind.HtmlIdentifier:
+		case syntaxKind.HtmlIdentifier:
 			// TODO: This may not be all char codes
 			return (
 				ch === CharacterCodes._ ||
@@ -612,7 +613,7 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
 				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
 			);
-		case SyntaxKind.StringLiteral:
+		case syntaxKind.StringLiteral:
 			// TODO: This may not be all char codes
 			return (
 				ch === CharacterCodes._ ||
@@ -624,7 +625,7 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
 				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
 			);
-		case SyntaxKind.NumericIdentifier:
+		case syntaxKind.NumericIdentifier:
 			return (
 				ch === CharacterCodes.minus ||
 				ch === CharacterCodes.dot ||
@@ -643,21 +644,21 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
  */
 // biome-ignore lint/correctness/noUnusedVariables: todo
 function getIdentifierStart(ch: number): Identifier | undefined {
-	if (ch === CharacterCodes.lessThan) return SyntaxKind.HtmlIdentifier;
-	if (ch === CharacterCodes.doubleQuote) return SyntaxKind.StringLiteral;
+	if (ch === CharacterCodes.lessThan) return syntaxKind.HtmlIdentifier;
+	if (ch === CharacterCodes.doubleQuote) return syntaxKind.StringLiteral;
 	if (
 		ch === CharacterCodes._ ||
 		(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
 		(CharacterCodes.a <= ch && ch <= CharacterCodes.z)
 	)
-		return SyntaxKind.TextIdentifier;
+		return syntaxKind.TextIdentifier;
 
 	if (
 		ch === CharacterCodes.minus ||
 		ch === CharacterCodes.dot ||
 		(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
 	)
-		return SyntaxKind.NumericIdentifier;
+		return syntaxKind.NumericIdentifier;
 
 	return undefined;
 }

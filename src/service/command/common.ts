@@ -1,5 +1,5 @@
 import { type Position, Range, TextEdit } from "vscode-languageserver-types";
-import { SyntaxKind } from "../../index.js";
+import { syntaxKind } from "../../index.js";
 import type { CommandIds } from "../codeAction.js";
 
 export function createChangeToEdit(start: Position, end: Position, changeTo: string): TextEdit {
@@ -17,48 +17,56 @@ export type ExecutableCommand<TArgs> = {
 };
 
 export type EdgeOpStr = "--" | "->";
-export function getEdgeStr(op: SyntaxKind.UndirectedEdgeOp): "--";
-export function getEdgeStr(op: SyntaxKind.DirectedEdgeOp): "->";
+export function getEdgeStr(op: typeof syntaxKind.UndirectedEdgeOp): "--";
+export function getEdgeStr(op: typeof syntaxKind.DirectedEdgeOp): "->";
 export function getEdgeStr(
-	op: SyntaxKind.DirectedEdgeOp | SyntaxKind.UndirectedEdgeOp,
+	op: typeof syntaxKind.DirectedEdgeOp | typeof syntaxKind.UndirectedEdgeOp,
 ): "->" | "--";
 export function getEdgeStr(
-	op: SyntaxKind.DirectedEdgeOp | SyntaxKind.UndirectedEdgeOp,
+	op: typeof syntaxKind.DirectedEdgeOp | typeof syntaxKind.UndirectedEdgeOp,
 ): "->" | "--" {
-	return op === SyntaxKind.DirectedEdgeOp ? "->" : "--";
+	return op === syntaxKind.DirectedEdgeOp ? "->" : "--";
 }
 
 export type GraphTypeStr = "graph" | "digraph";
-export function getGraphKeywordStr(g: SyntaxKind.GraphKeyword): "graph";
-export function getGraphKeywordStr(g: SyntaxKind.DigraphKeyword): "digraph";
+export function getGraphKeywordStr(g: typeof syntaxKind.GraphKeyword): "graph";
+export function getGraphKeywordStr(g: typeof syntaxKind.DigraphKeyword): "digraph";
 export function getGraphKeywordStr(g: GraphType): "digraph" | "graph";
 export function getGraphKeywordStr(g: GraphType): "digraph" | "graph" {
-	return g === SyntaxKind.DigraphKeyword ? "digraph" : "graph";
+	return g === syntaxKind.DigraphKeyword ? "digraph" : "graph";
 }
 
-export type GraphType = SyntaxKind.DigraphKeyword | SyntaxKind.GraphKeyword;
-export function getOppositeKind(g: SyntaxKind.DigraphKeyword): SyntaxKind.GraphKeyword;
-export function getOppositeKind(g: SyntaxKind.GraphKeyword): SyntaxKind.DigraphKeyword;
+export type GraphType = typeof syntaxKind.DigraphKeyword | typeof syntaxKind.GraphKeyword;
+export function getOppositeKind(
+	g: typeof syntaxKind.DigraphKeyword,
+): typeof syntaxKind.GraphKeyword;
+export function getOppositeKind(
+	g: typeof syntaxKind.GraphKeyword,
+): typeof syntaxKind.DigraphKeyword;
 export function getOppositeKind(g: GraphType): GraphType;
 export function getOppositeKind(g: GraphType): GraphType {
-	return g === SyntaxKind.DigraphKeyword ? SyntaxKind.GraphKeyword : SyntaxKind.DigraphKeyword;
+	return g === syntaxKind.DigraphKeyword ? syntaxKind.GraphKeyword : syntaxKind.DigraphKeyword;
 }
 
-export type EdgeType = SyntaxKind.DirectedEdgeOp | SyntaxKind.UndirectedEdgeOp;
-export function getOppositeEdgeOp(g: SyntaxKind.DirectedEdgeOp): SyntaxKind.UndirectedEdgeOp;
-export function getOppositeEdgeOp(g: SyntaxKind.UndirectedEdgeOp): SyntaxKind.DirectedEdgeOp;
+export type EdgeType = typeof syntaxKind.DirectedEdgeOp | typeof syntaxKind.UndirectedEdgeOp;
+export function getOppositeEdgeOp(
+	g: typeof syntaxKind.DirectedEdgeOp,
+): typeof syntaxKind.UndirectedEdgeOp;
+export function getOppositeEdgeOp(
+	g: typeof syntaxKind.UndirectedEdgeOp,
+): typeof syntaxKind.DirectedEdgeOp;
 export function getOppositeEdgeOp(g: EdgeType): EdgeType;
 export function getOppositeEdgeOp(g: EdgeType): EdgeType {
-	return g === SyntaxKind.DirectedEdgeOp
-		? SyntaxKind.UndirectedEdgeOp
-		: SyntaxKind.DirectedEdgeOp;
+	return g === syntaxKind.DirectedEdgeOp
+		? syntaxKind.UndirectedEdgeOp
+		: syntaxKind.DirectedEdgeOp;
 }
 
-export function getAllowedOp(g: SyntaxKind.GraphKeyword): SyntaxKind.UndirectedEdgeOp;
-export function getAllowedOp(g: SyntaxKind.DigraphKeyword): SyntaxKind.DirectedEdgeOp;
+export function getAllowedOp(g: typeof syntaxKind.GraphKeyword): typeof syntaxKind.UndirectedEdgeOp;
+export function getAllowedOp(g: typeof syntaxKind.DigraphKeyword): typeof syntaxKind.DirectedEdgeOp;
 export function getAllowedOp(g: GraphType): EdgeType;
 export function getAllowedOp(g: GraphType): EdgeType {
-	return g === SyntaxKind.DigraphKeyword
-		? SyntaxKind.DirectedEdgeOp
-		: SyntaxKind.UndirectedEdgeOp;
+	return g === syntaxKind.DigraphKeyword
+		? syntaxKind.DirectedEdgeOp
+		: syntaxKind.UndirectedEdgeOp;
 }

@@ -11,7 +11,6 @@ import {
 	nodeContainsErrors,
 } from "../checker.js";
 import {
-	type CheckError,
 	checkError,
 	type CheckErrorCode,
 	type CommandApplication,
@@ -25,7 +24,7 @@ import {
 	type ParseErrorCode,
 	type ScanErrorCode,
 	type SourceFile,
-	SyntaxKind,
+	syntaxKind,
 	type SyntaxNode,
 } from "../index.js";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
@@ -111,7 +110,7 @@ function getGeneralRefactorings(
 
 		let clickedNode = findNodeAtOffset(g, rangeStartOffset);
 		if (clickedNode && !!clickedNode.parent) {
-			if (clickedNode.kind === SyntaxKind.SemicolonToken) {
+			if (clickedNode.kind === syntaxKind.SemicolonToken) {
 				res.push(RemoveSemicolonsCommand.create());
 			}
 
@@ -273,7 +272,7 @@ function getCheckerErrorCommand(
 function convertGraphTypeCommand(
 	file: SourceFile,
 	graph: Graph,
-	changeToGraphType: SyntaxKind.DigraphKeyword | SyntaxKind.GraphKeyword,
+	changeToGraphType: typeof syntaxKind.DigraphKeyword | typeof syntaxKind.GraphKeyword,
 ) {
 	const changeToEdgeOp = getAllowedOp(changeToGraphType);
 

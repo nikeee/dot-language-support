@@ -13,7 +13,7 @@ import {
 	type QuotedTextIdentifier,
 	type SubGraph,
 	type SubGraphStatement,
-	SyntaxKind,
+	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
 } from "./types.js";
@@ -43,89 +43,89 @@ export function forEachChild<TReturn>(
 	cbNode: (node: SyntaxNode) => TReturn,
 	cbNodes?: (nodes: SyntaxNodeArray<SyntaxNode>) => TReturn,
 ): TReturn | undefined {
-	if (!node || node.kind <= SyntaxKind.LastKeyword) return;
+	if (!node || node.kind <= syntaxKind.LastKeyword) return;
 
 	switch (node.kind) {
-		case SyntaxKind.DirectedGraph:
-		case SyntaxKind.UndirectedGraph:
+		case syntaxKind.DirectedGraph:
+		case syntaxKind.UndirectedGraph:
 			return (
 				visitNodes(cbNode, cbNodes, (node as Graph).statements) ||
 				visitNode(cbNode, (node as Graph).strict) ||
 				visitNode(cbNode, (node as Graph).id)
 			);
-		case SyntaxKind.AttributeStatement:
+		case syntaxKind.AttributeStatement:
 			return (
 				visitNodes(cbNode, cbNodes, (node as AttributeStatement).attributes) ||
 				visitNode(cbNode, (node as AttributeStatement).subject) ||
 				visitNode(cbNode, (node as AttributeStatement).terminator)
 			);
-		case SyntaxKind.EdgeStatement:
+		case syntaxKind.EdgeStatement:
 			return (
 				visitNodes(cbNode, cbNodes, (node as EdgeStatement).attributes) ||
 				visitNodes(cbNode, cbNodes, (node as EdgeStatement).rhs) ||
 				visitNode(cbNode, (node as EdgeStatement).source) ||
 				visitNode(cbNode, (node as EdgeStatement).terminator)
 			);
-		case SyntaxKind.NodeStatement:
+		case syntaxKind.NodeStatement:
 			return (
 				visitNodes(cbNode, cbNodes, (node as NodeStatement).attributes) ||
 				visitNode(cbNode, (node as NodeStatement).id) ||
 				visitNode(cbNode, (node as NodeStatement).terminator)
 			);
-		case SyntaxKind.SubGraph:
+		case syntaxKind.SubGraph:
 			return (
 				visitNodes(cbNode, cbNodes, (node as SubGraph).statements) ||
 				visitNode(cbNode, (node as SubGraph).id)
 			);
-		case SyntaxKind.SubGraphStatement:
+		case syntaxKind.SubGraphStatement:
 			return (
 				visitNode(cbNode, (node as SubGraphStatement).subgraph) ||
 				visitNode(cbNode, (node as SubGraphStatement).terminator)
 			);
-		case SyntaxKind.IdEqualsIdStatement:
+		case syntaxKind.IdEqualsIdStatement:
 			return (
 				visitNode(cbNode, (node as IdEqualsIdStatement).leftId) ||
 				visitNode(cbNode, (node as IdEqualsIdStatement).rightId) ||
 				visitNode(cbNode, (node as IdEqualsIdStatement).terminator)
 			);
-		case SyntaxKind.QuotedTextIdentifier:
+		case syntaxKind.QuotedTextIdentifier:
 			return visitNodes(cbNode, cbNodes, (node as QuotedTextIdentifier).values);
-		case SyntaxKind.EdgeRhs:
+		case syntaxKind.EdgeRhs:
 			return (
 				visitNode(cbNode, (node as EdgeRhs).operation) ||
 				visitNode(cbNode, (node as EdgeRhs).target)
 			);
-		case SyntaxKind.AttributeContainer:
+		case syntaxKind.AttributeContainer:
 			return visitNodes(cbNode, cbNodes, (node as AttributeContainer).assignments);
-		case SyntaxKind.Assignment:
+		case syntaxKind.Assignment:
 			return (
 				visitNode(cbNode, (node as Assignment).leftId) ||
 				visitNode(cbNode, (node as Assignment).rightId) ||
 				visitNode(cbNode, (node as Assignment).terminator)
 			);
-		case SyntaxKind.NormalPortDeclaration:
+		case syntaxKind.NormalPortDeclaration:
 			return (
 				visitNode(cbNode, (node as NormalPortDeclaration).colon) ||
 				visitNode(cbNode, (node as NormalPortDeclaration).id) ||
 				visitNode(cbNode, (node as NormalPortDeclaration).compassPt)
 			);
-		case SyntaxKind.CompassPortDeclaration:
+		case syntaxKind.CompassPortDeclaration:
 			return (
 				visitNode(cbNode, (node as CompassPortDeclaration).colon) ||
 				visitNode(cbNode, (node as CompassPortDeclaration).compassPt)
 			);
-		case SyntaxKind.NodeId:
+		case syntaxKind.NodeId:
 			return (
 				visitNode(cbNode, (node as NodeId).port) || visitNode(cbNode, (node as NodeId).id)
 			);
 		default:
 			return undefined;
 		/*
-		case SyntaxKind.DirectedEdgeOp:
-		case SyntaxKind.UndirectedEdgeOp:
+		case syntaxKind.DirectedEdgeOp:
+		case syntaxKind.UndirectedEdgeOp:
 			return; // leave these out;
 		default:
-			throw "TODO: " + SyntaxKind[node.kind];
+			throw "TODO: " + syntaxKind[node.kind];
 		*/
 	}
 }

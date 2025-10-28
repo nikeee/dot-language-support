@@ -67,31 +67,31 @@ export interface SourceFile {
 }
 
 export interface HtmlIdentifier extends SyntaxNode {
-	kind: SyntaxKind.HtmlIdentifier;
+	kind: typeof syntaxKind.HtmlIdentifier;
 
 	htmlContent: string;
-	// open: Token<SyntaxKind.LessThan>;
-	// close: Token<SyntaxKind.GreaterThan>;
+	// open: Token<typeof syntaxKind.LessThan>;
+	// close: Token<typeof syntaxKind.GreaterThan>;
 }
 export interface TextIdentifier extends SyntaxNode {
-	kind: SyntaxKind.TextIdentifier;
+	kind: typeof syntaxKind.TextIdentifier;
 
 	text: string;
 }
 
 export interface QuotedTextIdentifier extends SyntaxNode {
-	kind: SyntaxKind.QuotedTextIdentifier;
+	kind: typeof syntaxKind.QuotedTextIdentifier;
 
 	values: SyntaxNodeArray<StringLiteral>;
 	concatenation?: string;
 }
 export interface StringLiteral extends SyntaxNode {
-	kind: SyntaxKind.StringLiteral;
+	kind: typeof syntaxKind.StringLiteral;
 
 	text: string;
 }
 export interface NumericIdentifier extends SyntaxNode {
-	kind: SyntaxKind.NumericIdentifier;
+	kind: typeof syntaxKind.NumericIdentifier;
 
 	text: string;
 	value: number;
@@ -99,20 +99,20 @@ export interface NumericIdentifier extends SyntaxNode {
 export type Identifier = TextIdentifier | QuotedTextIdentifier | HtmlIdentifier | NumericIdentifier;
 
 export interface Graph extends SyntaxNode {
-	kind: SyntaxKind.DirectedGraph | SyntaxKind.UndirectedGraph;
+	kind: typeof syntaxKind.DirectedGraph | typeof syntaxKind.UndirectedGraph;
 
-	keyword: Token<SyntaxKind.GraphKeyword | SyntaxKind.DigraphKeyword>;
-	strict?: Token<SyntaxKind.StrictKeyword>;
+	keyword: Token<typeof syntaxKind.GraphKeyword | typeof syntaxKind.DigraphKeyword>;
+	strict?: Token<typeof syntaxKind.StrictKeyword>;
 	id?: Identifier;
 	statements: SyntaxNodeArray<Statement>;
-	// openBrace: Token<SyntaxKind.OpenBraceToken>;
-	// closeBrace: Token<SyntaxKind.CloseBraceToken>;
+	// openBrace: Token<typeof syntaxKind.OpenBraceToken>;
+	// closeBrace: Token<typeof syntaxKind.CloseBraceToken>;
 }
 
 export interface StatementBase {
 	terminator?: StatementSeparator;
 }
-export type StatementSeparator = Token<SyntaxKind.SemicolonToken>;
+export type StatementSeparator = Token<typeof syntaxKind.SemicolonToken>;
 
 export type Statement =
 	| NodeStatement
@@ -122,14 +122,14 @@ export type Statement =
 	| SubGraphStatement;
 
 export interface NodeStatement extends SyntaxNode, StatementBase {
-	kind: SyntaxKind.NodeStatement;
+	kind: typeof syntaxKind.NodeStatement;
 
 	id: NodeId;
 	attributes: SyntaxNodeArray<AttributeContainer>;
 }
 
 export interface NodeId extends SyntaxNode {
-	kind: SyntaxKind.NodeId;
+	kind: typeof syntaxKind.NodeId;
 
 	id: Identifier;
 	port?: PortDeclaration;
@@ -138,7 +138,7 @@ export interface NodeId extends SyntaxNode {
 export type EdgeSourceOrTarget = NodeId | SubGraph;
 
 export interface EdgeStatement extends SyntaxNode, StatementBase {
-	kind: SyntaxKind.EdgeStatement;
+	kind: typeof syntaxKind.EdgeStatement;
 
 	source: EdgeSourceOrTarget;
 	rhs: SyntaxNodeArray<EdgeRhs>;
@@ -146,171 +146,245 @@ export interface EdgeStatement extends SyntaxNode, StatementBase {
 }
 
 export interface AttributeStatement extends SyntaxNode, StatementBase {
-	kind: SyntaxKind.AttributeStatement;
+	kind: typeof syntaxKind.AttributeStatement;
 
 	subject:
-		| Token<SyntaxKind.GraphKeyword>
-		| Token<SyntaxKind.NodeKeyword>
-		| Token<SyntaxKind.EdgeKeyword>;
+		| Token<typeof syntaxKind.GraphKeyword>
+		| Token<typeof syntaxKind.NodeKeyword>
+		| Token<typeof syntaxKind.EdgeKeyword>;
 	attributes: SyntaxNodeArray<AttributeContainer>;
 }
 
 export interface IdEqualsIdStatement extends SyntaxNode, StatementBase {
-	kind: SyntaxKind.IdEqualsIdStatement;
+	kind: typeof syntaxKind.IdEqualsIdStatement;
 
 	leftId: Identifier;
-	// equalsToken: Token<SyntaxKind.EqualsToken>;
+	// equalsToken: Token<typeof syntaxKind.EqualsToken>;
 	rightId: Identifier;
 }
 
 export interface SubGraph extends SyntaxNode {
-	kind: SyntaxKind.SubGraph;
+	kind: typeof syntaxKind.SubGraph;
 
 	id?: Identifier;
 	statements: SyntaxNodeArray<Statement>;
 }
 
 export interface SubGraphStatement extends SyntaxNode, StatementBase {
-	kind: SyntaxKind.SubGraphStatement;
+	kind: typeof syntaxKind.SubGraphStatement;
 
 	subgraph: SubGraph;
 }
 
 export interface EdgeRhs extends SyntaxNode {
-	kind: SyntaxKind.EdgeRhs;
+	kind: typeof syntaxKind.EdgeRhs;
 
 	operation: EdgeOp;
 	target: EdgeSourceOrTarget;
 }
 
 export interface AttributeContainer extends SyntaxNode {
-	kind: SyntaxKind.AttributeContainer;
+	kind: typeof syntaxKind.AttributeContainer;
 
-	openBracket: Token<SyntaxKind.OpenBracketToken>;
+	openBracket: Token<typeof syntaxKind.OpenBracketToken>;
 	assignments: SyntaxNodeArray<Assignment>;
-	closeBracket: Token<SyntaxKind.CloseBracketToken>;
+	closeBracket: Token<typeof syntaxKind.CloseBracketToken>;
 }
 
 export interface Assignment extends SyntaxNode {
-	kind: SyntaxKind.Assignment;
+	kind: typeof syntaxKind.Assignment;
 
 	leftId: Identifier;
-	// equalsToken: Token<SyntaxKind.EqualsToken>;
+	// equalsToken: Token<typeof syntaxKind.EqualsToken>;
 	rightId: Identifier;
 	terminator?: AssignmentSeparator;
 }
 
-export type AssignmentSeparator = Token<SyntaxKind.SemicolonToken> | Token<SyntaxKind.CommaToken>;
+export type AssignmentSeparator =
+	| Token<typeof syntaxKind.SemicolonToken>
+	| Token<typeof syntaxKind.CommaToken>;
 
 export type PortDeclaration = NormalPortDeclaration | CompassPortDeclaration;
 
 export interface NormalPortDeclaration extends SyntaxNode {
-	kind: SyntaxKind.NormalPortDeclaration;
+	kind: typeof syntaxKind.NormalPortDeclaration;
 
-	colon: Token<SyntaxKind.ColonToken>;
+	colon: Token<typeof syntaxKind.ColonToken>;
 	id: Identifier;
 	compassPt?: CompassPortDeclaration;
 }
 export interface CompassPortDeclaration extends SyntaxNode {
-	kind: SyntaxKind.CompassPortDeclaration;
+	kind: typeof syntaxKind.CompassPortDeclaration;
 
-	colon: Token<SyntaxKind.ColonToken>;
+	colon: Token<typeof syntaxKind.ColonToken>;
 	compassPt: CompassPort;
 }
 export type CompassPort =
-	| Token<SyntaxKind.CompassNorthToken>
-	| Token<SyntaxKind.CompassNorthEastToken>
-	| Token<SyntaxKind.CompassEastToken>
-	| Token<SyntaxKind.CompassSouthEastToken>
-	| Token<SyntaxKind.CompassSouthToken>
-	| Token<SyntaxKind.CompassSouthWestToken>
-	| Token<SyntaxKind.CompassWestToken>
-	| Token<SyntaxKind.CompassNorthWestToken>
-	| Token<SyntaxKind.CompassCenterToken>
-	| Token<SyntaxKind.UnderscoreToken>;
+	| Token<typeof syntaxKind.CompassNorthToken>
+	| Token<typeof syntaxKind.CompassNorthEastToken>
+	| Token<typeof syntaxKind.CompassEastToken>
+	| Token<typeof syntaxKind.CompassSouthEastToken>
+	| Token<typeof syntaxKind.CompassSouthToken>
+	| Token<typeof syntaxKind.CompassSouthWestToken>
+	| Token<typeof syntaxKind.CompassWestToken>
+	| Token<typeof syntaxKind.CompassNorthWestToken>
+	| Token<typeof syntaxKind.CompassCenterToken>
+	| Token<typeof syntaxKind.UnderscoreToken>;
 
-export type EdgeOp = Token<SyntaxKind.DirectedEdgeOp> | Token<SyntaxKind.UndirectedEdgeOp>;
+export type EdgeOp =
+	| Token<typeof syntaxKind.DirectedEdgeOp>
+	| Token<typeof syntaxKind.UndirectedEdgeOp>;
 
 export interface TextRange {
 	pos: number;
 	end: number;
 }
 
-export /* const */ enum SyntaxKind {
-	Unknown = 0,
-	EndOfFileToken = 1,
-	NewLineTrivia = 2,
-	WhitespaceTrivia = 3,
+export type SyntaxKind = (typeof syntaxKind)[keyof typeof syntaxKind];
+export const syntaxKind = {
+	Unknown: 0,
+	EndOfFileToken: 1,
+	NewLineTrivia: 2,
+	WhitespaceTrivia: 3,
 
-	HashCommentTrivia = 4,
-	SingleLineCommentTrivia = 5,
-	MultiLineCommentTrivia = 6,
+	HashCommentTrivia: 4,
+	SingleLineCommentTrivia: 5,
+	MultiLineCommentTrivia: 6,
 
-	CommaToken = 7,
-	SemicolonToken = 8,
-	PlusToken = 9,
-	OpenBraceToken = 10,
-	CloseBraceToken = 11,
-	OpenBracketToken = 12,
-	CloseBracketToken = 13,
-	ColonToken = 14,
-	EqualsToken = 15,
-	LessThan = 16,
-	GreaterThan = 17,
+	CommaToken: 7,
+	SemicolonToken: 8,
+	PlusToken: 9,
+	OpenBraceToken: 10,
+	CloseBraceToken: 11,
+	OpenBracketToken: 12,
+	CloseBracketToken: 13,
+	ColonToken: 14,
+	EqualsToken: 15,
+	LessThan: 16,
+	GreaterThan: 17,
 
-	CompassNorthToken = 18,
-	CompassNorthEastToken = 19,
-	CompassEastToken = 20,
-	CompassSouthEastToken = 21,
-	CompassSouthToken = 22,
-	CompassSouthWestToken = 23,
-	CompassWestToken = 24,
-	CompassNorthWestToken = 25,
-	CompassCenterToken = 26,
-	UnderscoreToken = 27,
+	CompassNorthToken: 18,
+	CompassNorthEastToken: 19,
+	CompassEastToken: 20,
+	CompassSouthEastToken: 21,
+	CompassSouthToken: 22,
+	CompassSouthWestToken: 23,
+	CompassWestToken: 24,
+	CompassNorthWestToken: 25,
+	CompassCenterToken: 26,
+	UnderscoreToken: 27,
 
-	StringLiteral = 28,
+	StringLiteral: 28,
 
-	HtmlIdentifier = 29,
-	TextIdentifier = 30,
-	QuotedTextIdentifier = 31, // Contains multiple "QuotedTextIdentifier" for concatenation with +
-	NumericIdentifier = 32,
+	HtmlIdentifier: 29,
+	TextIdentifier: 30,
+	QuotedTextIdentifier: 31, // Contains multiple "QuotedTextIdentifier" for concatenation with +
+	NumericIdentifier: 32,
 
-	GraphKeyword = 33,
-	DigraphKeyword = 34,
-	NodeKeyword = 35,
-	EdgeKeyword = 36,
-	SubgraphKeyword = 37,
-	StrictKeyword = 38,
+	GraphKeyword: 33,
+	DigraphKeyword: 34,
+	NodeKeyword: 35,
+	EdgeKeyword: 36,
+	SubgraphKeyword: 37,
+	StrictKeyword: 38,
 
-	DirectedEdgeOp = 39,
-	UndirectedEdgeOp = 40,
+	DirectedEdgeOp: 39,
+	UndirectedEdgeOp: 40,
 
-	DirectedGraph = 41,
-	UndirectedGraph = 42,
-	NodeStatement = 43,
-	EdgeStatement = 44,
-	AttributeStatement = 45,
-	IdEqualsIdStatement = 46,
-	SubGraph = 47,
-	SubGraphStatement = 48,
-	EdgeRhs = 49,
-	AttributeContainer = 50,
-	Assignment = 51,
-	NormalPortDeclaration = 52,
-	CompassPortDeclaration = 53,
-	NodeId = 54,
+	DirectedGraph: 41,
+	UndirectedGraph: 42,
+	NodeStatement: 43,
+	EdgeStatement: 44,
+	AttributeStatement: 45,
+	IdEqualsIdStatement: 46,
+	SubGraph: 47,
+	SubGraphStatement: 48,
+	EdgeRhs: 49,
+	AttributeContainer: 50,
+	Assignment: 51,
+	NormalPortDeclaration: 52,
+	CompassPortDeclaration: 53,
+	NodeId: 54,
 
-	Count = 55, // Number of items in this enum
+	Count: 55, // Number of items in this enum
 
-	FirstNode = DirectedGraph,
-	CompassBegin = CompassNorthToken,
-	CompassEnd = UnderscoreToken,
+	FirstNode: 41, // DirectedGraph
+	CompassBegin: 18, // CompassNorthToken,
+	CompassEnd: 27, // UnderscoreToken,
 
-	LastKeyword = StrictKeyword,
+	LastKeyword: 38, // StrictKeyword,
 
-	// Identifier = QuotedTextIdentifier | HtmlIdentifier | TextIdentifier | NumericIdentifier,
-}
+	// Identifier: QuotedTextIdentifier | HtmlIdentifier | TextIdentifier | NumericIdentifier,
+} as const;
+
+/** reverse lookup because we cannot make syntaxKind an enum */
+export const syntaxKindNames = {
+	0: "Unknown",
+	1: "EndOfFileToken",
+	2: "NewLineTrivia",
+	3: "WhitespaceTrivia",
+
+	4: "HashCommentTrivia",
+	5: "SingleLineCommentTrivia",
+	6: "MultiLineCommentTrivia",
+
+	7: "CommaToken",
+	8: "SemicolonToken",
+	9: "PlusToken",
+	10: "OpenBraceToken",
+	11: "CloseBraceToken",
+	12: "OpenBracketToken",
+	13: "CloseBracketToken",
+	14: "ColonToken",
+	15: "EqualsToken",
+	16: "LessThan",
+	17: "GreaterThan",
+
+	18: "CompassNorthToken",
+	19: "CompassNorthEastToken",
+	20: "CompassEastToken",
+	21: "CompassSouthEastToken",
+	22: "CompassSouthToken",
+	23: "CompassSouthWestToken",
+	24: "CompassWestToken",
+	25: "CompassNorthWestToken",
+	26: "CompassCenterToken",
+	27: "UnderscoreToken",
+
+	28: "StringLiteral",
+
+	29: "HtmlIdentifier",
+	30: "TextIdentifier",
+	31: "QuotedTextIdentifier", // Contains multiple "QuotedTextIdentifier" for concatenation with +
+	32: "NumericIdentifier",
+
+	33: "GraphKeyword",
+	34: "DigraphKeyword",
+	35: "NodeKeyword",
+	36: "EdgeKeyword",
+	37: "SubgraphKeyword",
+	38: "StrictKeyword",
+
+	39: "DirectedEdgeOp",
+	40: "UndirectedEdgeOp",
+
+	41: "DirectedGraph",
+	42: "UndirectedGraph",
+	43: "NodeStatement",
+	44: "EdgeStatement",
+	45: "AttributeStatement",
+	46: "IdEqualsIdStatement",
+	47: "SubGraph",
+	48: "SubGraphStatement",
+	49: "EdgeRhs",
+	50: "AttributeContainer",
+	51: "Assignment",
+	52: "NormalPortDeclaration",
+	53: "CompassPortDeclaration",
+	54: "NodeId",
+
+	55: "Count", // Number of items in this enum
+} as const;
 
 export interface SyntaxNode extends TextRange {
 	kind: SyntaxKind;
@@ -514,14 +588,14 @@ export interface Color {
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export type StatementOf<T extends Statement["kind"]> = T extends SyntaxKind.SubGraphStatement
+export type StatementOf<T extends Statement["kind"]> = T extends typeof syntaxKind.SubGraphStatement
 	? SubGraphStatement
-	: T extends SyntaxKind.AttributeStatement
+	: T extends typeof syntaxKind.AttributeStatement
 		? AttributeStatement
-		: T extends SyntaxKind.EdgeStatement
+		: T extends typeof syntaxKind.EdgeStatement
 			? EdgeStatement
-			: T extends SyntaxKind.IdEqualsIdStatement
+			: T extends typeof syntaxKind.IdEqualsIdStatement
 				? IdEqualsIdStatement
-				: T extends SyntaxKind.NodeStatement
+				: T extends typeof syntaxKind.NodeStatement
 					? NodeStatement
 					: never;
