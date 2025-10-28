@@ -12,5 +12,5 @@ A language service library, written in TypeScript. Used by [dot-language-server]
 
 ## Installation
 ```sh
-npm -S i dot-language-support
+npm i dot-language-support
 ```
