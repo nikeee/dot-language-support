@@ -5,7 +5,7 @@ import {
 	type AttributeStatement,
 	CheckError,
 	type CheckErrorCode,
-	DiagnosticCategory,
+	diagnosticCategory,
 	type DiagnosticMessage,
 	type EdgeOp,
 	type EdgeRhs,
@@ -139,7 +139,7 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 		}
 
 		invalidShapes.push({
-			category: DiagnosticCategory.Warning,
+			category: diagnosticCategory.Warning,
 			code: createCheckerError(CheckError.InvalidShapeName),
 			message: `Unknown shape "${rightText}".`,
 			start: rightId.pos,
@@ -259,7 +259,7 @@ function createEdgeViolationDiagnostics(
 
 	const message = `Invalid edge operation, use "${op}" in ${graphType} graph`;
 	const code = createCheckerError(CheckError.InvalidEdgeOperation);
-	const category = DiagnosticCategory.Error;
+	const category = diagnosticCategory.Error;
 
 	// Add flags in side-effected forEach instead of map() below
 	for (const edge of violators) {

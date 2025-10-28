@@ -1,6 +1,13 @@
 import { createMapFromTemplate } from "./core.js";
 import { assertNever } from "./service/util.js";
-import { CharacterCodes, DiagnosticCategory, ScanError, SyntaxKind, TokenFlags } from "./types.js";
+import {
+	CharacterCodes,
+	type DiagnosticCategory,
+	diagnosticCategory,
+	ScanError,
+	SyntaxKind,
+	TokenFlags,
+} from "./types.js";
 
 export interface Scanner {
 	readonly end: number;
@@ -319,14 +326,7 @@ export class DefaultScanner implements Scanner {
 	#error(
 		message: string,
 		sub: ScanError,
-		errPos: number,
-		length: number,
-		category?: DiagnosticCategory,
-	): void;
-	#error(
-		message: string,
-		sub: ScanError,
-		category: DiagnosticCategory = DiagnosticCategory.Error,
+		category: DiagnosticCategory = diagnosticCategory.Error,
 		errPos: number = this.pos,
 		length = 0,
 	): void {

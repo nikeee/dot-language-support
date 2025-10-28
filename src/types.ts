@@ -43,12 +43,14 @@ export interface DiagnosticMessage {
 	end: number;
 }
 
-export enum DiagnosticCategory {
-	Error = 1,
-	Warning = 2,
-	Message = 3,
-	Suggestion = 4,
-}
+export const diagnosticCategory = Object.freeze({
+	Error: 1,
+	Warning: 2,
+	Message: 3,
+	Suggestion: 4,
+} as const);
+
+export type DiagnosticCategory = (typeof diagnosticCategory)[keyof typeof diagnosticCategory];
 
 export type ID = string;
 

@@ -6,7 +6,8 @@ import {
 	type AttributeContainer,
 	type AttributeStatement,
 	type CompassPortDeclaration,
-	DiagnosticCategory,
+	type DiagnosticCategory,
+	diagnosticCategory,
 	type DiagnosticMessage,
 	type EdgeRhs,
 	type EdgeStatement,
@@ -833,7 +834,7 @@ export class Parser {
 
 		if (!lastError || start !== lastError.start) {
 			ds.push({
-				category: DiagnosticCategory.Error,
+				category: diagnosticCategory.Error,
 				start,
 				end,
 				message,
