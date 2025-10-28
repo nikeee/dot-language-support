@@ -325,7 +325,6 @@ export class DefaultScanner implements Scanner {
 		}
 	}
 
-	#error(message: string, sub: ScanError, category?: DiagnosticCategory): void;
 	#error(
 		message: string,
 		sub: ScanError,

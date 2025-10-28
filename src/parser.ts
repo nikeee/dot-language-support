@@ -89,6 +89,7 @@ export class Parser {
 		return this.currentToken;
 	}
 
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
 	#getLinesFromFile(sourceText: string): string[] {
 		return sourceText.split(/\r?\n/);
 	}
@@ -230,6 +231,7 @@ export class Parser {
 		node.text = text;
 		return this.#finishNode(node);
 	}
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
 	#isQuotedStringFollowing(): boolean {
 		this.#nextToken();
 		return this.#token() === syntaxKind.StringLiteral;
@@ -901,6 +903,7 @@ export class Parser {
 		//}
 	}
 
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
 	#parseExpectedOneOf<T extends SyntaxKind>(...kinds: T[]): boolean {
 		if (kinds.length < 2) {
 			console.assert(false);
@@ -946,6 +949,7 @@ export class Parser {
 		return this.#createMissingNode(kind) as Token<T>;
 	}
 
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
 	#parseExpected<T extends SyntaxKind>(kind: T /*, diagnostic?: Diagnostic */): boolean {
 		const res = this.#parseOptional(kind);
 
@@ -1033,6 +1037,7 @@ export class Parser {
 	 * callback returns something truthy, then the parser state is not rolled back. The result
 	 * of invoking the callback is returned from this function.
 	 */
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
 	#tryParse(callback: () => SyntaxKind | boolean): SyntaxKind | boolean {
 		return this.#speculationHelper(callback, /*isLookAhead*/ false);
 	}
