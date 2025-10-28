@@ -9,10 +9,15 @@
 
     "moduleResolution": "node",
 
+    "noEmit": true,
+
     "outDir": "lib/cjs",
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,
+
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
