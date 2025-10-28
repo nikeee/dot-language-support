@@ -10,7 +10,8 @@ import {
 	type EdgeRhs,
 	type EdgeStatement,
 	type Graph,
-	GraphContext,
+	type GraphContext,
+	graphContext,
 	type IdEqualsIdStatement,
 	type Identifier,
 	type NodeId,
@@ -42,13 +43,13 @@ function createBinder(): Binder {
 	let parent: SyntaxNode | undefined;
 	let symbolTable: SymbolTable | undefined;
 	let colorTable: ColorTable | undefined;
-	let graphContext: GraphContext = GraphContext.None;
+	let gc: GraphContext = graphContext.None;
 
 	function bind(node: SyntaxNode): void {
 		if (!node) return;
 
 		const saveParent = parent;
-		const saveContext = graphContext;
+		const saveContext = gc;
 
 		node.parent = saveParent;
 		node.graphContext = saveContext;
@@ -58,7 +59,7 @@ function createBinder(): Binder {
 		innerBind(node);
 
 		parent = saveParent;
-		graphContext = saveContext;
+		gc = saveContext;
 	}
 
 	function innerBind(node: SyntaxNode): void {
@@ -99,14 +100,14 @@ function createBinder(): Binder {
 
 	function bindGraph(node: Graph) {
 		if (node.strict) {
-			graphContext |= GraphContext.Strict;
+			gc |= graphContext.Strict;
 		}
 		switch (node.kind) {
 			case syntaxKind.DirectedGraph:
-				graphContext |= GraphContext.Directed;
+				gc |= graphContext.Directed;
 				break;
 			case syntaxKind.UndirectedGraph:
-				graphContext |= GraphContext.Undirected;
+				gc |= graphContext.Undirected;
 				break;
 		}
 

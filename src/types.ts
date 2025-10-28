@@ -411,12 +411,13 @@ export const enum SyntaxNodeFlags {
 	Synthesized = 1 << 2,
 }
 
-export const enum GraphContext {
-	None = 0,
-	Strict = 1 << 1,
-	Directed = 1 << 2,
-	Undirected = 1 << 3,
-}
+export const graphContext = {
+	None: 0,
+	Strict: 1 << 1,
+	Directed: 1 << 2,
+	Undirected: 1 << 3,
+} as const;
+export type GraphContext = (typeof graphContext)[keyof typeof graphContext];
 
 export const tokenFlags = {
 	None: 0,
