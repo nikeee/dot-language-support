@@ -20,11 +20,12 @@ export interface CheckErrorCode {
 	sub: CheckError;
 }
 
-export const enum ParseError {
-	ExpectationFailed = 0,
-	TrailingData = 1,
-	FailedListParsing = 2,
-}
+export const parseError = {
+	ExpectationFailed: 0,
+	TrailingData: 1,
+	FailedListParsing: 2,
+} as const;
+export type ParseError = (typeof parseError)[keyof typeof parseError];
 
 export const scanError = {
 	ExpectationFailed: 0,

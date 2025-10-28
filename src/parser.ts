@@ -22,7 +22,8 @@ import {
 	type NodeStatement,
 	type NormalPortDeclaration,
 	type NumericIdentifier,
-	ParseError,
+	type ParseError,
+	parseError,
 	type PortDeclaration,
 	type QuotedTextIdentifier,
 	type ScanError,
@@ -107,7 +108,7 @@ export class Parser {
 					this.scanner.tokenPos,
 					this.scanner.text.length - 1,
 					"Content after the end of a graph declaration is invalid.",
-					{ source: errorSource.Parse, sub: ParseError.TrailingData },
+					{ source: errorSource.Parse, sub: parseError.TrailingData },
 				);
 			}
 		}
@@ -693,7 +694,7 @@ export class Parser {
 	#abortListParsing(context: ParsingContext) {
 		this.#parseErrorAtCurrentToken(
 			this.#getContextParseError(context),
-			ParseError.FailedListParsing,
+			parseError.FailedListParsing,
 		);
 
 		if (this.#isInSomeParsingContext()) {
@@ -894,7 +895,7 @@ export class Parser {
 		//	this.parseErrorAtCurrentToken(diagnostic);
 		//}
 		//else {
-		this.#parseErrorAtCurrentToken(msg, ParseError.ExpectationFailed);
+		this.#parseErrorAtCurrentToken(msg, parseError.ExpectationFailed);
 		//}
 	}
 
