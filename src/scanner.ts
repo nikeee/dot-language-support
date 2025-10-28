@@ -4,7 +4,8 @@ import {
 	CharacterCodes,
 	type DiagnosticCategory,
 	diagnosticCategory,
-	ScanError,
+	type ScanError,
+	scanError,
 	SyntaxKind,
 	TokenFlags,
 } from "./types.js";
@@ -197,7 +198,7 @@ export class DefaultScanner implements Scanner {
 					}
 					this.#error(
 						'Unexpected "/". Did you mean to start a comment like "/*" or "//"? If you wanted to use it as an identifier, put it in double quotes.',
-						ScanError.ExpectationFailed,
+						scanError.ExpectationFailed,
 					);
 					++this.pos;
 					break;
@@ -261,7 +262,7 @@ export class DefaultScanner implements Scanner {
 							const chr = this.text.charAt(this.pos + 1);
 							this.#error(
 								`Unexpected "${chr}". Did you mean to define an edge? Depending on the type of graph you are defining, use "->" or "--".`,
-								ScanError.ExpectationFailed,
+								scanError.ExpectationFailed,
 							);
 							break;
 						}
@@ -311,7 +312,7 @@ export class DefaultScanner implements Scanner {
 					const chr = this.text.charAt(this.pos);
 					this.#error(
 						`Unexpected "${chr}". Did you mean to start an identifier? Node names cannot start with "${chr}".`,
-						ScanError.ExpectationFailed,
+						scanError.ExpectationFailed,
 					);
 					// debugger;
 					this.pos++;
@@ -412,7 +413,7 @@ export class DefaultScanner implements Scanner {
 				result += this.text.substring(start, this.pos);
 				this.tokenFlags |= TokenFlags.Unterminated;
 				this.isUnterminated = true;
-				this.#error("Unterminated html literal", ScanError.Unterminated);
+				this.#error("Unterminated html literal", scanError.Unterminated);
 				break;
 			}
 			const ch = this.text.charCodeAt(this.pos);
@@ -449,7 +450,7 @@ export class DefaultScanner implements Scanner {
 				result += this.text.substring(start, this.pos);
 				this.tokenFlags |= TokenFlags.Unterminated;
 				this.isUnterminated = true;
-				this.#error("Unterminated string", ScanError.Unterminated);
+				this.#error("Unterminated string", scanError.Unterminated);
 				break;
 			}
 			const ch = this.text.charCodeAt(this.pos);
@@ -469,7 +470,7 @@ export class DefaultScanner implements Scanner {
 						result += this.text.substring(start, this.pos);
 						this.tokenFlags |= TokenFlags.Unterminated;
 						this.isUnterminated = true;
-						this.#error("Unterminated string", ScanError.Unterminated);
+						this.#error("Unterminated string", scanError.Unterminated);
 						break;
 					}
 				}

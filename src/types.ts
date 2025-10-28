@@ -25,10 +25,12 @@ export const enum ParseError {
 	FailedListParsing = 2,
 }
 
-export const enum ScanError {
-	ExpectationFailed = 0,
-	Unterminated = 1,
-}
+export const scanError = {
+	ExpectationFailed: 0,
+	Unterminated: 1,
+};
+
+export type ScanError = (typeof scanError)[keyof typeof scanError];
 
 export const enum CheckError {
 	InvalidEdgeOperation = 0,
