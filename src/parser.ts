@@ -806,9 +806,9 @@ export class Parser {
 		// repeatedly calling push(), the list may not have the optimal memory layout. We invoke slice() for
 		// small arrays (1 to 4 elements) to give the VM a chance to allocate an optimal representation.
 		const length = elements.length;
-		const array = <MutableSyntaxNodeArray<T>>(
+		const array = (
 			(length >= 1 && length <= 4 ? elements.slice() : elements)
-		);
+		) as MutableSyntaxNodeArray<T>;
 		array.pos = pos;
 		array.end = end === undefined ? this.scanner.startPos : end;
 		return array;
