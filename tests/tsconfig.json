@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2023",
+    "module": "esnext",
     "lib": [
       "es2019",
       "dom"
     ],
 
     "strict": true,
+
+    "noEmit": true,
+
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
 
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
