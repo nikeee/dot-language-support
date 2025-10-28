@@ -17,7 +17,7 @@ import {
 	type DiagnosticMessage,
 	type DocumentLike,
 	type EdgeStatement,
-	ErrorSource,
+	errorSource,
 	forEachChild,
 	type Graph,
 	isIdentifierNode,
@@ -205,11 +205,11 @@ function getCommandsForDiagnostic(
 	d: DiagnosticMessage,
 ): lst.Command[] | undefined {
 	switch (d.code.source) {
-		case ErrorSource.Scan:
+		case errorSource.Scan:
 			return getScannerErrorCommand(doc, file, d, d.code);
-		case ErrorSource.Parse:
+		case errorSource.Parse:
 			return getParserErrorCommand(doc, file, d, d.code);
-		case ErrorSource.Check:
+		case errorSource.Check:
 			return getCheckerErrorCommand(doc, file, d, d.code);
 		default:
 			return assertNever(d.code);
@@ -221,8 +221,8 @@ function getScannerErrorCommand(
 	d: DiagnosticMessage,
 	code: ScanErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Scan);
-	console.assert(code.source === ErrorSource.Scan);
+	console.assert(d.code.source === errorSource.Scan);
+	console.assert(code.source === errorSource.Scan);
 	return undefined; // TODO
 }
 
@@ -232,8 +232,8 @@ function getParserErrorCommand(
 	d: DiagnosticMessage,
 	code: ParseErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Parse);
-	console.assert(code.source === ErrorSource.Parse);
+	console.assert(d.code.source === errorSource.Parse);
+	console.assert(code.source === errorSource.Parse);
 	return undefined; // TODO
 }
 
@@ -243,8 +243,8 @@ function getCheckerErrorCommand(
 	d: DiagnosticMessage,
 	code: CheckErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Check);
-	console.assert(code.source === ErrorSource.Check);
+	console.assert(d.code.source === errorSource.Check);
+	console.assert(code.source === errorSource.Check);
 	switch (code.sub) {
 		case CheckError.InvalidEdgeOperation: {
 			const graph = file.graph;

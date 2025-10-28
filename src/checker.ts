@@ -10,7 +10,7 @@ import {
 	type EdgeOp,
 	type EdgeRhs,
 	type EdgeStatement,
-	ErrorSource,
+	errorSource,
 	type Graph,
 	type Identifier,
 	type NodeId,
@@ -329,7 +329,7 @@ export function getIdentifierText(n: Identifier): string {
 
 function createCheckerError(sub: CheckError): CheckErrorCode {
 	return {
-		source: ErrorSource.Check,
+		source: errorSource.Check,
 		sub,
 	};
 }

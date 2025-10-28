@@ -1,21 +1,22 @@
-export const enum ErrorSource {
-	Scan = 1,
-	Parse = 2,
-	Check = 4,
-}
+export const errorSource = {
+	Scan: 1,
+	Parse: 2,
+	Check: 4,
+} as const;
+export type ErrorSource = (typeof errorSource)[keyof typeof errorSource];
 
 export type ErrorCode = ParseErrorCode | ScanErrorCode | CheckErrorCode;
 
 export interface ParseErrorCode {
-	source: ErrorSource.Parse;
+	source: typeof errorSource.Parse;
 	sub: ParseError;
 }
 export interface ScanErrorCode {
-	source: ErrorSource.Scan;
+	source: typeof errorSource.Scan;
 	sub: ScanError;
 }
 export interface CheckErrorCode {
-	source: ErrorSource.Check;
+	source: typeof errorSource.Check;
 	sub: CheckError;
 }
 
@@ -28,7 +29,7 @@ export const enum ParseError {
 export const scanError = {
 	ExpectationFailed: 0,
 	Unterminated: 1,
-};
+} as const;
 
 export type ScanError = (typeof scanError)[keyof typeof scanError];
 

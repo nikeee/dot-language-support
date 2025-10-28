@@ -12,7 +12,7 @@ import {
 	type EdgeRhs,
 	type EdgeStatement,
 	type ErrorCode,
-	ErrorSource,
+	errorSource,
 	type Graph,
 	type HtmlIdentifier,
 	type IdEqualsIdStatement,
@@ -107,7 +107,7 @@ export class Parser {
 					this.scanner.tokenPos,
 					this.scanner.text.length - 1,
 					"Content after the end of a graph declaration is invalid.",
-					{ source: ErrorSource.Parse, sub: ParseError.TrailingData },
+					{ source: errorSource.Parse, sub: ParseError.TrailingData },
 				);
 			}
 		}
@@ -847,7 +847,7 @@ export class Parser {
 
 	#parseErrorAtCurrentToken(message: string, sub: ParseError) {
 		const error = {
-			source: ErrorSource.Parse as ErrorSource.Parse,
+			source: errorSource.Parse,
 			sub,
 		};
 
@@ -857,7 +857,7 @@ export class Parser {
 	#scanError(message: string, _category: DiagnosticCategory, sub: ScanError, length: number) {
 		const errorPos = this.scanner.pos;
 		const err = {
-			source: ErrorSource.Scan as ErrorSource.Scan,
+			source: errorSource.Scan,
 			sub,
 		};
 
