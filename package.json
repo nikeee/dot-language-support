@@ -10,8 +10,8 @@
   "type": "module",
   "scripts": {
     "ci": "biome ci ./src",
-    "test": "tsc && vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "tsc && node --test '**/*.spec.ts'",
+    "test:coverage": "node --test --experimental-test-coverage '**/*.spec.ts'",
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",

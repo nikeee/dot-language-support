@@ -1,4 +1,4 @@
-import { describe, test } from "vitest";
+import { describe, test } from "node:test";
 import { expect } from "expect";
 
 import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
