@@ -310,12 +310,13 @@ function isInRange(
 	return false; // TODO
 }
 
-export const enum CommandIds {
-	ChangeEdgeOp = "DOT.changeEdgeOp",
-	ConvertGraphType = "DOT.convertGraphType",
-	ConsolidateDescendants = "DOT.consolidateDescendants",
-	RemoveSemicolons = "DOT.removeSemicolons",
-}
+export const commandIds = {
+	ChangeEdgeOp: "DOT.changeEdgeOp",
+	ConvertGraphType: "DOT.convertGraphType",
+	ConsolidateDescendants: "DOT.consolidateDescendants",
+	RemoveSemicolons: "DOT.removeSemicolons",
+} as const;
+export type CommandIds = (typeof commandIds)[keyof typeof commandIds];
 
 type CommandHandler = (
 	doc: DocumentLike,
@@ -328,10 +329,10 @@ interface CommandHandlers {
 }
 
 const commandHandlers: CommandHandlers = {
-	[CommandIds.ChangeEdgeOp]: ChangeEdgeOpCommand.execute,
-	[CommandIds.ConvertGraphType]: ChangeAllOtherEdgeOpsAndFixGraphCommand.execute,
-	[CommandIds.ConsolidateDescendants]: ConsolidateDescendantsCommand.execute,
-	[CommandIds.RemoveSemicolons]: RemoveSemicolonsCommand.execute,
+	[commandIds.ChangeEdgeOp]: ChangeEdgeOpCommand.execute,
+	[commandIds.ConvertGraphType]: ChangeAllOtherEdgeOpsAndFixGraphCommand.execute,
+	[commandIds.ConsolidateDescendants]: ConsolidateDescendantsCommand.execute,
+	[commandIds.RemoveSemicolons]: RemoveSemicolonsCommand.execute,
 };
 
 export function getAvailableCommands() {

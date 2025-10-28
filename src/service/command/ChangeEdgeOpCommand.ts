@@ -1,10 +1,10 @@
 import * as lst from "vscode-languageserver-types";
 import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
-import { CommandIds } from "../codeAction.js";
+import { commandIds } from "../codeAction.js";
 import { type EdgeOpStr, type EdgeType, type ExecutableCommand, getEdgeStr } from "./common.js";
 
 export interface ChangeEdgeOpCommand extends lst.Command {
-	command: CommandIds.ChangeEdgeOp;
+	command: typeof commandIds.ChangeEdgeOp;
 	arguments: [number, number, EdgeOpStr];
 }
 
@@ -19,7 +19,7 @@ export function create(
 
 	return {
 		title: `Change "${from}" to "${to}".`,
-		command: CommandIds.ChangeEdgeOp,
+		command: commandIds.ChangeEdgeOp,
 		arguments: [startOffset, endOffset, to],
 	};
 }
@@ -47,5 +47,5 @@ export function execute(
 }
 
 function isChangeEdgeOpCommand(cmd: ExecutableCommand<unknown[]>): cmd is ChangeEdgeOpCommand {
-	return cmd.command === CommandIds.ChangeEdgeOp && !!cmd.arguments && cmd.arguments.length === 3;
+	return cmd.command === commandIds.ChangeEdgeOp && !!cmd.arguments && cmd.arguments.length === 3;
 }

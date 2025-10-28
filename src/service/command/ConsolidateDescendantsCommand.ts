@@ -8,12 +8,12 @@ import type {
 	SourceFile,
 	SyntaxNode,
 } from "../../index.js";
-import { CommandIds } from "../codeAction.js";
+import { commandIds } from "../codeAction.js";
 import { getStart } from "../util.js";
 import type { ExecutableCommand } from "./common.js";
 
 export interface ConsolidateDescendantsCommand extends lst.Command {
-	command: CommandIds.ConsolidateDescendants;
+	command: typeof commandIds.ConsolidateDescendants;
 	arguments: number[];
 }
 
@@ -25,7 +25,7 @@ export function create(statements: EdgeStatement[], below: boolean): Consolidate
 		: `Convert edges from "${from}" to subgraph`;
 	return {
 		title,
-		command: CommandIds.ConsolidateDescendants,
+		command: commandIds.ConsolidateDescendants,
 		arguments: statements.map(s => s.pos),
 	};
 }
@@ -121,7 +121,7 @@ function isConsolidateDescendantsCommand(
 	cmd: ExecutableCommand<unknown[]>,
 ): cmd is ConsolidateDescendantsCommand {
 	return (
-		cmd.command === CommandIds.ConsolidateDescendants &&
+		cmd.command === commandIds.ConsolidateDescendants &&
 		!!cmd.arguments &&
 		cmd.arguments.length > 1
 	);

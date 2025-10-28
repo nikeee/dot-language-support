@@ -1,18 +1,18 @@
 import type * as lst from "vscode-languageserver-types";
 import { findOptionalSemicolons } from "../../checker.js";
 import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
-import { CommandIds } from "../codeAction.js";
+import { commandIds } from "../codeAction.js";
 import { createChangeToEdit, type ExecutableCommand } from "./common.js";
 
 export interface RemoveSemicolonsCommand extends lst.Command {
-	command: CommandIds.RemoveSemicolons;
+	command: typeof commandIds.RemoveSemicolons;
 	arguments: undefined;
 }
 
 export function create(): RemoveSemicolonsCommand {
 	return {
 		title: "Remove optional semicolons",
-		command: CommandIds.RemoveSemicolons,
+		command: commandIds.RemoveSemicolons,
 		arguments: undefined,
 	};
 }
@@ -49,7 +49,7 @@ function isRemoveSemicolonsCommand(
 	cmd: ExecutableCommand<unknown[]>,
 ): cmd is RemoveSemicolonsCommand {
 	return (
-		cmd.command === CommandIds.RemoveSemicolons &&
+		cmd.command === commandIds.RemoveSemicolons &&
 		(!cmd.arguments || cmd.arguments.length === 0 || cmd.arguments.every(e => e === undefined))
 	);
 }

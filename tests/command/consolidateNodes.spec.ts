@@ -3,7 +3,7 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
 import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.js";
-import { CommandIds, getCodeActions } from "../../src/service/codeAction.js";
+import { commandIds, getCodeActions } from "../../src/service/codeAction.js";
 import { ExecutableCommand } from "../../src/service/command/common.js";
 
 describe("Consolidate graph command execution", () => {
@@ -115,7 +115,7 @@ describe("Consolidate graph command execution", () => {
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).toEqual(CommandIds.ConsolidateDescendants);
+		expect(firstAction.command).toEqual(commandIds.ConsolidateDescendants);
 		expect(firstAction.arguments).toBeDefined();
 		expect(firstAction.arguments).toHaveLength(2)
 		expect(firstAction.title).toBeDefined();
@@ -143,7 +143,7 @@ describe("Consolidate graph command execution", () => {
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).toEqual(CommandIds.ConsolidateDescendants);
+		expect(firstAction.command).toEqual(commandIds.ConsolidateDescendants);
 		expect(firstAction.arguments).toBeDefined();
 		expect(firstAction.arguments).toHaveLength(2)
 		expect(firstAction.title).toBeDefined();
