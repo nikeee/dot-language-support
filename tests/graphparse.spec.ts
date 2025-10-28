@@ -1,4 +1,5 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "vitest";
+import { expect } from "expect";
 
 import { createParserWithText, ensureGraph } from "./testutils.js";
 import { syntaxKind, type EdgeStatement, type NodeId } from "../src/types.js";

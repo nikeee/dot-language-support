@@ -1,4 +1,5 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "vitest";
+import { expect } from "expect";
 
 import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testutils.js";
 import { getCompletions } from "../../src/service/completion.js";

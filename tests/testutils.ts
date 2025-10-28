@@ -1,5 +1,4 @@
-import { expect } from "vitest";
-
+import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { Parser } from "../src"

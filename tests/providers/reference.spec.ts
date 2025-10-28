@@ -1,4 +1,5 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "vitest";
+import { expect } from "expect";
 
 import { ensureDocAndSourceFile } from "../testutils.js";
 import { findReferences } from "../../src/service/reference.js";

@@ -1,4 +1,5 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "vitest";
+import { expect } from "expect";
 
 import { createParserWithText, ensureGraph } from "./testutils";
 import { syntaxKind } from "../src/types";
