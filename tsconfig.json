@@ -9,6 +9,8 @@
 
     "moduleResolution": "node",
 
+    "noEmit": true,
+
     "outDir": "lib/cjs",
     "declaration": true,
     "sourceMap": true,
