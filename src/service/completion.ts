@@ -60,20 +60,27 @@ export function getCompletions(
 		}
 	}
 
-	if (node.kind === syntaxKind.TextIdentifier && parent?.kind === syntaxKind.NodeId) {
-		const exclusions = node.symbol ? [node.symbol.name] : undefined;
-		return getNodeCompletions(symbols, exclusions);
-	}
+	const prevNodeNi = findNodeAtOffset(g, node.pos - 1, false);
 
 	if (
 		node.kind === syntaxKind.AttributeContainer ||
+		// FIXME: conflitcs with #issue 17 9 (last test of nodeCompletion.spec.ts)
+		// || (node.kind === SyntaxKind.TextIdentifier && prevNodeNi?.kind === SyntaxKind.AttributeContainer)
+		(node.kind === syntaxKind.TextIdentifier && prevNodeNi?.kind === syntaxKind.CommaToken) ||
 		(node.kind === syntaxKind.CommaToken && parent?.kind === syntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}
 
+	if (node.kind === SyntaxKind.TextIdentifier && parent?.kind === SyntaxKind.NodeId) {
+		const exclusions = node.symbol ? [node.symbol.name] : undefined;
+		return getNodeCompletions(symbols, exclusions);
+	}
+
 	const prevNode = findNodeAtOffset(g, node.pos - 1, true);
-	if (!prevNode) return [];
+	if (!prevNode) {
+		return [];
+	}
 
 	if (isIdentifierNode(prevNode)) {
 		const p = prevNode.parent;
