@@ -418,11 +418,12 @@ export const enum GraphContext {
 	Undirected = 1 << 3,
 }
 
-export const enum TokenFlags {
-	None = 0,
-	Unterminated = 1 << 1,
-	PrecedingLineBreak = 1 << 2,
-}
+export const tokenFlags = {
+	None: 0,
+	Unterminated: 1 << 1,
+	PrecedingLineBreak: 1 << 2,
+} as const;
+export type TokenFlags = (typeof tokenFlags)[keyof typeof tokenFlags];
 
 export const enum CharacterCodes {
 	nullCharacter = 0,

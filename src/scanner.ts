@@ -8,7 +8,8 @@ import {
 	scanError,
 	type SyntaxKind,
 	syntaxKind,
-	TokenFlags,
+	type TokenFlags,
+	tokenFlags,
 } from "./types.js";
 
 export interface Scanner {
@@ -117,12 +118,12 @@ export class DefaultScanner implements Scanner {
 		this.tokenPos = textPos;
 		this.token = syntaxKind.Unknown;
 		this.tokenValue = undefined;
-		this.tokenFlags = TokenFlags.None;
+		this.tokenFlags = tokenFlags.None;
 	}
 
 	scan(skipTrivia = true): SyntaxKind {
 		this.startPos = this.pos;
-		this.tokenFlags = TokenFlags.None;
+		this.tokenFlags = tokenFlags.None;
 		this.isUnterminated = false;
 
 		while (true) {
@@ -135,7 +136,7 @@ export class DefaultScanner implements Scanner {
 			switch (ch) {
 				case CharacterCodes.lineFeed:
 				case CharacterCodes.carriageReturn:
-					this.tokenFlags |= TokenFlags.PrecedingLineBreak;
+					this.tokenFlags |= tokenFlags.PrecedingLineBreak;
 					// Maybe add flags to token
 					if (skipTrivia) {
 						this.pos++;
@@ -412,7 +413,7 @@ export class DefaultScanner implements Scanner {
 		while (true) {
 			if (this.pos >= this.end) {
 				result += this.text.substring(start, this.pos);
-				this.tokenFlags |= TokenFlags.Unterminated;
+				this.tokenFlags |= tokenFlags.Unterminated;
 				this.isUnterminated = true;
 				this.#error("Unterminated html literal", scanError.Unterminated);
 				break;
@@ -449,7 +450,7 @@ export class DefaultScanner implements Scanner {
 		while (true) {
 			if (this.pos >= this.end) {
 				result += this.text.substring(start, this.pos);
-				this.tokenFlags |= TokenFlags.Unterminated;
+				this.tokenFlags |= tokenFlags.Unterminated;
 				this.isUnterminated = true;
 				this.#error("Unterminated string", scanError.Unterminated);
 				break;
@@ -469,7 +470,7 @@ export class DefaultScanner implements Scanner {
 					}
 					if (isLineBreak(ch)) {
 						result += this.text.substring(start, this.pos);
-						this.tokenFlags |= TokenFlags.Unterminated;
+						this.tokenFlags |= tokenFlags.Unterminated;
 						this.isUnterminated = true;
 						this.#error("Unterminated string", scanError.Unterminated);
 						break;
