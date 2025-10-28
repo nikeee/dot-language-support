@@ -1,7 +1,8 @@
 import { createMapFromTemplate } from "./core.js";
 import { assertNever } from "./service/util.js";
 import {
-	CharacterCodes,
+	type CharacterCodes,
+	characterCodes,
 	type DiagnosticCategory,
 	diagnosticCategory,
 	type ScanError,
@@ -134,8 +135,8 @@ export class DefaultScanner implements Scanner {
 
 			let ch = this.text.charCodeAt(this.pos);
 			switch (ch) {
-				case CharacterCodes.lineFeed:
-				case CharacterCodes.carriageReturn:
+				case characterCodes.lineFeed:
+				case characterCodes.carriageReturn:
 					this.tokenFlags |= tokenFlags.PrecedingLineBreak;
 					// Maybe add flags to token
 					if (skipTrivia) {
@@ -144,19 +145,19 @@ export class DefaultScanner implements Scanner {
 					}
 					// consume both CR and LF
 					if (
-						ch === CharacterCodes.carriageReturn &&
+						ch === characterCodes.carriageReturn &&
 						this.pos + 1 < this.end &&
-						this.text.charCodeAt(this.pos + 1) === CharacterCodes.lineFeed
+						this.text.charCodeAt(this.pos + 1) === characterCodes.lineFeed
 					) {
 						this.pos += 2;
 					} else {
 						this.pos++;
 					}
 					return (this.token = syntaxKind.NewLineTrivia);
-				case CharacterCodes.tab:
-				case CharacterCodes.verticalTab:
-				case CharacterCodes.formFeed:
-				case CharacterCodes.space:
+				case characterCodes.tab:
+				case characterCodes.verticalTab:
+				case characterCodes.formFeed:
+				case characterCodes.space:
 					if (skipTrivia) {
 						this.pos++;
 						continue;
@@ -168,7 +169,7 @@ export class DefaultScanner implements Scanner {
 						this.pos++;
 					return (this.token = syntaxKind.WhitespaceTrivia);
 
-				case CharacterCodes.hash: {
+				case characterCodes.hash: {
 					const content = this.#scanHashCommentTrivia(skipTrivia);
 
 					// Skip rest of line
@@ -176,12 +177,12 @@ export class DefaultScanner implements Scanner {
 					this.tokenValue = content;
 					return (this.token = syntaxKind.HashCommentTrivia);
 				}
-				case CharacterCodes.slash: {
+				case characterCodes.slash: {
 					if (this.pos + 1 < this.end) {
 						const nextChar = this.text.charCodeAt(this.pos + 1);
 
 						switch (nextChar) {
-							case CharacterCodes.slash: {
+							case characterCodes.slash: {
 								const commentContent =
 									this.#scanSingleLineCommentTrivia(skipTrivia);
 								if (skipTrivia) continue;
@@ -189,7 +190,7 @@ export class DefaultScanner implements Scanner {
 								this.tokenValue = commentContent;
 								return (this.token = syntaxKind.SingleLineCommentTrivia);
 							}
-							case CharacterCodes.asterisk: {
+							case characterCodes.asterisk: {
 								const commentContent = this.#scanMultiLineCommentTrivia(skipTrivia);
 								if (skipTrivia) continue;
 
@@ -205,59 +206,59 @@ export class DefaultScanner implements Scanner {
 					++this.pos;
 					break;
 				}
-				case CharacterCodes.openBrace:
+				case characterCodes.openBrace:
 					this.pos++;
 					return (this.token = syntaxKind.OpenBraceToken);
-				case CharacterCodes.closeBrace:
+				case characterCodes.closeBrace:
 					this.pos++;
 					return (this.token = syntaxKind.CloseBraceToken);
-				case CharacterCodes.openBracket:
+				case characterCodes.openBracket:
 					this.pos++;
 					return (this.token = syntaxKind.OpenBracketToken);
-				case CharacterCodes.closeBracket:
+				case characterCodes.closeBracket:
 					this.pos++;
 					return (this.token = syntaxKind.CloseBracketToken);
-				case CharacterCodes.plus:
+				case characterCodes.plus:
 					this.pos++;
 					return (this.token = syntaxKind.PlusToken);
-				case CharacterCodes.equals:
+				case characterCodes.equals:
 					this.pos++;
 					return (this.token = syntaxKind.EqualsToken);
-				case CharacterCodes._0:
-				case CharacterCodes._1:
-				case CharacterCodes._2:
-				case CharacterCodes._3:
-				case CharacterCodes._4:
-				case CharacterCodes._5:
-				case CharacterCodes._6:
-				case CharacterCodes._7:
-				case CharacterCodes._8:
-				case CharacterCodes._9:
-				case CharacterCodes.dot:
+				case characterCodes._0:
+				case characterCodes._1:
+				case characterCodes._2:
+				case characterCodes._3:
+				case characterCodes._4:
+				case characterCodes._5:
+				case characterCodes._6:
+				case characterCodes._7:
+				case characterCodes._8:
+				case characterCodes._9:
+				case characterCodes.dot:
 					this.tokenValue = this.#scanNumber();
 					return (this.token = syntaxKind.NumericIdentifier);
-				case CharacterCodes.minus: {
+				case characterCodes.minus: {
 					const nextChar = this.text.charCodeAt(this.pos + 1);
 
 					switch (nextChar) {
-						case CharacterCodes.minus: // --
+						case characterCodes.minus: // --
 							this.pos += 2;
 							return (this.token = syntaxKind.UndirectedEdgeOp);
-						case CharacterCodes.greaterThan: // ->
+						case characterCodes.greaterThan: // ->
 							this.pos += 2;
 							return (this.token = syntaxKind.DirectedEdgeOp);
 
-						case CharacterCodes._0:
-						case CharacterCodes._1:
-						case CharacterCodes._2:
-						case CharacterCodes._3:
-						case CharacterCodes._4:
-						case CharacterCodes._5:
-						case CharacterCodes._6:
-						case CharacterCodes._7:
-						case CharacterCodes._8:
-						case CharacterCodes._9:
-						case CharacterCodes.dot:
+						case characterCodes._0:
+						case characterCodes._1:
+						case characterCodes._2:
+						case characterCodes._3:
+						case characterCodes._4:
+						case characterCodes._5:
+						case characterCodes._6:
+						case characterCodes._7:
+						case characterCodes._8:
+						case characterCodes._9:
+						case characterCodes.dot:
 							this.tokenValue = this.#scanNumber();
 							return (this.token = syntaxKind.NumericIdentifier);
 						default: {
@@ -275,22 +276,22 @@ export class DefaultScanner implements Scanner {
 					//return this.token = syntaxKind.Unknown;
 				}
 				// TODO: Remove UnderscoreToken
-				case CharacterCodes._:
+				case characterCodes._:
 					this.pos++;
 					return (this.token = syntaxKind.UnderscoreToken);
-				case CharacterCodes.semicolon:
+				case characterCodes.semicolon:
 					this.pos++;
 					return (this.token = syntaxKind.SemicolonToken);
-				case CharacterCodes.colon:
+				case characterCodes.colon:
 					this.pos++;
 					return (this.token = syntaxKind.ColonToken);
-				case CharacterCodes.comma:
+				case characterCodes.comma:
 					this.pos++;
 					return (this.token = syntaxKind.CommaToken);
-				case CharacterCodes.lessThan:
+				case characterCodes.lessThan:
 					this.tokenValue = this.#scanHtml();
 					return (this.token = syntaxKind.HtmlIdentifier);
-				case CharacterCodes.doubleQuote:
+				case characterCodes.doubleQuote:
 					this.tokenValue = this.#scanString();
 					return (this.token = syntaxKind.StringLiteral);
 				default: {
@@ -347,26 +348,26 @@ export class DefaultScanner implements Scanner {
 		// Note: nextLine is in the Zs space, and should be considered to be a whitespace.
 		// It is explicitly not a line-break as it isn't in the exact set specified by EcmaScript.
 		return (
-			ch === CharacterCodes.space ||
-			ch === CharacterCodes.tab ||
-			ch === CharacterCodes.verticalTab ||
-			ch === CharacterCodes.formFeed ||
-			ch === CharacterCodes.nonBreakingSpace ||
-			ch === CharacterCodes.nextLine ||
-			ch === CharacterCodes.ogham ||
-			(ch >= CharacterCodes.enQuad && ch <= CharacterCodes.zeroWidthSpace) ||
-			ch === CharacterCodes.narrowNoBreakSpace ||
-			ch === CharacterCodes.mathematicalSpace ||
-			ch === CharacterCodes.ideographicSpace ||
-			ch === CharacterCodes.byteOrderMark
+			ch === characterCodes.space ||
+			ch === characterCodes.tab ||
+			ch === characterCodes.verticalTab ||
+			ch === characterCodes.formFeed ||
+			ch === characterCodes.nonBreakingSpace ||
+			ch === characterCodes.nextLine ||
+			ch === characterCodes.ogham ||
+			(ch >= characterCodes.enQuad && ch <= characterCodes.zeroWidthSpace) ||
+			ch === characterCodes.narrowNoBreakSpace ||
+			ch === characterCodes.mathematicalSpace ||
+			ch === characterCodes.ideographicSpace ||
+			ch === characterCodes.byteOrderMark
 		);
 	}
 
 	#isAtMultiLineCommentEnd(pos: number): boolean {
 		return (
 			pos + 1 < this.end &&
-			this.text.charCodeAt(pos) === CharacterCodes.asterisk &&
-			this.text.charCodeAt(pos + 1) === CharacterCodes.slash
+			this.text.charCodeAt(pos) === characterCodes.asterisk &&
+			this.text.charCodeAt(pos + 1) === characterCodes.slash
 		);
 	}
 
@@ -419,12 +420,12 @@ export class DefaultScanner implements Scanner {
 				break;
 			}
 			const ch = this.text.charCodeAt(this.pos);
-			if (ch === CharacterCodes.lessThan) {
+			if (ch === characterCodes.lessThan) {
 				++subTagsLevel;
 				this.pos++;
 				continue;
 			}
-			if (ch === CharacterCodes.greaterThan) {
+			if (ch === characterCodes.greaterThan) {
 				this.pos++;
 				console.assert(subTagsLevel >= 0);
 
@@ -457,7 +458,7 @@ export class DefaultScanner implements Scanner {
 			}
 			const ch = this.text.charCodeAt(this.pos);
 
-			if (ch === CharacterCodes.backslash) {
+			if (ch === characterCodes.backslash) {
 				hasBackslash = true;
 			} else {
 				if (hasBackslash) {
@@ -493,18 +494,18 @@ export class DefaultScanner implements Scanner {
 			const ch = this.text.charCodeAt(this.pos);
 
 			switch (ch) {
-				case CharacterCodes._0:
-				case CharacterCodes._1:
-				case CharacterCodes._2:
-				case CharacterCodes._3:
-				case CharacterCodes._4:
-				case CharacterCodes._5:
-				case CharacterCodes._6:
-				case CharacterCodes._7:
-				case CharacterCodes._8:
-				case CharacterCodes._9:
+				case characterCodes._0:
+				case characterCodes._1:
+				case characterCodes._2:
+				case characterCodes._3:
+				case characterCodes._4:
+				case characterCodes._5:
+				case characterCodes._6:
+				case characterCodes._7:
+				case characterCodes._8:
+				case characterCodes._9:
 					break;
-				case CharacterCodes.dot:
+				case characterCodes.dot:
 					if (hadDot) {
 						result += this.text.substring(start, this.pos);
 						return result;
@@ -512,7 +513,7 @@ export class DefaultScanner implements Scanner {
 					hadDot = true;
 					hadMinus = true;
 					break;
-				case CharacterCodes.minus:
+				case characterCodes.minus:
 					if (this.pos !== start || hadMinus) {
 						result += this.text.substring(start, this.pos);
 						return result;
@@ -533,8 +534,8 @@ export class DefaultScanner implements Scanner {
 		if (len >= 4 && len <= 8) {
 			const ch = tokenValue.charCodeAt(0);
 			if (
-				(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
-				(ch >= CharacterCodes.A && ch <= CharacterCodes.Z)
+				(ch >= characterCodes.a && ch <= characterCodes.z) ||
+				(ch >= characterCodes.A && ch <= characterCodes.Z)
 			) {
 				const lowerCaseToken = tokenValue.toLowerCase();
 				const t = textToToken.get(lowerCaseToken);
@@ -598,39 +599,39 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
 	switch (idType) {
 		case syntaxKind.TextIdentifier:
 			return (
-				ch === CharacterCodes._ ||
-				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
-				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
-				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+				ch === characterCodes._ ||
+				(characterCodes.A <= ch && ch <= characterCodes.Z) ||
+				(characterCodes.a <= ch && ch <= characterCodes.z) ||
+				(characterCodes._0 <= ch && ch <= characterCodes._9)
 			);
 		case syntaxKind.HtmlIdentifier:
 			// TODO: This may not be all char codes
 			return (
-				ch === CharacterCodes._ ||
-				ch === CharacterCodes.lessThan ||
-				ch === CharacterCodes.equals ||
-				ch === CharacterCodes.doubleQuote ||
-				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
-				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
-				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+				ch === characterCodes._ ||
+				ch === characterCodes.lessThan ||
+				ch === characterCodes.equals ||
+				ch === characterCodes.doubleQuote ||
+				(characterCodes.A <= ch && ch <= characterCodes.Z) ||
+				(characterCodes.a <= ch && ch <= characterCodes.z) ||
+				(characterCodes._0 <= ch && ch <= characterCodes._9)
 			);
 		case syntaxKind.StringLiteral:
 			// TODO: This may not be all char codes
 			return (
-				ch === CharacterCodes._ ||
-				ch === CharacterCodes.backslash ||
-				ch === CharacterCodes.lessThan ||
-				ch === CharacterCodes.equals ||
-				ch === CharacterCodes.doubleQuote ||
-				(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
-				(CharacterCodes.a <= ch && ch <= CharacterCodes.z) ||
-				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+				ch === characterCodes._ ||
+				ch === characterCodes.backslash ||
+				ch === characterCodes.lessThan ||
+				ch === characterCodes.equals ||
+				ch === characterCodes.doubleQuote ||
+				(characterCodes.A <= ch && ch <= characterCodes.Z) ||
+				(characterCodes.a <= ch && ch <= characterCodes.z) ||
+				(characterCodes._0 <= ch && ch <= characterCodes._9)
 			);
 		case syntaxKind.NumericIdentifier:
 			return (
-				ch === CharacterCodes.minus ||
-				ch === CharacterCodes.dot ||
-				(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+				ch === characterCodes.minus ||
+				ch === characterCodes.dot ||
+				(characterCodes._0 <= ch && ch <= characterCodes._9)
 			);
 		default:
 			return assertNever(idType);
@@ -645,19 +646,19 @@ function isIdentifierPartOf(ch: number, idType: Identifier): boolean {
  */
 // biome-ignore lint/correctness/noUnusedVariables: todo
 function getIdentifierStart(ch: number): Identifier | undefined {
-	if (ch === CharacterCodes.lessThan) return syntaxKind.HtmlIdentifier;
-	if (ch === CharacterCodes.doubleQuote) return syntaxKind.StringLiteral;
+	if (ch === characterCodes.lessThan) return syntaxKind.HtmlIdentifier;
+	if (ch === characterCodes.doubleQuote) return syntaxKind.StringLiteral;
 	if (
-		ch === CharacterCodes._ ||
-		(CharacterCodes.A <= ch && ch <= CharacterCodes.Z) ||
-		(CharacterCodes.a <= ch && ch <= CharacterCodes.z)
+		ch === characterCodes._ ||
+		(characterCodes.A <= ch && ch <= characterCodes.Z) ||
+		(characterCodes.a <= ch && ch <= characterCodes.z)
 	)
 		return syntaxKind.TextIdentifier;
 
 	if (
-		ch === CharacterCodes.minus ||
-		ch === CharacterCodes.dot ||
-		(CharacterCodes._0 <= ch && ch <= CharacterCodes._9)
+		ch === characterCodes.minus ||
+		ch === characterCodes.dot ||
+		(characterCodes._0 <= ch && ch <= characterCodes._9)
 	)
 		return syntaxKind.NumericIdentifier;
 
@@ -667,23 +668,23 @@ function getIdentifierStart(ch: number): Identifier | undefined {
 export function isIdentifierStart(ch: number): boolean {
 	// TODO: Check Identifiers
 	return (
-		(ch >= CharacterCodes.A && ch <= CharacterCodes.Z) ||
-		(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
-		(ch >= CharacterCodes._0 && ch <= CharacterCodes._9) ||
-		ch === CharacterCodes._ ||
-		ch === CharacterCodes.lessThan ||
-		ch === CharacterCodes.doubleQuote
+		(ch >= characterCodes.A && ch <= characterCodes.Z) ||
+		(ch >= characterCodes.a && ch <= characterCodes.z) ||
+		(ch >= characterCodes._0 && ch <= characterCodes._9) ||
+		ch === characterCodes._ ||
+		ch === characterCodes.lessThan ||
+		ch === characterCodes.doubleQuote
 	);
 }
 
 function isIdentifierPart(ch: number): boolean {
 	return (
-		(ch >= CharacterCodes.A && ch <= CharacterCodes.Z) ||
-		(ch >= CharacterCodes.a && ch <= CharacterCodes.z) ||
-		(ch >= CharacterCodes._0 && ch <= CharacterCodes._9) ||
-		ch === CharacterCodes.$ ||
-		ch === CharacterCodes._ ||
-		ch > CharacterCodes.maxAsciiCharacter
+		(ch >= characterCodes.A && ch <= characterCodes.Z) ||
+		(ch >= characterCodes.a && ch <= characterCodes.z) ||
+		(ch >= characterCodes._0 && ch <= characterCodes._9) ||
+		ch === characterCodes.$ ||
+		ch === characterCodes._ ||
+		ch > characterCodes.maxAsciiCharacter
 	);
 }
 
@@ -692,17 +693,17 @@ export function skipTrivia(text: string, pos: number /* stopAtComments = false *
 	while (true) {
 		const ch = text.charCodeAt(pos);
 		switch (ch) {
-			case CharacterCodes.carriageReturn:
-				if (text.charCodeAt(pos + 1) === CharacterCodes.lineFeed) ++pos;
+			case characterCodes.carriageReturn:
+				if (text.charCodeAt(pos + 1) === characterCodes.lineFeed) ++pos;
 				continue;
-			case CharacterCodes.lineFeed:
-			case CharacterCodes.tab:
-			case CharacterCodes.verticalTab:
-			case CharacterCodes.formFeed:
-			case CharacterCodes.space:
+			case characterCodes.lineFeed:
+			case characterCodes.tab:
+			case characterCodes.verticalTab:
+			case characterCodes.formFeed:
+			case characterCodes.space:
 				++pos;
 				continue;
-			case CharacterCodes.hash: {
+			case characterCodes.hash: {
 				// Skip single line comments started using hash
 				++pos;
 				while (pos < text.length) {
@@ -711,12 +712,12 @@ export function skipTrivia(text: string, pos: number /* stopAtComments = false *
 				}
 				continue;
 			}
-			case CharacterCodes.slash:
+			case characterCodes.slash:
 				if (pos + 1 < text.length) {
 					const nextChar = text.charCodeAt(pos + 1);
 
 					switch (nextChar) {
-						case CharacterCodes.slash: {
+						case characterCodes.slash: {
 							pos += 2;
 							while (pos < text.length) {
 								if (isLineBreak(text.charCodeAt(pos))) break;
@@ -724,12 +725,12 @@ export function skipTrivia(text: string, pos: number /* stopAtComments = false *
 							}
 							continue;
 						}
-						case CharacterCodes.asterisk: {
+						case characterCodes.asterisk: {
 							pos += 2;
 							while (pos < text.length) {
 								if (
-									text.charCodeAt(pos) === CharacterCodes.asterisk &&
-									text.charCodeAt(pos + 1) === CharacterCodes.slash
+									text.charCodeAt(pos) === characterCodes.asterisk &&
+									text.charCodeAt(pos + 1) === characterCodes.slash
 								) {
 									pos += 2;
 									break;
@@ -747,5 +748,5 @@ export function skipTrivia(text: string, pos: number /* stopAtComments = false *
 }
 
 export function isLineBreak(ch: number): boolean {
-	return ch === CharacterCodes.lineFeed || ch === CharacterCodes.carriageReturn;
+	return ch === characterCodes.lineFeed || ch === characterCodes.carriageReturn;
 }
