@@ -31,13 +31,12 @@ export const scanError = {
 	ExpectationFailed: 0,
 	Unterminated: 1,
 } as const;
-
 export type ScanError = (typeof scanError)[keyof typeof scanError];
 
 export const checkError = {
 	InvalidEdgeOperation: 0,
 	InvalidShapeName: 1,
-};
+} as const;
 export type CheckError = (typeof checkError)[keyof typeof checkError];
 
 export interface DiagnosticMessage {
@@ -48,13 +47,12 @@ export interface DiagnosticMessage {
 	end: number;
 }
 
-export const diagnosticCategory = Object.freeze({
+export const diagnosticCategory = {
 	Error: 1,
 	Warning: 2,
 	Message: 3,
 	Suggestion: 4,
-} as const);
-
+} as const;
 export type DiagnosticCategory = (typeof diagnosticCategory)[keyof typeof diagnosticCategory];
 
 export type ID = string;
