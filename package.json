@@ -1,24 +1,22 @@
 {
   "name": "dot-language-support",
-  "version": "2.2.2",
+  "version": "4.0.0",
   "description": "Parser and language service for graphviz (dot) files",
   "author": "Niklas Mollenhauer",
   "license": "MIT",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "ci": "biome ci ./src",
-    "test": "tsc --noEmit && vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "tsc && node --test '**/*.spec.ts'",
+    "test:coverage": "node --test --experimental-test-coverage '**/*.spec.ts'",
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
-    "lint:fix": "biome lint --apply ./src",
-    "clean": "rimraf lib",
-    "build:esm": "tsc --target esnext --module esnext --outDir lib/esm",
-    "build:cjs": "tsc --target es2017 --module commonjs --outDir lib/cjs",
-    "build": "npm run build:esm && npm run build:cjs",
-    "prepare": "npm run clean && npm run build"
+    "lint:fix": "biome lint --write ./src",
+    "build": "tsup",
+    "prepare": "npm run build"
   },
   "keywords": [
     "graphviz",
@@ -33,17 +31,16 @@
     "url": "https://github.com/nikeee/dot-language-support.git"
   },
   "dependencies": {
-    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.3",
-    "@vitest/coverage-v8": "^1.2.2",
-    "rimraf": "^5.0.5",
-    "typescript": "^5.3.3",
-    "vitest": "^1.2.2"
+    "@biomejs/biome": "^2.3.1",
+    "expect": "^30.2.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

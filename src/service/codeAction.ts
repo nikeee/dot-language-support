@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+
 import {
 	edgeStatementHasAttributes,
 	findAllEdges,
@@ -9,35 +10,35 @@ import {
 	isEdgeStatement,
 	isNodeId,
 	nodeContainsErrors,
-} from "../checker.js";
+} from "../checker.ts";
 import {
-	CheckError,
 	type CheckErrorCode,
 	type CommandApplication,
+	checkError,
 	type DiagnosticMessage,
 	type DocumentLike,
 	type EdgeStatement,
-	ErrorSource,
+	errorSource,
+	forEachChild,
 	type Graph,
+	isIdentifierNode,
 	type ParseErrorCode,
 	type ScanErrorCode,
 	type SourceFile,
-	SyntaxKind,
 	type SyntaxNode,
-	forEachChild,
-	isIdentifierNode,
-} from "../index.js";
-import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
-import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
-import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.js";
-import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.js";
+	syntaxKind,
+} from "../index.ts";
+import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.ts";
+import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.ts";
+import * as ConsolidateDescendantsCommand from "./command/ConsolidateDescendantsCommand.ts";
 import {
 	type ExecutableCommand,
 	getAllowedOp,
 	getOppositeEdgeOp,
 	getOppositeKind,
-} from "./command/common.js";
-import { assertNever, getStart } from "./util.js";
+} from "./command/common.ts";
+import * as RemoveSemicolonsCommand from "./command/RemoveSemicolons.ts";
+import { assertNever, getStart } from "./util.ts";
 
 export function getCodeActions(
 	doc: DocumentLike,
@@ -110,7 +111,7 @@ function getGeneralRefactorings(
 
 		let clickedNode = findNodeAtOffset(g, rangeStartOffset);
 		if (clickedNode && !!clickedNode.parent) {
-			if (clickedNode.kind === SyntaxKind.SemicolonToken) {
+			if (clickedNode.kind === syntaxKind.SemicolonToken) {
 				res.push(RemoveSemicolonsCommand.create());
 			}
 
@@ -205,11 +206,11 @@ function getCommandsForDiagnostic(
 	d: DiagnosticMessage,
 ): lst.Command[] | undefined {
 	switch (d.code.source) {
-		case ErrorSource.Scan:
+		case errorSource.Scan:
 			return getScannerErrorCommand(doc, file, d, d.code);
-		case ErrorSource.Parse:
+		case errorSource.Parse:
 			return getParserErrorCommand(doc, file, d, d.code);
-		case ErrorSource.Check:
+		case errorSource.Check:
 			return getCheckerErrorCommand(doc, file, d, d.code);
 		default:
 			return assertNever(d.code);
@@ -221,8 +222,8 @@ function getScannerErrorCommand(
 	d: DiagnosticMessage,
 	code: ScanErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Scan);
-	console.assert(code.source === ErrorSource.Scan);
+	console.assert(d.code.source === errorSource.Scan);
+	console.assert(code.source === errorSource.Scan);
 	return undefined; // TODO
 }
 
@@ -232,8 +233,8 @@ function getParserErrorCommand(
 	d: DiagnosticMessage,
 	code: ParseErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Parse);
-	console.assert(code.source === ErrorSource.Parse);
+	console.assert(d.code.source === errorSource.Parse);
+	console.assert(code.source === errorSource.Parse);
 	return undefined; // TODO
 }
 
@@ -243,10 +244,10 @@ function getCheckerErrorCommand(
 	d: DiagnosticMessage,
 	code: CheckErrorCode,
 ): lst.Command[] | undefined {
-	console.assert(d.code.source === ErrorSource.Check);
-	console.assert(code.source === ErrorSource.Check);
+	console.assert(d.code.source === errorSource.Check);
+	console.assert(code.source === errorSource.Check);
 	switch (code.sub) {
-		case CheckError.InvalidEdgeOperation: {
+		case checkError.InvalidEdgeOperation: {
 			const graph = file.graph;
 			if (!graph) return undefined;
 
@@ -264,7 +265,7 @@ function getCheckerErrorCommand(
 			);
 			return [fixSingleEdge, fixAll, convertToThisWrongType];
 		}
-		case CheckError.InvalidShapeName:
+		case checkError.InvalidShapeName:
 			return undefined; // Fixing spelling errors is not supported
 	}
 }
@@ -272,7 +273,7 @@ function getCheckerErrorCommand(
 function convertGraphTypeCommand(
 	file: SourceFile,
 	graph: Graph,
-	changeToGraphType: SyntaxKind.DigraphKeyword | SyntaxKind.GraphKeyword,
+	changeToGraphType: typeof syntaxKind.DigraphKeyword | typeof syntaxKind.GraphKeyword,
 ) {
 	const changeToEdgeOp = getAllowedOp(changeToGraphType);
 
@@ -310,12 +311,13 @@ function isInRange(
 	return false; // TODO
 }
 
-export const enum CommandIds {
-	ChangeEdgeOp = "DOT.changeEdgeOp",
-	ConvertGraphType = "DOT.convertGraphType",
-	ConsolidateDescendants = "DOT.consolidateDescendants",
-	RemoveSemicolons = "DOT.removeSemicolons",
-}
+export const commandIds = {
+	ChangeEdgeOp: "DOT.changeEdgeOp",
+	ConvertGraphType: "DOT.convertGraphType",
+	ConsolidateDescendants: "DOT.consolidateDescendants",
+	RemoveSemicolons: "DOT.removeSemicolons",
+} as const;
+export type CommandIds = (typeof commandIds)[keyof typeof commandIds];
 
 type CommandHandler = (
 	doc: DocumentLike,
@@ -328,10 +330,10 @@ interface CommandHandlers {
 }
 
 const commandHandlers: CommandHandlers = {
-	[CommandIds.ChangeEdgeOp]: ChangeEdgeOpCommand.execute,
-	[CommandIds.ConvertGraphType]: ChangeAllOtherEdgeOpsAndFixGraphCommand.execute,
-	[CommandIds.ConsolidateDescendants]: ConsolidateDescendantsCommand.execute,
-	[CommandIds.RemoveSemicolons]: RemoveSemicolonsCommand.execute,
+	[commandIds.ChangeEdgeOp]: ChangeEdgeOpCommand.execute,
+	[commandIds.ConvertGraphType]: ChangeAllOtherEdgeOpsAndFixGraphCommand.execute,
+	[commandIds.ConsolidateDescendants]: ConsolidateDescendantsCommand.execute,
+	[commandIds.RemoveSemicolons]: RemoveSemicolonsCommand.execute,
 };
 
 export function getAvailableCommands() {

@@ -1,16 +1,17 @@
 import * as lst from "vscode-languageserver-types";
-import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker.js";
-import { type DocumentLike, isIdentifierNode } from "../index.js";
+
+import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker.ts";
+import { type DocumentLike, isIdentifierNode } from "../index.ts";
 import {
 	type Assignment,
 	type AttributeContainer,
 	type SourceFile,
 	type SymbolTable,
-	SyntaxKind,
-	SyntaxNodeFlags,
-} from "../types.js";
-import * as languageFacts from "./languageFacts.js";
-import { escapeIdentifierText } from "./util.js";
+	syntaxKind,
+	syntaxNodeFlags,
+} from "../types.ts";
+import * as languageFacts from "./languageFacts.ts";
+import { escapeIdentifierText } from "./util.ts";
 
 // TODO: Rewrite pattern matching + completion
 // Currently, we use this hack with "inclusiveEnd"
@@ -46,13 +47,13 @@ export function getCompletions(
 	// Hack to fix GitHub issue #17
 	// We have problems handling whitespace when finding a node at a specific offset
 	// So we check if the current cursor is in an AttributeContainer ("   [   ]") and if the cursor is before the end
-	if (node.kind === SyntaxKind.AttributeContainer) {
+	if (node.kind === syntaxKind.AttributeContainer) {
 		const openingBracket = (node as AttributeContainer).openBracket;
 		if (openingBracket.end - 1 > offset - 1) {
 			// - 1 for semantic clarity
 
 			const exclusions =
-				prevOffsetNode?.kind === SyntaxKind.TextIdentifier && prevOffsetNode.symbol
+				prevOffsetNode?.kind === syntaxKind.TextIdentifier && prevOffsetNode.symbol
 					? [prevOffsetNode.symbol.name]
 					: undefined;
 			return getNodeCompletions(symbols, exclusions);
@@ -62,11 +63,11 @@ export function getCompletions(
 	const prevNodeNi = findNodeAtOffset(g, node.pos - 1, false);
 
 	if (
-		node.kind === SyntaxKind.AttributeContainer ||
+		node.kind === syntaxKind.AttributeContainer ||
 		// FIXME: conflitcs with #issue 17 9 (last test of nodeCompletion.spec.ts)
 		// || (node.kind === SyntaxKind.TextIdentifier && prevNodeNi?.kind === SyntaxKind.AttributeContainer)
-		(node.kind === SyntaxKind.TextIdentifier && prevNodeNi?.kind === SyntaxKind.CommaToken) ||
-		(node.kind === SyntaxKind.CommaToken && parent?.kind === SyntaxKind.Assignment)
+		(node.kind === syntaxKind.TextIdentifier && prevNodeNi?.kind === syntaxKind.CommaToken) ||
+		(node.kind === syntaxKind.CommaToken && parent?.kind === syntaxKind.Assignment)
 	) {
 		return getAttributeCompletions(position);
 	}
@@ -85,24 +86,22 @@ export function getCompletions(
 		const p = prevNode.parent;
 		if (p) {
 			switch (p.kind) {
-				case SyntaxKind.NodeId: {
+				case syntaxKind.NodeId:
 					return getNodeCompletions(symbols);
-				}
-				case SyntaxKind.Assignment: {
+				case syntaxKind.Assignment:
 					return getAssignmentCompletion(p as Assignment);
-				}
 			}
 		}
 	}
 
-	if (node.flags & SyntaxNodeFlags.ContainsErrors || node.end === node.pos) {
+	if (node.flags & syntaxNodeFlags.ContainsErrors || node.end === node.pos) {
 		const attribute = prevNode;
 		if (!attribute) return [];
 
 		if (!attribute.parent) throw "sourceFile is not bound";
 
 		const parent = attribute.parent;
-		if (parent.kind === SyntaxKind.Assignment) {
+		if (parent.kind === syntaxKind.Assignment) {
 			return getAssignmentCompletion(parent as Assignment);
 		}
 	}
@@ -166,7 +165,7 @@ function getNodeCompletions(
 	symbols: SymbolTable,
 	exlucdedSymbols?: string[],
 ): lst.CompletionItem[] {
-	const res = new Array<lst.CompletionItem>();
+	const res: lst.CompletionItem[] = [];
 	for (const [key, value] of symbols) {
 		if (exlucdedSymbols?.includes(key)) continue;
 
@@ -174,8 +173,8 @@ function getNodeCompletions(
 		const a = value.firstMention.parent;
 		if (a) {
 			switch (a.kind) {
-				case SyntaxKind.DirectedGraph:
-				case SyntaxKind.UndirectedGraph:
+				case syntaxKind.DirectedGraph:
+				case syntaxKind.UndirectedGraph:
 					kind = lst.CompletionItemKind.Class;
 					break;
 			}

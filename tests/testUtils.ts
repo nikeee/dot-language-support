@@ -1,11 +1,10 @@
-import { expect } from "vitest";
-
+import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { Parser } from "../src"
-import { SourceFile, Graph } from "../src/types";
-import { bindSourceFile } from "../src/binder";
-import { checkSourceFile } from "../src/checker";
+import { Parser } from "../src/index.ts"
+import type { SourceFile, Graph } from "../src/types.ts";
+import { bindSourceFile } from "../src/binder.ts";
+import { checkSourceFile } from "../src/checker.ts";
 
 export function createParserWithText(text: string) {
 	const p = new Parser();

@@ -1,16 +1,17 @@
-import { shapes as validShapes } from "./service/languageFacts.js";
-import { assertNever, getStart } from "./service/util.js";
+import { shapes as validShapes } from "./service/languageFacts.ts";
+import { assertNever, getStart } from "./service/util.ts";
 import {
 	type Assignment,
 	type AttributeStatement,
-	CheckError,
+	type CheckError,
 	type CheckErrorCode,
-	DiagnosticCategory,
+	checkError,
 	type DiagnosticMessage,
+	diagnosticCategory,
 	type EdgeOp,
 	type EdgeRhs,
 	type EdgeStatement,
-	ErrorSource,
+	errorSource,
 	type Graph,
 	type Identifier,
 	type NodeId,
@@ -18,15 +19,15 @@ import {
 	type Statement,
 	type StatementOf,
 	type SubGraphStatement,
-	SyntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
-	SyntaxNodeFlags,
+	syntaxKind,
+	syntaxNodeFlags,
 	type TextIdentifier,
 	type TextRange,
 	type Token,
-} from "./types.js";
-import { forEachChild } from "./visitor.js";
+} from "./types.ts";
+import { forEachChild } from "./visitor.ts";
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;
@@ -40,6 +41,7 @@ export function checkSourceFile(file: SourceFile): void {
 	}
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode): SyntaxNode {
 	const prevRange = prev.end - prev.pos;
 
@@ -82,9 +84,9 @@ export function findNodeAtOffset(
 }
 
 export function getAllowedEdgeOperation(graph: Graph) {
-	return graph.kind === SyntaxKind.DirectedGraph
-		? SyntaxKind.DirectedEdgeOp
-		: SyntaxKind.UndirectedEdgeOp;
+	return graph.kind === syntaxKind.DirectedGraph
+		? syntaxKind.DirectedEdgeOp
+		: syntaxKind.UndirectedEdgeOp;
 }
 
 function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[] | undefined {
@@ -104,7 +106,7 @@ function checkGraphSemantics(file: SourceFile, root: Graph): DiagnosticMessage[]
 
 function forEachAssignmentTransitive(root: SyntaxNode, cb: (assignment: Assignment) => void) {
 	forEachChild(root, child => {
-		if (child.kind === SyntaxKind.Assignment) {
+		if (child.kind === syntaxKind.Assignment) {
 			cb(child as Assignment);
 			return;
 		}
@@ -119,8 +121,8 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 	forEachAssignmentTransitive(root, assignment => {
 		const { leftId, rightId } = assignment;
 		if (
-			leftId.kind !== SyntaxKind.TextIdentifier ||
-			rightId.kind !== SyntaxKind.TextIdentifier
+			leftId.kind !== syntaxKind.TextIdentifier ||
+			rightId.kind !== syntaxKind.TextIdentifier
 		) {
 			return;
 		}
@@ -138,8 +140,8 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 		}
 
 		invalidShapes.push({
-			category: DiagnosticCategory.Warning,
-			code: createCheckerError(CheckError.InvalidShapeName),
+			category: diagnosticCategory.Warning,
+			code: createCheckerError(checkError.InvalidShapeName),
 			message: `Unknown shape "${rightText}".`,
 			start: rightId.pos,
 			end: rightId.end,
@@ -173,19 +175,21 @@ export function findAllEdges(node: SyntaxNode): EdgeRhs[] {
 	return allEdges;
 }
 
-export function findOptionalSemicolons(node: SyntaxNode): Token<SyntaxKind.SemicolonToken>[] {
+export function findOptionalSemicolons(
+	node: SyntaxNode,
+): Token<typeof syntaxKind.SemicolonToken>[] {
 	const statements = findAllStatements(node);
 	const terminators = statements.map(p => p.terminator);
-	return terminators.filter(t => !!t) as Token<SyntaxKind.SemicolonToken>[];
+	return terminators.filter(t => !!t) as Token<typeof syntaxKind.SemicolonToken>[];
 }
 
 function isStatement(node: SyntaxNode): node is Statement {
 	return (
-		node.kind === SyntaxKind.SubGraphStatement ||
-		node.kind === SyntaxKind.EdgeStatement ||
-		node.kind === SyntaxKind.NodeStatement ||
-		node.kind === SyntaxKind.IdEqualsIdStatement ||
-		node.kind === SyntaxKind.AttributeStatement
+		node.kind === syntaxKind.SubGraphStatement ||
+		node.kind === syntaxKind.EdgeStatement ||
+		node.kind === syntaxKind.NodeStatement ||
+		node.kind === syntaxKind.IdEqualsIdStatement ||
+		node.kind === syntaxKind.AttributeStatement
 	);
 }
 
@@ -241,7 +245,7 @@ function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeR
 
 	if (wrongEdges && wrongEdges.length > 0) {
 		for (const edge of wrongEdges) {
-			edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+			edge.operation.flags |= syntaxNodeFlags.ContainsErrors;
 		}
 		return wrongEdges;
 	}
@@ -253,16 +257,16 @@ function createEdgeViolationDiagnostics(
 	expectedEdgeOp: EdgeOp["kind"],
 	violators: EdgeRhs[],
 ): DiagnosticMessage[] {
-	const op = expectedEdgeOp === SyntaxKind.UndirectedEdgeOp ? "--" : "->";
-	const graphType = expectedEdgeOp === SyntaxKind.UndirectedEdgeOp ? "undirected" : "directed";
+	const op = expectedEdgeOp === syntaxKind.UndirectedEdgeOp ? "--" : "->";
+	const graphType = expectedEdgeOp === syntaxKind.UndirectedEdgeOp ? "undirected" : "directed";
 
 	const message = `Invalid edge operation, use "${op}" in ${graphType} graph`;
-	const code = createCheckerError(CheckError.InvalidEdgeOperation);
-	const category = DiagnosticCategory.Error;
+	const code = createCheckerError(checkError.InvalidEdgeOperation);
+	const category = diagnosticCategory.Error;
 
 	// Add flags in side-effected forEach instead of map() below
 	for (const edge of violators) {
-		edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+		edge.operation.flags |= syntaxNodeFlags.ContainsErrors;
 	}
 
 	return violators.map(edge => {
@@ -279,6 +283,7 @@ function createEdgeViolationDiagnostics(
 	});
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: todo
 function getInvalidEdgeRhs(allowedOp: EdgeOp["kind"], edges: SyntaxNodeArray<EdgeRhs>): EdgeRhs[] {
 	const res = [];
 	for (const e of edges) {
@@ -288,19 +293,19 @@ function getInvalidEdgeRhs(allowedOp: EdgeOp["kind"], edges: SyntaxNodeArray<Edg
 }
 
 export function isAttrStatement(node: SyntaxNode): node is AttributeStatement {
-	return node.kind === SyntaxKind.AttributeStatement;
+	return node.kind === syntaxKind.AttributeStatement;
 }
 export function isEdgeStatement(node: SyntaxNode): node is EdgeStatement {
-	return node.kind === SyntaxKind.EdgeStatement;
+	return node.kind === syntaxKind.EdgeStatement;
 }
 export function isSubGraphStatement(node: SyntaxNode): node is SubGraphStatement {
-	return node.kind === SyntaxKind.SubGraphStatement;
+	return node.kind === syntaxKind.SubGraphStatement;
 }
-function isGraph(node: SyntaxNode): node is Graph {
-	return node.kind === SyntaxKind.DirectedGraph || node.kind === SyntaxKind.UndirectedGraph;
+export function isGraph(node: SyntaxNode): node is Graph {
+	return node.kind === syntaxKind.DirectedGraph || node.kind === syntaxKind.UndirectedGraph;
 }
 export function isNodeId(node: SyntaxNode): node is NodeId {
-	return node.kind === SyntaxKind.NodeId;
+	return node.kind === syntaxKind.NodeId;
 }
 export function edgeStatementHasAttributes(es: EdgeStatement) {
 	return (
@@ -312,13 +317,13 @@ export function edgeStatementHasAttributes(es: EdgeStatement) {
 
 export function getIdentifierText(n: Identifier): string {
 	switch (n.kind) {
-		case SyntaxKind.HtmlIdentifier:
+		case syntaxKind.HtmlIdentifier:
 			return n.htmlContent;
-		case SyntaxKind.TextIdentifier:
+		case syntaxKind.TextIdentifier:
 			return n.text;
-		case SyntaxKind.NumericIdentifier:
+		case syntaxKind.NumericIdentifier:
 			return n.text;
-		case SyntaxKind.QuotedTextIdentifier:
+		case syntaxKind.QuotedTextIdentifier:
 			return n.concatenation as string; // Assertion because concatenation is filled in binding step
 		default:
 			return assertNever(n);
@@ -327,11 +332,11 @@ export function getIdentifierText(n: Identifier): string {
 
 function createCheckerError(sub: CheckError): CheckErrorCode {
 	return {
-		source: ErrorSource.Check,
+		source: errorSource.Check,
 		sub,
 	};
 }
 
 export function nodeContainsErrors(node: SyntaxNode): boolean {
-	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors;
+	return (node.flags & syntaxNodeFlags.ContainsErrors) === syntaxNodeFlags.ContainsErrors;
 }

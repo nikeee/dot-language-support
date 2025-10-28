@@ -1,7 +1,8 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "node:test";
+import { expect } from "expect";
 
-import { ensureDocAndSourceFile } from "../testutils.js";
-import { hover } from "../../src/service/hover.js";
+import { ensureDocAndSourceFile } from "../testUtils.ts";
+import { hover } from "../../src/service/hover.ts";
 
 describe("Hover Handling", () => {
 
@@ -50,13 +51,13 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	test("should correctly return graph info (offset " + "digraph".length + ")", () => {
+	test(`should correctly return graph info (offset ${"digraph".length})`, () => {
 		const h = hoverAtSampleAtOffset("digraph".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	}
 	);
 
-	test("should correctly return graph info (offset " + "digraph Gra".length + ")", () => {
+	test(`should correctly return graph info (offset ${"digraph Gra".length})`, () => {
 		const h = hoverAtSampleAtOffset("digraph Gra".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	}
@@ -141,7 +142,7 @@ describe("Hover Handling", () => {
 	test("should correctly show node labels on hover (source node)", () => {
 		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
 
-		let h = hoverOnCode(7);
+		const h = hoverOnCode(7);
 		expect(h.contents).toEqual("(node) c: xd");
 	});
 
@@ -150,7 +151,7 @@ describe("Hover Handling", () => {
 	 */
 	test("should correctly show node labels on hover (other node)", () => {
 		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
-		let h = hoverOnCode(22);
+		const h = hoverOnCode(22);
 		expect(h.contents).toEqual("(node) c: xd");
 	});
 
@@ -164,7 +165,7 @@ describe("Hover Handling", () => {
 
 			vp -> vf;
 		}`);
-		let h = hoverOnCode(75);
+		const h = hoverOnCode(75);
 		expect(h.contents).toEqual("(node) vp: View Profile");
 	});
 
@@ -178,7 +179,7 @@ describe("Hover Handling", () => {
 
 			vp -> vf;
 		}`);
-		let h = hoverOnCode(81);
+		const h = hoverOnCode(81);
 		expect(h.contents).toEqual("(node) vf: View Friends");
 	});
 });

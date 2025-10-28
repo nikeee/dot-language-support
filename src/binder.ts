@@ -1,5 +1,5 @@
-import { getIdentifierText, nodeContainsErrors } from "./checker.js";
-import { isIdentifierNode } from "./parser.js";
+import { getIdentifierText, nodeContainsErrors } from "./checker.ts";
+import { isIdentifierNode } from "./parser.ts";
 import {
 	type Assignment,
 	type AttributeContainer,
@@ -10,7 +10,8 @@ import {
 	type EdgeRhs,
 	type EdgeStatement,
 	type Graph,
-	GraphContext,
+	type GraphContext,
+	graphContext,
 	type IdEqualsIdStatement,
 	type Identifier,
 	type NodeId,
@@ -22,11 +23,11 @@ import {
 	type SubGraph,
 	type SubGraphStatement,
 	type SymbolTable,
-	SyntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
+	syntaxKind,
 	type TypeSymbol,
-} from "./types.js";
+} from "./types.ts";
 
 interface Binder {
 	bind(file: SourceFile): void;
@@ -39,16 +40,16 @@ export function bindSourceFile(file: SourceFile) {
 }
 
 function createBinder(): Binder {
-	let parent: SyntaxNode | undefined = undefined;
-	let symbolTable: SymbolTable | undefined = undefined;
-	let colorTable: ColorTable | undefined = undefined;
-	let graphContext: GraphContext = GraphContext.None;
+	let parent: SyntaxNode | undefined;
+	let symbolTable: SymbolTable | undefined;
+	let colorTable: ColorTable | undefined;
+	let gc: GraphContext = graphContext.None;
 
 	function bind(node: SyntaxNode): void {
 		if (!node) return;
 
 		const saveParent = parent;
-		const saveContext = graphContext;
+		const saveContext = gc;
 
 		node.parent = saveParent;
 		node.graphContext = saveContext;
@@ -58,55 +59,55 @@ function createBinder(): Binder {
 		innerBind(node);
 
 		parent = saveParent;
-		graphContext = saveContext;
+		gc = saveContext;
 	}
 
 	function innerBind(node: SyntaxNode): void {
 		switch (node.kind) {
-			case SyntaxKind.DirectedGraph:
-			case SyntaxKind.UndirectedGraph:
+			case syntaxKind.DirectedGraph:
+			case syntaxKind.UndirectedGraph:
 				return bindGraph(node as Graph);
-			case SyntaxKind.AttributeStatement:
+			case syntaxKind.AttributeStatement:
 				return bindAttributeStatement(node as AttributeStatement);
-			case SyntaxKind.EdgeStatement:
+			case syntaxKind.EdgeStatement:
 				return bindEdgeStatement(node as EdgeStatement);
-			case SyntaxKind.NodeStatement:
+			case syntaxKind.NodeStatement:
 				return bindNodeStatement(node as NodeStatement);
-			case SyntaxKind.SubGraph:
+			case syntaxKind.SubGraph:
 				return bindSubGraph(node as SubGraph);
-			case SyntaxKind.SubGraphStatement:
+			case syntaxKind.SubGraphStatement:
 				return bindSubGraphStatement(node as SubGraphStatement);
-			case SyntaxKind.IdEqualsIdStatement:
+			case syntaxKind.IdEqualsIdStatement:
 				return bindIdEqualsIdStatement(node as IdEqualsIdStatement);
-			case SyntaxKind.QuotedTextIdentifier:
+			case syntaxKind.QuotedTextIdentifier:
 				return bindQuotedTextIdentifier(node as QuotedTextIdentifier);
-			case SyntaxKind.EdgeRhs:
+			case syntaxKind.EdgeRhs:
 				return bindEdgeRhs(node as EdgeRhs);
-			case SyntaxKind.AttributeContainer:
+			case syntaxKind.AttributeContainer:
 				return bindAttributeContainer(node as AttributeContainer);
-			case SyntaxKind.Assignment:
+			case syntaxKind.Assignment:
 				return bindAssignment(node as Assignment);
-			case SyntaxKind.NormalPortDeclaration:
+			case syntaxKind.NormalPortDeclaration:
 				return bindNormalPortDeclaration(node as NormalPortDeclaration);
-			case SyntaxKind.CompassPortDeclaration:
+			case syntaxKind.CompassPortDeclaration:
 				return bindCompassPortDeclaration(node as CompassPortDeclaration);
-			case SyntaxKind.NodeId:
+			case syntaxKind.NodeId:
 				return bindNodeId(node as NodeId);
 			default:
-				if (node.kind >= SyntaxKind.FirstNode) throw "TODO";
+				if (node.kind >= syntaxKind.FirstNode) throw "TODO";
 		}
 	}
 
 	function bindGraph(node: Graph) {
 		if (node.strict) {
-			graphContext |= GraphContext.Strict;
+			gc |= graphContext.Strict;
 		}
 		switch (node.kind) {
-			case SyntaxKind.DirectedGraph:
-				graphContext |= GraphContext.Directed;
+			case syntaxKind.DirectedGraph:
+				gc |= graphContext.Directed;
 				break;
-			case SyntaxKind.UndirectedGraph:
-				graphContext |= GraphContext.Undirected;
+			case syntaxKind.UndirectedGraph:
+				gc |= graphContext.Undirected;
 				break;
 		}
 
@@ -201,18 +202,18 @@ function createBinder(): Binder {
 
 		// TODO: This is crap, fix it
 
-		let carrierIdentifier = undefined;
+		let carrierIdentifier: Identifier | undefined;
 		switch (superParentStatement.kind) {
-			case SyntaxKind.NodeStatement:
+			case syntaxKind.NodeStatement:
 				carrierIdentifier = superParentStatement.id.id;
 				break;
-			case SyntaxKind.EdgeStatement:
+			case syntaxKind.EdgeStatement:
 				// carrierIdentifier = superParentStatement.source.id;
 				break;
-			case SyntaxKind.SubGraphStatement:
+			case syntaxKind.SubGraphStatement:
 				// carrierIdentifier = superParentStatement.id;
 				break;
-			case SyntaxKind.AttributeStatement:
+			case syntaxKind.AttributeStatement:
 				// carrierIdentifier = superParentStatement.subject;
 				break;
 		}

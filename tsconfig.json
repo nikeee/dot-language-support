@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "es2023",
+    "module": "esnext",
     "lib": [
-      "es2019",
+      "es2023",
       "dom" // for console
     ],
 
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
 
-    "outDir": "lib/cjs",
+    "noEmit": true,
+
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,
+
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

@@ -1,9 +1,10 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "node:test";
+import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.js";
-import { getCompletions } from "../../src/service/completion.js";
-import { shapes } from "../../src/service/languageFacts.js";
-import { CheckError, DiagnosticCategory, ErrorSource } from "../../src/types.js";
+import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
+import { getCompletions } from "../../src/service/completion.ts";
+import { shapes } from "../../src/service/languageFacts.ts";
+import { checkError, diagnosticCategory, errorSource } from "../../src/types.ts";
 
 describe("Shape completion", () => {
 
@@ -117,30 +118,30 @@ describe("Shape completion", () => {
 	});
 
 	test("should validate shapes (single node)", () => {
-		let [doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
+		let [_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 
-		[doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
+		[_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
-			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
-			category: DiagnosticCategory.Warning,
+			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+			category: diagnosticCategory.Warning,
 			start: 17,
 			end: 21,
 		}]);
 	});
 
 	test("should validate shapes (all nodes)", () => {
-		let [doc, sf] = ensureDocAndSourceFile(`graph { node [shape=box]; }`);
+		let [_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 
-		[doc, sf] = ensureDocAndSourceFile(`graph { node [shape=test]; }`);
+		[_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
-			code: { source: ErrorSource.Check, sub: CheckError.InvalidShapeName },
-			category: DiagnosticCategory.Warning,
+			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+			category: diagnosticCategory.Warning,
 			start: 20,
 			end: 24,
 		}]);

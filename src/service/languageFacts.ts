@@ -29,6 +29,7 @@ export const shapes = Object.freeze([
 	"Mdiamond",
 	"Msquare",
 	"Mcircle",
+	"record",
 	"rect",
 	"rectangle",
 	"square",

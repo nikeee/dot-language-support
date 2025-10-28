@@ -1,8 +1,9 @@
 import { type Position, TextEdit, type WorkspaceEdit } from "vscode-languageserver-types";
-import { findNodeAtOffset } from "../checker.js";
-import { type DocumentLike, isIdentifierNode } from "../index.js";
-import { type SourceFile, SyntaxKind, type SyntaxNode } from "../types.js";
-import { syntaxNodesToRanges } from "./util.js";
+
+import { findNodeAtOffset } from "../checker.ts";
+import { type DocumentLike, isIdentifierNode } from "../index.ts";
+import { type SourceFile, type SyntaxNode, syntaxKind } from "../types.ts";
+import { syntaxNodesToRanges } from "./util.ts";
 
 export function renameSymbol(
 	doc: DocumentLike,
@@ -53,12 +54,12 @@ export function renameSymbol(
 
 function isRenameableNode(node: SyntaxNode): boolean {
 	return (
-		node.kind === SyntaxKind.NodeId ||
-		node.kind === SyntaxKind.DirectedGraph ||
-		node.kind === SyntaxKind.UndirectedGraph
+		node.kind === syntaxKind.NodeId ||
+		node.kind === syntaxKind.DirectedGraph ||
+		node.kind === syntaxKind.UndirectedGraph
 	);
 }
 
 function isRenamableIdentifier(node: SyntaxNode): boolean {
-	return node.kind !== SyntaxKind.QuotedTextIdentifier;
+	return node.kind !== syntaxKind.QuotedTextIdentifier;
 }

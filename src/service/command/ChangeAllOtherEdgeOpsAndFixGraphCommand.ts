@@ -1,20 +1,21 @@
 import type * as lst from "vscode-languageserver-types";
-import type { CommandApplication, DocumentLike, SourceFile } from "../../index.js";
-import { CommandIds } from "../codeAction.js";
+
+import type { CommandApplication, DocumentLike, SourceFile } from "../../index.ts";
+import { commandIds } from "../codeAction.ts";
 import {
+	createChangeToEdit,
 	type EdgeOpStr,
 	type EdgeType,
 	type ExecutableCommand,
 	type GraphType,
 	type GraphTypeStr,
-	type Offset,
-	createChangeToEdit,
 	getEdgeStr,
 	getGraphKeywordStr,
-} from "./common.js";
+	type Offset,
+} from "./common.ts";
 
 export interface ChangeAllOtherEdgeOpsAndFixGraphCommand extends lst.Command {
-	command: CommandIds.ConvertGraphType;
+	command: typeof commandIds.ConvertGraphType;
 	arguments: [Offset[], EdgeOpStr, Offset, GraphTypeStr];
 }
 
@@ -34,7 +35,7 @@ export function create(
 	const edgeStr = getEdgeStr(changeEdgesTo);
 	return {
 		title,
-		command: CommandIds.ConvertGraphType,
+		command: commandIds.ConvertGraphType,
 		arguments: [edgeOffsets, edgeStr, graphOffset, toGraph],
 	};
 }
@@ -72,6 +73,6 @@ function isChangeAllOtherEdgeOpsAndFixGraphCommand(
 	cmd: ExecutableCommand<unknown[]>,
 ): cmd is ChangeAllOtherEdgeOpsAndFixGraphCommand {
 	return (
-		cmd.command === CommandIds.ConvertGraphType && !!cmd.arguments && cmd.arguments.length === 4
+		cmd.command === commandIds.ConvertGraphType && !!cmd.arguments && cmd.arguments.length === 4
 	);
 }

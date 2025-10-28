@@ -1,11 +1,12 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "node:test";
+import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
+import { ensureDocAndSourceFile, ensureGraph } from "../testUtils.ts";
 
-import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons";
-import { CommandIds, getCodeActions } from "../../src/service/codeAction";
+import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons.ts";
+import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
 
 describe("Remove semicolon command execution", () => {
 
@@ -33,10 +34,10 @@ describe("Remove semicolon command execution", () => {
 		const semicolons = 9;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
+		const _pg = ensureGraph(sf);
 
 		const command = {
-			command: CommandIds.RemoveSemicolons,
+			command: commandIds.RemoveSemicolons,
 			arguments: undefined,
 		};
 
@@ -80,22 +81,22 @@ describe("Remove semicolon command execution", () => {
 		if (!secondSemicolon) throw "Just for the type checker";
 
 		const start = secondSemicolon.end - 1;
-		const end = secondSemicolon.end;
+		const _end = secondSemicolon.end;
 
 		const range = {
 			start: doc.positionAt(start),
 			end: doc.positionAt(start),
 		};
 
-		let actions = getCodeActions(doc, sf, range, undefined);
+		const actions = getCodeActions(doc, sf, range, undefined);
 		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
-		let firstAction = actions[0];
+		const firstAction = actions[0];
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).toEqual(CommandIds.RemoveSemicolons);
+		expect(firstAction.command).toEqual(commandIds.RemoveSemicolons);
 		expect(firstAction.arguments).toBeUndefined();
 		expect(firstAction.title).toBeDefined();
 /*
@@ -109,7 +110,7 @@ describe("Remove semicolon command execution", () => {
 		expect(firstAction).to.exist;
 		if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).to.equal(CommandIds.RemoveSemicolons);
+		expect(firstAction.command).to.equal(commandIds.RemoveSemicolons);
 		expect(firstAction.arguments).to.be.undefined;
 		expect(firstAction.title).to.exist;
 */

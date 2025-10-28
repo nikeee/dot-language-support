@@ -1,7 +1,8 @@
-import { describe, test, expect } from "vitest";
+import { describe, test } from "node:test";
+import { expect } from "expect";
 
-import { createParserWithText, ensureGraph } from "./testutils.js";
-import { SyntaxKind, EdgeStatement, NodeId } from "../src/types.js";
+import { createParserWithText, ensureGraph } from "./testUtils.ts";
+import { syntaxKind, type EdgeStatement, type NodeId } from "../src/types.ts";
 
 describe("Graph Parsing", () => {
 
@@ -9,10 +10,11 @@ describe("Graph Parsing", () => {
 		const p = createParserWithText(`strict digraph lol {}`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
 		if (pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(pg.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((pg.id as any).text).toEqual("lol");
 		expect(pg.strict).toBeDefined();
 		expect(pg.statements).toBeDefined();
@@ -28,7 +30,7 @@ describe("Graph Parsing", () => {
 
 		expect(p.diagnostics).toHaveLength(0);
 
-		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
 		expect(pg.id).toBeFalsy();
 
 		expect(pg.statements).toBeDefined();
@@ -37,15 +39,15 @@ describe("Graph Parsing", () => {
 		const fs = pg.statements[0];
 
 		expect(fs).toBeDefined();
-		expect(fs.kind).toEqual(SyntaxKind.EdgeStatement);
+		expect(fs.kind).toEqual(syntaxKind.EdgeStatement);
 		const es = fs as EdgeStatement;
 		expect(es).toBeDefined();
 		expect(es.source).toBeDefined();
-		expect(es.source.kind).toEqual(SyntaxKind.NodeId);
+		expect(es.source.kind).toEqual(syntaxKind.NodeId);
 		const ess = es.source as NodeId;
 		expect(ess).toBeDefined();
 		if (ess === undefined) throw "Just for type checker";
-		expect(ess.id.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect(ess.id.kind).toEqual(syntaxKind.NumericIdentifier);
 	});
 
 	test("should parse attributes", () => {
@@ -56,10 +58,11 @@ describe("Graph Parsing", () => {
 		`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
 		if (pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(pg.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((pg.id as any).text).toEqual("lol");
 		expect(pg.strict).toBeDefined();
 		expect(pg.statements).toBeDefined();
@@ -72,10 +75,10 @@ describe("Graph Parsing", () => {
 
 		const gS = sts[0];
 		expect(gS).toBeDefined();
-		expect(gS.kind).toEqual(SyntaxKind.AttributeStatement);
-		if (gS.kind !== SyntaxKind.AttributeStatement) throw "Just for type checker";
+		expect(gS.kind).toEqual(syntaxKind.AttributeStatement);
+		if (gS.kind !== syntaxKind.AttributeStatement) throw "Just for type checker";
 
-		expect(gS.subject.kind).toEqual(SyntaxKind.GraphKeyword);
+		expect(gS.subject.kind).toEqual(syntaxKind.GraphKeyword);
 
 		expect(gS.attributes).toBeDefined();
 		expect(gS.attributes.length).toEqual(1);
@@ -83,39 +86,45 @@ describe("Graph Parsing", () => {
 
 		const gsa = gS.attributes;
 		expect(gsa[0]).toBeDefined();
-		expect(gsa[0].kind).toEqual(SyntaxKind.AttributeContainer);
+		expect(gsa[0].kind).toEqual(syntaxKind.AttributeContainer);
 
 		const gsaa = gsa[0].assignments;
 		expect(gsaa).toBeDefined();
 		expect(gsaa.length).toEqual(3);
 
-		expect(gsaa[0].kind).toEqual(SyntaxKind.Assignment);
-		expect(gsaa[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(gsaa[0].kind).toEqual(syntaxKind.Assignment);
+		expect(gsaa[0].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[0].leftId as any).text).toEqual("size");
 		// expect(gsaa[0].equalsToken).to.exist;
-		expect(gsaa[0].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(gsaa[0].rightId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[0].rightId as any).text).toEqual("lel");
 
-		expect(gsaa[1].kind).toEqual(SyntaxKind.Assignment);
-		expect(gsaa[1].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(gsaa[1].kind).toEqual(syntaxKind.Assignment);
+		expect(gsaa[1].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[1].leftId as any).text).toEqual("other");
 		// expect(gsaa[1].equalsToken).to.exist;
-		expect(gsaa[1].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(gsaa[1].rightId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[1].rightId as any).text).toEqual("lal");
 
-		expect(gsaa[2].kind).toEqual(SyntaxKind.Assignment);
-		expect(gsaa[2].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(gsaa[2].kind).toEqual(syntaxKind.Assignment);
+		expect(gsaa[2].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[2].leftId as any).text).toEqual("pi");
 		// expect(gsaa[2].equalsToken).to.exist;
-		expect(gsaa[2].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect(gsaa[2].rightId.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((gsaa[2].rightId as any).text).toEqual("3");
 
 		const nS = sts[1];
 		expect(nS).toBeDefined();
-		expect(nS.kind).toEqual(SyntaxKind.AttributeStatement);
-		if (nS.kind !== SyntaxKind.AttributeStatement) throw "Just for type checker";
+		expect(nS.kind).toEqual(syntaxKind.AttributeStatement);
+		if (nS.kind !== syntaxKind.AttributeStatement) throw "Just for type checker";
 
-		expect(nS.subject.kind).toEqual(SyntaxKind.NodeKeyword);
+		expect(nS.subject.kind).toEqual(syntaxKind.NodeKeyword);
 
 		expect(nS.attributes).toBeDefined();
 		expect(nS.attributes.length).toEqual(3);
@@ -123,24 +132,28 @@ describe("Graph Parsing", () => {
 
 		const nsa = nS.attributes;
 		expect(nsa[0]).toBeDefined();
-		expect(nsa[0].kind).toEqual(SyntaxKind.AttributeContainer);
+		expect(nsa[0].kind).toEqual(syntaxKind.AttributeContainer);
 
 		const nsaa = nsa[0].assignments;
 		expect(nsaa).toBeDefined();
 		expect(nsaa.length).toEqual(2);
 
-		expect(nsaa[0].kind).toEqual(SyntaxKind.Assignment);
-		expect(nsaa[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(nsaa[0].kind).toEqual(syntaxKind.Assignment);
+		expect(nsaa[0].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa[0].leftId as any).text).toEqual("fontsize");
 		// expect(nsaa[0].equalsToken).to.exist;
-		expect(nsaa[0].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect(nsaa[0].rightId.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa[0].rightId as any).text).toEqual("36");
 
-		expect(nsaa[1].kind).toEqual(SyntaxKind.Assignment);
-		expect(nsaa[1].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(nsaa[1].kind).toEqual(syntaxKind.Assignment);
+		expect(nsaa[1].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa[1].leftId as any).text).toEqual("shape");
 		// expect(nsaa[1].equalsToken).to.exist;
-		expect(nsaa[1].rightId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(nsaa[1].rightId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa[1].rightId as any).text).toEqual("polygon");
 
 		const nsaa1 = nsa[1].assignments;
@@ -151,11 +164,13 @@ describe("Graph Parsing", () => {
 		expect(nsaa2).toBeDefined();
 		expect(nsaa2.length).toEqual(1);
 
-		expect(nsaa2[0].kind).toEqual(SyntaxKind.Assignment);
-		expect(nsaa2[0].leftId.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(nsaa2[0].kind).toEqual(syntaxKind.Assignment);
+		expect(nsaa2[0].leftId.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa2[0].leftId as any).text).toEqual("e");
 		// expect(nsaa2[0].equalsToken).to.exist;
-		expect(nsaa2[0].rightId.kind).toEqual(SyntaxKind.NumericIdentifier);
+		expect(nsaa2[0].rightId.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((nsaa2[0].rightId as any).text).toEqual("2");
 
 	});
@@ -171,10 +186,11 @@ describe("Graph Parsing", () => {
 		}`);
 		const pg = ensureGraph(p);
 
-		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
 		expect(pg.id).toBeDefined();
 		if (pg.id === undefined) throw "Just for type checker";
-		expect(pg.id.kind).toEqual(SyntaxKind.TextIdentifier);
+		expect(pg.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((pg.id as any).text).toEqual("G");
 
 		expect(pg.strict).toBeUndefined();
@@ -185,28 +201,30 @@ describe("Graph Parsing", () => {
 
 		const s0 = ss[0];
 		expect(s0).toBeDefined();
-		expect(s0.kind).toEqual(SyntaxKind.SubGraphStatement);
-		if (s0.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
+		expect(s0.kind).toEqual(syntaxKind.SubGraphStatement);
+		if (s0.kind !== syntaxKind.SubGraphStatement) throw "Just for type checker";
 		expect(s0.terminator).toBeFalsy();
 		expect(s0.subgraph.id).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s0.subgraph.id as any).text).toEqual("cluster_0");
 		expect(s0.subgraph.statements).toBeDefined();
 		expect(s0.subgraph.statements.length).toEqual(0);
 
 		const s1 = ss[1];
 		expect(s1).toBeDefined();
-		expect(s1.kind).toEqual(SyntaxKind.SubGraphStatement);
-		if (s1.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
+		expect(s1.kind).toEqual(syntaxKind.SubGraphStatement);
+		if (s1.kind !== syntaxKind.SubGraphStatement) throw "Just for type checker";
 		expect(s1.terminator).toBeFalsy();
 		expect(s1.subgraph.id).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s1.subgraph.id as any).text).toEqual("cluster_1");
 		expect(s1.subgraph.statements).toBeDefined();
 		expect(s1.subgraph.statements.length).toEqual(0);
 
 		const s2 = ss[2];
 		expect(s2).toBeDefined();
-		expect(s2.kind).toEqual(SyntaxKind.SubGraphStatement);
-		if (s2.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
+		expect(s2.kind).toEqual(syntaxKind.SubGraphStatement);
+		if (s2.kind !== syntaxKind.SubGraphStatement) throw "Just for type checker";
 		expect(s2.terminator).toBeFalsy();
 		expect(s2.subgraph.id).toBeUndefined();
 		expect(s2.subgraph.statements).toBeDefined();
@@ -214,8 +232,8 @@ describe("Graph Parsing", () => {
 
 		const s3 = ss[3];
 		expect(s3).toBeDefined();
-		expect(s3.kind).toEqual(SyntaxKind.SubGraphStatement);
-		if (s3.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
+		expect(s3.kind).toEqual(syntaxKind.SubGraphStatement);
+		if (s3.kind !== syntaxKind.SubGraphStatement) throw "Just for type checker";
 		expect(s3.terminator).toBeFalsy();
 		expect(s3.subgraph.id).toBeUndefined();
 		expect(s3.subgraph.statements).toBeDefined();
@@ -223,8 +241,8 @@ describe("Graph Parsing", () => {
 
 		const s4 = ss[4];
 		expect(s4).toBeDefined();
-		expect(s4.kind).toEqual(SyntaxKind.SubGraphStatement);
-		if (s4.kind !== SyntaxKind.SubGraphStatement) throw "Just for type checker";
+		expect(s4.kind).toEqual(syntaxKind.SubGraphStatement);
+		if (s4.kind !== syntaxKind.SubGraphStatement) throw "Just for type checker";
 		expect(s4.terminator).toBeDefined();
 		expect(s4.subgraph.id).toBeUndefined();
 		expect(s4.subgraph.statements).toBeDefined();
@@ -242,11 +260,12 @@ describe("Graph Parsing", () => {
 		const pg = ensureGraph(p);
 
 		expect(pg.strict).toBeFalsy();
-		expect(pg.kind).toEqual(SyntaxKind.DirectedGraph);
-		if (pg.kind !== SyntaxKind.DirectedGraph) throw "Just for type checker";
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
+		if (pg.kind !== syntaxKind.DirectedGraph) throw "Just for type checker";
 
 		// expect(pg.openBrace).to.exist;
 		// expect(pg.closeBrace).to.exist;
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((pg.id as any).text).toEqual("G");
 
 		const s = pg.statements;
@@ -255,46 +274,54 @@ describe("Graph Parsing", () => {
 
 		const s0 = s[0];
 		expect(s0).toBeDefined();
-		expect(s0.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
-		if (s0.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
+		expect(s0.kind).toEqual(syntaxKind.IdEqualsIdStatement);
+		if (s0.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
 		expect(s0.terminator).toBeDefined();
 		expect(s0.leftId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s0.leftId as any).text).toEqual("a");
 		// expect(s0.equalsToken).to.exist;
 		expect(s0.rightId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s0.rightId as any).text).toEqual("b");
 
 		const s1 = s[1];
 		expect(s1).toBeDefined();
-		expect(s1.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
-		if (s1.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
+		expect(s1.kind).toEqual(syntaxKind.IdEqualsIdStatement);
+		if (s1.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
 		expect(s1.terminator).toBeFalsy();
 		expect(s1.leftId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s1.leftId as any).text).toEqual("c");
 		// expect(s1.equalsToken).to.exist;
 		expect(s1.rightId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s1.rightId as any).text).toEqual("d");
 
 		const s2 = s[2];
 		expect(s2).toBeDefined();
-		expect(s2.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
-		if (s2.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
+		expect(s2.kind).toEqual(syntaxKind.IdEqualsIdStatement);
+		if (s2.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
 		expect(s2.terminator).toBeFalsy();
 		expect(s2.leftId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s2.leftId as any).text).toEqual("e");
 		// expect(s2.equalsToken).to.exist;
 		expect(s2.rightId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s2.rightId as any).text).toEqual("f");
 
 		const s3 = s[3];
 		expect(s3).toBeDefined();
-		expect(s3.kind).toEqual(SyntaxKind.IdEqualsIdStatement);
-		if (s3.kind !== SyntaxKind.IdEqualsIdStatement) throw "Just for type checker";
+		expect(s3.kind).toEqual(syntaxKind.IdEqualsIdStatement);
+		if (s3.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
 		expect(s3.terminator).toBeDefined();
 		expect(s3.leftId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s3.leftId as any).text).toEqual("g");
 		// expect(s3.equalsToken).to.exist;
 		expect(s3.rightId).toBeDefined();
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s3.rightId as any).text).toEqual("3");
 	});
 });

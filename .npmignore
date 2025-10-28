@@ -1,4 +1,3 @@
-# No log files/DBs
 *.log
 *.db*
 
@@ -6,24 +5,18 @@
 !*.d.ts
 *.js.map
 
-# No ts files are shipped, so we don't need any config
 tsconfig.json
+biome.json
 
-# Make sure js files always get included
 !*.js
 
-# No CI/Editor-Specific files
+.github/
 .editorconfig
 .vscode/
-.travis.yml
 
-# No raw ts source + tests
 src/
 tests/
 
-# License is stated/linked to in package.json
 LICENSE
 *.md
-
-
-lib/tester.*
+CITATION.cff

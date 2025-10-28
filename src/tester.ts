@@ -1,10 +1,12 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { bindSourceFile } from "./binder.js";
-import { checkSourceFile } from "./checker.js";
-import { Parser } from "./parser.js";
-import { getCompletions } from "./service/completion.js";
-// import { Scanner, DefaultScanner } from "./scanner.js";
-// import { hover } from "./service/hover.js";
+
+import { bindSourceFile } from "./binder.ts";
+import { checkSourceFile } from "./checker.ts";
+import { Parser } from "./parser.ts";
+import { getCompletions } from "./service/completion.ts";
+
+// import { Scanner, DefaultScanner } from "./scanner.ts";
+// import { hover } from "./service/hover.ts";
 
 const text = `graph {
 	node_name_a -- node_name_b [color=blue,
