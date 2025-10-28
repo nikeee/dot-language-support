@@ -35,10 +35,10 @@
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.3",
+    "@biomejs/biome": "^2.3.1",
     "expect": "^30.2.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=22"
