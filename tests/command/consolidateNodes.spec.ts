@@ -1,11 +1,11 @@
-import { describe, test } from "vitest";
+import { describe, test } from "node:test";
 import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
-import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.js";
-import { commandIds, getCodeActions } from "../../src/service/codeAction.js";
-import type { ExecutableCommand } from "../../src/service/command/common.js";
+import { ensureDocAndSourceFile, ensureGraph } from "../testUtils.ts";
+import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.ts";
+import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
+import type { ExecutableCommand } from "../../src/service/command/common.ts";
 
 describe("Consolidate graph command execution", () => {
 

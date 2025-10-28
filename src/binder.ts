@@ -1,5 +1,5 @@
-import { getIdentifierText, nodeContainsErrors } from "./checker.js";
-import { isIdentifierNode } from "./parser.js";
+import { getIdentifierText, nodeContainsErrors } from "./checker.ts";
+import { isIdentifierNode } from "./parser.ts";
 import {
 	type Assignment,
 	type AttributeContainer,
@@ -27,7 +27,7 @@ import {
 	type SyntaxNodeArray,
 	syntaxKind,
 	type TypeSymbol,
-} from "./types.js";
+} from "./types.ts";
 
 interface Binder {
 	bind(file: SourceFile): void;

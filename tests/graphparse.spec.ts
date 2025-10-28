@@ -1,8 +1,8 @@
-import { describe, test } from "vitest";
+import { describe, test } from "node:test";
 import { expect } from "expect";
 
-import { createParserWithText, ensureGraph } from "./testutils.js";
-import { syntaxKind, type EdgeStatement, type NodeId } from "../src/types.js";
+import { createParserWithText, ensureGraph } from "./testUtils.ts";
+import { syntaxKind, type EdgeStatement, type NodeId } from "../src/types.ts";
 
 describe("Graph Parsing", () => {
 

@@ -1,5 +1,5 @@
-import { createMapFromTemplate } from "./core.js";
-import { assertNever } from "./service/util.js";
+import { createMapFromTemplate } from "./core.ts";
+import { assertNever } from "./service/util.ts";
 import {
 	characterCodes,
 	type DiagnosticCategory,
@@ -10,7 +10,7 @@ import {
 	syntaxKind,
 	type TokenFlags,
 	tokenFlags,
-} from "./types.js";
+} from "./types.ts";
 
 export interface Scanner {
 	readonly end: number;

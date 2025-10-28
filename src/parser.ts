@@ -1,5 +1,5 @@
-import { DefaultScanner, getTokenAsText, type Scanner } from "./scanner.js";
-import { assertNever } from "./service/util.js";
+import { DefaultScanner, getTokenAsText, type Scanner } from "./scanner.ts";
+import { assertNever } from "./service/util.ts";
 import {
 	type Assignment,
 	type AssignmentSeparator,
@@ -39,7 +39,7 @@ import {
 	syntaxNodeFlags,
 	type TextIdentifier,
 	type Token,
-} from "./types";
+} from "./types.ts";
 
 export type ParsingContext = (typeof parsingContext)[keyof typeof parsingContext];
 export const parsingContext = {

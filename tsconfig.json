@@ -3,11 +3,11 @@
     "target": "es2023",
     "module": "esnext",
     "lib": [
-      "es2019",
+      "es2023",
       "dom" // for console
     ],
 
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
 
     "noEmit": true,
 

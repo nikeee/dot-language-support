@@ -1,5 +1,6 @@
 import type * as lst from "vscode-languageserver-types";
-import { findNodeAtOffset, getIdentifierText } from "../../checker.js";
+
+import { findNodeAtOffset, getIdentifierText } from "../../checker.ts";
 import type {
 	CommandApplication,
 	DocumentLike,
@@ -7,10 +8,10 @@ import type {
 	NodeId,
 	SourceFile,
 	SyntaxNode,
-} from "../../index.js";
-import { commandIds } from "../codeAction.js";
-import { getStart } from "../util.js";
-import type { ExecutableCommand } from "./common.js";
+} from "../../index.ts";
+import { commandIds } from "../codeAction.ts";
+import { getStart } from "../util.ts";
+import type { ExecutableCommand } from "./common.ts";
 
 export interface ConsolidateDescendantsCommand extends lst.Command {
 	command: typeof commandIds.ConsolidateDescendants;
