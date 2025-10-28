@@ -41,16 +41,17 @@ import {
 	type Token,
 } from "./types";
 
-export enum ParsingContext {
-	None = 0,
-	StatementList = 1,
-	AttributeContainerList = 2,
-	AssignmentList = 3,
-	EdgeRhsList = 4,
-	QuotedTextIdentifierConcatenation = 5,
+export type ParsingContext = (typeof parsingContext)[keyof typeof parsingContext];
+export const parsingContext = {
+	None: 0,
+	StatementList: 1,
+	AttributeContainerList: 2,
+	AssignmentList: 3,
+	EdgeRhsList: 4,
+	QuotedTextIdentifierConcatenation: 5,
 
-	Count = 6, // Number of parsing contexts
-}
+	Count: 6, // Number of parsing contexts
+} as const;
 
 export class Parser {
 	currentToken: SyntaxKind = syntaxKind.Unknown;
@@ -77,7 +78,7 @@ export class Parser {
 		this.nodeCount = 0;
 		this.diagnostics = [];
 		this.currentNodeHasError = false;
-		this.currentContext = ParsingContext.None;
+		this.currentContext = parsingContext.None;
 	}
 
 	#nextToken(): SyntaxKind {
@@ -145,7 +146,7 @@ export class Parser {
 
 		/* node.openBrace = */ this.#parseExpectedToken(syntaxKind.OpenBraceToken);
 
-		node.statements = this.#parseList(ParsingContext.StatementList, () =>
+		node.statements = this.#parseList(parsingContext.StatementList, () =>
 			this.#parseStatement(),
 		);
 
@@ -207,7 +208,7 @@ export class Parser {
 		const node = this.#createNode(syntaxKind.QuotedTextIdentifier) as QuotedTextIdentifier;
 
 		node.values = this.#parseList(
-			ParsingContext.QuotedTextIdentifierConcatenation,
+			parsingContext.QuotedTextIdentifierConcatenation,
 			() => this.#parseQuotedTextIdentifier(),
 			/* at least one */ true,
 		);
@@ -330,7 +331,7 @@ export class Parser {
 
 				// node.attributes is not optional because we have to have an opening bracket
 				if (this.#token() === syntaxKind.OpenBracketToken) {
-					node.attributes = this.#parseList(ParsingContext.AttributeContainerList, () =>
+					node.attributes = this.#parseList(parsingContext.AttributeContainerList, () =>
 						this.#parseAttributeContainer(),
 					);
 				} else {
@@ -365,7 +366,7 @@ export class Parser {
 		node.openBracket = this.#parseExpectedToken(syntaxKind.OpenBracketToken);
 
 		if (this.#isIdentifier() && this.#lookAhead(() => this.#isAssignmentStart())) {
-			node.assignments = this.#parseList(ParsingContext.AssignmentList, () =>
+			node.assignments = this.#parseList(parsingContext.AssignmentList, () =>
 				this.#parseAssignment(),
 			);
 		} else {
@@ -423,7 +424,7 @@ export class Parser {
 		node.id = this.#parseNodeId();
 
 		if (this.#token() === syntaxKind.OpenBracketToken) {
-			node.attributes = this.#parseList(ParsingContext.AttributeContainerList, () =>
+			node.attributes = this.#parseList(parsingContext.AttributeContainerList, () =>
 				this.#parseAttributeContainer(),
 			);
 		} else {
@@ -448,11 +449,11 @@ export class Parser {
 		node.source = precedingItem;
 
 		// TODO: Check edge ops in directed and undirected graphs via flags
-		node.rhs = this.#parseList(ParsingContext.EdgeRhsList, () => this.#parseEdgeRhs());
+		node.rhs = this.#parseList(parsingContext.EdgeRhsList, () => this.#parseEdgeRhs());
 
 		// Check if we have some following attributes
 		if (this.#token() === syntaxKind.OpenBracketToken) {
-			node.attributes = this.#parseList(ParsingContext.AttributeContainerList, () =>
+			node.attributes = this.#parseList(parsingContext.AttributeContainerList, () =>
 				this.#parseAttributeContainer(),
 			);
 		} else {
@@ -565,7 +566,7 @@ export class Parser {
 
 		/* node.openBrace = */ this.#parseExpectedToken(syntaxKind.OpenBraceToken);
 
-		node.statements = this.#parseList(ParsingContext.StatementList, () =>
+		node.statements = this.#parseList(parsingContext.StatementList, () =>
 			this.#parseStatement(),
 		);
 
@@ -658,19 +659,19 @@ export class Parser {
 
 	#getContextParseError(context: ParsingContext) {
 		switch (context) {
-			case ParsingContext.StatementList:
+			case parsingContext.StatementList:
 				return "Assignment, node definition, graph/node/edge attribute or edge definition expected.";
-			case ParsingContext.AssignmentList:
+			case parsingContext.AssignmentList:
 				return "Assignment expected.";
-			case ParsingContext.EdgeRhsList:
+			case parsingContext.EdgeRhsList:
 				return "Edge operation expected.";
-			case ParsingContext.QuotedTextIdentifierConcatenation:
+			case parsingContext.QuotedTextIdentifierConcatenation:
 				return "Quoted identifier expected";
-			case ParsingContext.AttributeContainerList:
+			case parsingContext.AttributeContainerList:
 				return "Attribute marker expected."; // TODO: Was besseres finden
-			case ParsingContext.None:
+			case parsingContext.None:
 				return "Wat, no parsing context";
-			case ParsingContext.Count:
+			case parsingContext.Count:
 				return "Wat, 'Count' parsing context";
 			default:
 				return assertNever(context);
@@ -678,11 +679,11 @@ export class Parser {
 	}
 
 	#isInSomeParsingContext(): boolean {
-		for (let ctx = 0; ctx < ParsingContext.Count; ctx++) {
+		for (let ctx = 0; ctx < parsingContext.Count; ctx++) {
 			if (this.currentContext & (1 << ctx)) {
 				if (
-					this.#isListElement(ctx, /*inErrorRecovery*/ true) ||
-					this.#isListTerminator(ctx)
+					this.#isListElement(ctx as ParsingContext, /*inErrorRecovery*/ true) ||
+					this.#isListTerminator(ctx as ParsingContext)
 				) {
 					return true;
 				}
@@ -708,22 +709,22 @@ export class Parser {
 
 	#isListElement(context: ParsingContext, _inErrorRecovery: boolean) {
 		switch (context) {
-			case ParsingContext.AssignmentList:
+			case parsingContext.AssignmentList:
 				return this.#isIdentifier();
-			case ParsingContext.AttributeContainerList:
+			case parsingContext.AttributeContainerList:
 				return this.#token() === syntaxKind.OpenBracketToken;
-			case ParsingContext.EdgeRhsList:
+			case parsingContext.EdgeRhsList:
 				return (
 					this.#token() === syntaxKind.DirectedEdgeOp ||
 					this.#token() === syntaxKind.UndirectedEdgeOp
 				);
-			case ParsingContext.QuotedTextIdentifierConcatenation:
+			case parsingContext.QuotedTextIdentifierConcatenation:
 				// TODO: This may be wrong because the plus is only allowed to occur after a plusToken
 				return (
 					this.#token() === syntaxKind.StringLiteral ||
 					this.#token() === syntaxKind.PlusToken
 				);
-			case ParsingContext.StatementList:
+			case parsingContext.StatementList:
 				return (
 					this.#isIdentifier() ||
 					this.#token() === syntaxKind.SubgraphKeyword ||
@@ -744,20 +745,20 @@ export class Parser {
 		if (token === syntaxKind.EndOfFileToken) return true;
 
 		switch (context) {
-			case ParsingContext.StatementList:
+			case parsingContext.StatementList:
 				// Statement lists can only be closed by '}'
 				return token === syntaxKind.CloseBraceToken;
-			case ParsingContext.AttributeContainerList:
+			case parsingContext.AttributeContainerList:
 				// The AttributeList is terminated by everything that is not a '['
 				return token !== syntaxKind.OpenBracketToken;
-			case ParsingContext.AssignmentList:
+			case parsingContext.AssignmentList:
 				// Assignment lists can only be closed by ']'
 				return token === syntaxKind.CloseBracketToken;
-			case ParsingContext.EdgeRhsList:
+			case parsingContext.EdgeRhsList:
 				// TODO: May adapt this to current flags
 				// There can only be another EdgeRhs if there is an edgeOp
 				return token !== syntaxKind.DirectedEdgeOp && token !== syntaxKind.UndirectedEdgeOp;
-			case ParsingContext.QuotedTextIdentifierConcatenation:
+			case parsingContext.QuotedTextIdentifierConcatenation:
 				// Quoted strings are concatenated as long as there is a + following
 				return token !== syntaxKind.PlusToken;
 
