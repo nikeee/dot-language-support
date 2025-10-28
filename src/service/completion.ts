@@ -1,4 +1,5 @@
 import * as lst from "vscode-languageserver-types";
+
 import { findNodeAtOffset, getIdentifierText, isEdgeStatement } from "../checker.ts";
 import { type DocumentLike, isIdentifierNode } from "../index.ts";
 import {

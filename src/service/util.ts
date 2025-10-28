@@ -1,4 +1,5 @@
 import type { Range } from "vscode-languageserver-types";
+
 import type { DocumentLike } from "../index.ts";
 import { isIdentifierStart, skipTrivia } from "../scanner.ts";
 import { type SourceFile, type SyntaxNode, syntaxKind } from "../types.ts";

@@ -1,4 +1,5 @@
 import { type Position, TextEdit, type WorkspaceEdit } from "vscode-languageserver-types";
+
 import { findNodeAtOffset } from "../checker.ts";
 import { type DocumentLike, isIdentifierNode } from "../index.ts";
 import { type SourceFile, type SyntaxNode, syntaxKind } from "../types.ts";

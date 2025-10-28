@@ -1,6 +1,7 @@
 import type { TextDocument } from "vscode-languageserver-textdocument";
 import type * as lst from "vscode-languageserver-types";
 import type { Color, ColorInformation, ColorPresentation } from "vscode-languageserver-types";
+
 import { bindSourceFile } from "../binder.ts";
 import { checkSourceFile } from "../checker.ts";
 import { Parser } from "../index.ts";

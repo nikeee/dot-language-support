@@ -1,4 +1,5 @@
 import { type Position, Range, TextEdit } from "vscode-languageserver-types";
+
 import { syntaxKind } from "../../index.ts";
 import type { CommandIds } from "../codeAction.ts";
 

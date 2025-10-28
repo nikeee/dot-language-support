@@ -1,7 +1,7 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile } from "../testutils.ts";
+import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { findReferences } from "../../src/service/reference.ts";
 
 describe("Reference Finding", () => {

@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { ensureDocAndSourceFile, ensureGraph } from "../testutils.ts";
+import { ensureDocAndSourceFile, ensureGraph } from "../testUtils.ts";
 import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.ts";
 import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
 import type { ExecutableCommand } from "../../src/service/command/common.ts";

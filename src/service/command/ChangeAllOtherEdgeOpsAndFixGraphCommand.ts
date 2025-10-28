@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+
 import type { CommandApplication, DocumentLike, SourceFile } from "../../index.ts";
 import { commandIds } from "../codeAction.ts";
 import {

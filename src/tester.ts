@@ -1,4 +1,5 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
+
 import { bindSourceFile } from "./binder.ts";
 import { checkSourceFile } from "./checker.ts";
 import { Parser } from "./parser.ts";

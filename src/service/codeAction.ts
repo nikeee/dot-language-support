@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+
 import {
 	edgeStatementHasAttributes,
 	findAllEdges,

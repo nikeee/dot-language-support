@@ -1,4 +1,5 @@
 import type { Location, Position, ReferenceContext } from "vscode-languageserver-types";
+
 import { findNodeAtOffset } from "../checker.ts";
 import { type DocumentLike, isIdentifierNode } from "../index.ts";
 import type { SourceFile, SyntaxNode } from "../types.ts";

@@ -1,8 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { createParserWithText, ensureGraph } from "./testutils";
-import { syntaxKind } from "../src/types";
+import { createParserWithText, ensureGraph } from "./testUtils.ts";
+import { syntaxKind } from "../src/types.ts";
 
 describe("Comment Handling", () => {
 	test("should skip comments while parsing", () => {

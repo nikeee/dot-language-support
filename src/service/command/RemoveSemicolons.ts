@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+
 import { findOptionalSemicolons } from "../../checker.ts";
 import type { CommandApplication, DocumentLike, SourceFile } from "../../index.ts";
 import { commandIds } from "../codeAction.ts";

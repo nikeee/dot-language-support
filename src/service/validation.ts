@@ -1,4 +1,5 @@
 import type * as lst from "vscode-languageserver-types";
+
 import { diagnosicSource, formatError } from "../error.ts";
 import type { DocumentLike } from "../index.ts";
 import type { DiagnosticMessage, SourceFile } from "../types.ts";

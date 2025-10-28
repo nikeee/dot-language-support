@@ -1,7 +1,7 @@
 import { describe, test } from "vitest";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testutils.ts";
+import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 import { shapes } from "../../src/service/languageFacts.ts";
 import { checkError, diagnosticCategory, errorSource } from "../../src/types.ts";

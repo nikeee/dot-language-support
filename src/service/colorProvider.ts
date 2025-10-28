@@ -4,6 +4,7 @@ import type {
 	ColorPresentation,
 	Range,
 } from "vscode-languageserver-types";
+
 import type { DocumentLike } from "../index.ts";
 import type { ColorTable, SourceFile } from "../types.ts";
 import * as languageFacts from "./languageFacts.ts";

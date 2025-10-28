@@ -39,7 +39,7 @@ import {
 	syntaxNodeFlags,
 	type TextIdentifier,
 	type Token,
-} from "./types";
+} from "./types.ts";
 
 export type ParsingContext = (typeof parsingContext)[keyof typeof parsingContext];
 export const parsingContext = {
