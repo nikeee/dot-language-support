@@ -23,9 +23,9 @@ import {
 	type SubGraph,
 	type SubGraphStatement,
 	type SymbolTable,
-	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
+	syntaxKind,
 	type TypeSymbol,
 } from "./types.js";
 

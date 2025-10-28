@@ -12,9 +12,9 @@ import {
 	type SourceFile,
 	type SubGraph,
 	type SubGraphStatement,
+	type SyntaxNode,
 	syntaxKind,
 	syntaxKindNames,
-	type SyntaxNode,
 } from "../types.js";
 import { getEdgeStr } from "./command/common.js";
 import { syntaxNodeToRange } from "./util.js";

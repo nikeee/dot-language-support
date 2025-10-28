@@ -13,9 +13,9 @@ import {
 	type QuotedTextIdentifier,
 	type SubGraph,
 	type SubGraphStatement,
-	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
+	syntaxKind,
 } from "./types.js";
 
 function visitNode<T>(cbNode: (node: SyntaxNode) => T, node?: SyntaxNode): T | undefined {

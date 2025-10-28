@@ -11,9 +11,9 @@ import {
 	nodeContainsErrors,
 } from "../checker.js";
 import {
-	checkError,
 	type CheckErrorCode,
 	type CommandApplication,
+	checkError,
 	type DiagnosticMessage,
 	type DocumentLike,
 	type EdgeStatement,
@@ -24,8 +24,8 @@ import {
 	type ParseErrorCode,
 	type ScanErrorCode,
 	type SourceFile,
-	syntaxKind,
 	type SyntaxNode,
+	syntaxKind,
 } from "../index.js";
 import * as ChangeAllOtherEdgeOpsAndFixGraphCommand from "./command/ChangeAllOtherEdgeOpsAndFixGraphCommand.js";
 import * as ChangeEdgeOpCommand from "./command/ChangeEdgeOpCommand.js";
