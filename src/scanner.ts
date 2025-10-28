@@ -1,7 +1,6 @@
 import { createMapFromTemplate } from "./core.js";
 import { assertNever } from "./service/util.js";
 import {
-	type CharacterCodes,
 	characterCodes,
 	type DiagnosticCategory,
 	diagnosticCategory,
