@@ -3,7 +3,7 @@ import { expect } from "vitest";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { Parser } from "../src"
-import { SourceFile, Graph } from "../src/types";
+import type { SourceFile, Graph } from "../src/types";
 import { bindSourceFile } from "../src/binder";
 import { checkSourceFile } from "../src/checker";
 

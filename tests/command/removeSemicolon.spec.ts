@@ -33,7 +33,7 @@ describe("Remove semicolon command execution", () => {
 		const semicolons = 9;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
-		const pg = ensureGraph(sf);
+		const _pg = ensureGraph(sf);
 
 		const command = {
 			command: commandIds.RemoveSemicolons,
@@ -80,18 +80,18 @@ describe("Remove semicolon command execution", () => {
 		if (!secondSemicolon) throw "Just for the type checker";
 
 		const start = secondSemicolon.end - 1;
-		const end = secondSemicolon.end;
+		const _end = secondSemicolon.end;
 
 		const range = {
 			start: doc.positionAt(start),
 			end: doc.positionAt(start),
 		};
 
-		let actions = getCodeActions(doc, sf, range, undefined);
+		const actions = getCodeActions(doc, sf, range, undefined);
 		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
-		let firstAction = actions[0];
+		const firstAction = actions[0];
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 

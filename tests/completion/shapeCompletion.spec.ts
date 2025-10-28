@@ -117,10 +117,10 @@ describe("Shape completion", () => {
 	});
 
 	test("should validate shapes (single node)", () => {
-		let [doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
+		let [_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 
-		[doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
+		[_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,
@@ -132,10 +132,10 @@ describe("Shape completion", () => {
 	});
 
 	test("should validate shapes (all nodes)", () => {
-		let [doc, sf] = ensureDocAndSourceFile(`graph { node [shape=box]; }`);
+		let [_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 
-		[doc, sf] = ensureDocAndSourceFile(`graph { node [shape=test]; }`);
+		[_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
 		expect(sf.diagnostics).toStrictEqual([{
 			message: `Unknown shape "test".`,

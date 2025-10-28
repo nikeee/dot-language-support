@@ -4,7 +4,7 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import { ensureDocAndSourceFile, ensureGraph } from "../testutils.js";
 import * as ConsolidateDescendantsCommand from "../../src/service/command/ConsolidateDescendantsCommand.js";
 import { commandIds, getCodeActions } from "../../src/service/codeAction.js";
-import { ExecutableCommand } from "../../src/service/command/common.js";
+import type { ExecutableCommand } from "../../src/service/command/common.js";
 
 describe("Consolidate graph command execution", () => {
 
@@ -30,9 +30,9 @@ describe("Consolidate graph command execution", () => {
 		expect(actions).toHaveLength(1);
 		expect(actions[0]).toBeDefined();
 
-		const command = actions[0];
+		const command = actions[0] as ExecutableCommand<unknown[]>;
 
-		const execution = ConsolidateDescendantsCommand.execute(doc, sf, command as ExecutableCommand);
+		const execution = ConsolidateDescendantsCommand.execute(doc, sf, command);
 
 		expect(execution).toBeDefined();
 		if (!execution) throw "Just for the type checker";
@@ -73,9 +73,9 @@ describe("Consolidate graph command execution", () => {
             expect(actions).toHaveLength(1);
             expect(actions[0]).toBeDefined();
 
-            const command = actions[0];
+            const command = actions[0] as ExecutableCommand<unknown[]>;
 
-            const execution = ConsolidateDescendantsCommand.execute(doc, sf, command as ExecutableCommand);
+            const execution = ConsolidateDescendantsCommand.execute(doc, sf, command);
 
             expect(execution).toBeDefined();
             if (!execution) throw "Just for the type checker";
@@ -107,11 +107,11 @@ describe("Consolidate graph command execution", () => {
 			end: doc.positionAt(end),
 		};
 
-		let actions = getCodeActions(doc, sf, range, undefined);
+		const actions = getCodeActions(doc, sf, range, undefined);
 		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
-		let firstAction = actions[0];
+		const firstAction = actions[0];
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
@@ -128,18 +128,18 @@ describe("Consolidate graph command execution", () => {
 		const pg = ensureGraph(sf);
 
 		const start = pg.statements[1].pos;
-		const end = pg.statements[1].pos;
+		const _end = pg.statements[1].pos;
 
 		const range = {
 			start: doc.positionAt(start),
 			end: doc.positionAt(start),
 		};
 
-		let actions = getCodeActions(doc, sf, range, undefined);
+		const actions = getCodeActions(doc, sf, range, undefined);
 		expect(actions).toBeDefined();
 		if (!actions) throw "Just for the type checker";
 
-		let firstAction = actions[0];
+		const firstAction = actions[0];
 		expect(firstAction).toBeDefined();
 		if (!firstAction) throw "Just for the type checker";
 
