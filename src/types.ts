@@ -405,11 +405,12 @@ export interface SyntaxNodeArray<T extends SyntaxNode> extends ReadonlyArray<T>,
 }
 export type MutableSyntaxNodeArray<T extends SyntaxNode> = SyntaxNodeArray<T> & T[];
 
-export const enum SyntaxNodeFlags {
-	None = 0,
-	ContainsErrors = 1 << 1,
-	Synthesized = 1 << 2,
-}
+export const syntaxNodeFlags = {
+	None: 0,
+	ContainsErrors: 1 << 1,
+	Synthesized: 1 << 2,
+} as const;
+export type SyntaxNodeFlags = (typeof syntaxNodeFlags)[keyof typeof syntaxNodeFlags];
 
 export const graphContext = {
 	None: 0,

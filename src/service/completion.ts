@@ -7,7 +7,7 @@ import {
 	type SourceFile,
 	type SymbolTable,
 	syntaxKind,
-	SyntaxNodeFlags,
+	syntaxNodeFlags,
 } from "../types.js";
 import * as languageFacts from "./languageFacts.js";
 import { escapeIdentifierText } from "./util.js";
@@ -86,7 +86,7 @@ export function getCompletions(
 		}
 	}
 
-	if (node.flags & SyntaxNodeFlags.ContainsErrors || node.end === node.pos) {
+	if (node.flags & syntaxNodeFlags.ContainsErrors || node.end === node.pos) {
 		const attribute = prevNode;
 		if (!attribute) return [];
 

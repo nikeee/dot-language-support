@@ -36,7 +36,7 @@ import {
 	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
-	SyntaxNodeFlags,
+	syntaxNodeFlags,
 	type TextIdentifier,
 	type Token,
 } from "./types";
@@ -786,7 +786,7 @@ export class Parser {
 		// flag so that we don't mark any subsequent nodes.
 		if (this.currentNodeHasError) {
 			this.currentNodeHasError = false;
-			node.flags |= SyntaxNodeFlags.ContainsErrors;
+			node.flags |= syntaxNodeFlags.ContainsErrors;
 		}
 
 		return node;
@@ -1041,7 +1041,7 @@ function newNode(kind: SyntaxKind, pos: number, end: number): SyntaxNode {
 	// this.id = 0;
 	return {
 		kind,
-		flags: SyntaxNodeFlags.None,
+		flags: syntaxNodeFlags.None,
 		end,
 		pos,
 		parent: undefined,

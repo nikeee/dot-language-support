@@ -22,7 +22,7 @@ import {
 	syntaxKind,
 	type SyntaxNode,
 	type SyntaxNodeArray,
-	SyntaxNodeFlags,
+	syntaxNodeFlags,
 	type TextIdentifier,
 	type TextRange,
 	type Token,
@@ -245,7 +245,7 @@ function findEdgeErrors(expectedEdgeOp: EdgeOp["kind"], node: SyntaxNode): EdgeR
 
 	if (wrongEdges && wrongEdges.length > 0) {
 		for (const edge of wrongEdges) {
-			edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+			edge.operation.flags |= syntaxNodeFlags.ContainsErrors;
 		}
 		return wrongEdges;
 	}
@@ -266,7 +266,7 @@ function createEdgeViolationDiagnostics(
 
 	// Add flags in side-effected forEach instead of map() below
 	for (const edge of violators) {
-		edge.operation.flags |= SyntaxNodeFlags.ContainsErrors;
+		edge.operation.flags |= syntaxNodeFlags.ContainsErrors;
 	}
 
 	return violators.map(edge => {
@@ -338,5 +338,5 @@ function createCheckerError(sub: CheckError): CheckErrorCode {
 }
 
 export function nodeContainsErrors(node: SyntaxNode): boolean {
-	return (node.flags & SyntaxNodeFlags.ContainsErrors) === SyntaxNodeFlags.ContainsErrors;
+	return (node.flags & syntaxNodeFlags.ContainsErrors) === syntaxNodeFlags.ContainsErrors;
 }
