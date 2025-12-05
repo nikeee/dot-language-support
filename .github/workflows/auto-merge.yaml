@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   dependabot:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ github.actor == 'dependabot[bot]' }}
 
     steps:
