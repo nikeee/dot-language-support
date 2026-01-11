@@ -324,4 +324,22 @@ describe("Graph Parsing", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s3.rightId as any).text).toEqual("3");
 	});
+
+	test("should parse graph with Mdiamond and Msquare shapes", () => {
+		const p = createParserWithText(`digraph G {
+			start -> end;
+			start [shape=Mdiamond];
+			end [shape=Msquare];
+		}`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.kind).toEqual(syntaxKind.DirectedGraph);
+		expect(pg.id).toBeDefined();
+		if (pg.id === undefined) throw "Just for type checker";
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((pg.id as any).text).toEqual("G");
+		expect(pg.statements).toBeDefined();
+		expect(pg.statements.length).toEqual(3);
+	});
 });
