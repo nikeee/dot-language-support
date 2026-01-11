@@ -1,5 +1,6 @@
 import { shapes as validShapes } from "./service/languageFacts.ts";
 import { assertNever, getStart } from "./service/util.ts";
+
 import {
 	type Assignment,
 	type AttributeStatement,
@@ -28,6 +29,8 @@ import {
 	type Token,
 } from "./types.ts";
 import { forEachChild } from "./visitor.ts";
+
+const validShapesLowerCase = new Set(validShapes.map(s => s.toLowerCase()));
 
 export function checkSourceFile(file: SourceFile): void {
 	const g = file.graph;
@@ -135,7 +138,7 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 
 		const rightText = (rightId as TextIdentifier).text.trim();
 		const shapeCandidate = rightText.toLowerCase();
-		if (validShapes.includes(shapeCandidate)) {
+		if (validShapesLowerCase.has(shapeCandidate)) {
 			return;
 		}
 
