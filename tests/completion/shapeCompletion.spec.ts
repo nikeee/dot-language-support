@@ -146,4 +146,9 @@ describe("Shape completion", () => {
 			end: 24,
 		}]);
 	});
+
+	test("should validate graph with Mdiamond and Msquare shapes", () => {
+		const [_doc, sf] = ensureDocAndSourceFile(`digraph G { start -> end; start [shape=Mdiamond]; end [shape=Msquare]; }`);
+		expect(sf.diagnostics).toHaveLength(0);
+	});
 });
