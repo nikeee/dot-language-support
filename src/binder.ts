@@ -249,8 +249,8 @@ function createBinder(): Binder {
 	}
 
 	function bindNodeId(node: NodeId) {
-		ensureGlobalSymbol(node.id);
 		bind(node.id);
+		ensureGlobalSymbol(node.id); // global symbol calls concatenated text, we need to bind the id beforehand
 		if (node.port) bind(node.port);
 	}
 
