@@ -156,4 +156,9 @@ describe("Shape completion", () => {
 		const [_doc, sf] = ensureDocAndSourceFile(`digraph G { "start" [shape=Mdiamond] }`);
 		expect(sf.diagnostics).toHaveLength(0);
 	});
+
+	test("should allow underscores as identifier", () => {
+		const [_doc, sf] = ensureDocAndSourceFile(`digraph {_a->b}`);
+		expect(sf.diagnostics).toHaveLength(0);
+	});
 });
