@@ -151,4 +151,9 @@ describe("Shape completion", () => {
 		const [_doc, sf] = ensureDocAndSourceFile(`digraph G { start -> end; start [shape=Mdiamond]; end [shape=Msquare]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 	});
+
+	test("should validate graph with quoted identifier", () => {
+		const [_doc, sf] = ensureDocAndSourceFile(`digraph G { "start" [shape=Mdiamond] }`);
+		expect(sf.diagnostics).toHaveLength(0);
+	});
 });
