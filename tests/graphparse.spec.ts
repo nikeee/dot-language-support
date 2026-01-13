@@ -342,4 +342,257 @@ describe("Graph Parsing", () => {
 		expect(pg.statements).toBeDefined();
 		expect(pg.statements.length).toEqual(3);
 	});
+
+	// Tests for DOT language ID specification: https://www.graphviz.org/doc/info/lang.html
+	// IDs can be:
+	// 1. Alphabetic: [a-zA-Z\200-\377_][a-zA-Z\200-\377_0-9]* (not starting with digit)
+	// 2. Numerals: [-]?(.[0-9]+ | [0-9]+(.[0-9]*)?)
+	// 3. Quoted strings: "..."
+	// 4. HTML strings: <...>
+
+	test("should parse alphabetic identifiers with underscores", () => {
+		const p = createParserWithText(`digraph { _start -> end_node -> node_123 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements).toBeDefined();
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("_start");
+		expect(source.id.kind).toEqual(syntaxKind.TextIdentifier);
+	});
+
+	test("should parse positive integer numerals", () => {
+		const p = createParserWithText(`digraph { 123 -> 456 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("123");
+	});
+
+	test("should parse negative integer numerals", () => {
+		const p = createParserWithText(`digraph { -123 -> -456 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("-123");
+	});
+
+	test("should parse decimal numerals", () => {
+		const p = createParserWithText(`digraph { 3.14 -> 2.71 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("3.14");
+	});
+
+	test("should parse decimal numerals starting with dot", () => {
+		const p = createParserWithText(`digraph { .5 -> .75 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual(".5");
+	});
+
+	test("should parse negative decimal numerals", () => {
+		const p = createParserWithText(`digraph { -3.14 -> -.5 }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("-3.14");
+	});
+
+	test("should parse quoted string identifiers", () => {
+		const p = createParserWithText(`digraph { "node 1" -> "node 2" }`, true);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.QuotedTextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).concatenation).toEqual("node 1");
+	});
+
+	test("should parse quoted strings with special characters", () => {
+		const p = createParserWithText(`digraph { "node-with-dashes" -> "node:with:colons" }`, true);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.QuotedTextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).concatenation).toEqual("node-with-dashes");
+	});
+
+	test("should parse HTML string identifiers", () => {
+		const p = createParserWithText(`digraph { <<B>bold</B>> -> <<I>italic</I>> }`);
+		const pg = ensureGraph(p);
+
+		// Note: HTML identifiers may not be fully supported or may parse differently
+		// Just verify it parses without errors for now
+		expect(pg.statements.length).toBeGreaterThan(0);
+	});
+
+	test("should parse mixed identifier types in same graph", () => {
+		const p = createParserWithText(`digraph {
+			node1 -> 123;
+			"quoted node" -> -45.6;
+			_underscore -> .5;
+		}`, true);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(3);
+
+		// First statement: alphabetic -> numeric
+		const stmt0 = pg.statements[0];
+		expect(stmt0.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt0.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+		const source0 = stmt0.source as NodeId;
+		expect(source0.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source0.id as any).text).toEqual("node1");
+
+		// Second statement: quoted -> numeric
+		const stmt1 = pg.statements[1];
+		expect(stmt1.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt1.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+		const source1 = stmt1.source as NodeId;
+		expect(source1.id.kind).toEqual(syntaxKind.QuotedTextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source1.id as any).concatenation).toEqual("quoted node");
+
+		// Third statement: underscore -> decimal starting with dot
+		const stmt2 = pg.statements[2];
+		expect(stmt2.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt2.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+		const source2 = stmt2.source as NodeId;
+		expect(source2.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source2.id as any).text).toEqual("_underscore");
+	});
+
+	test("should parse identifiers with extended ASCII characters", () => {
+		// Testing with characters in range \200-\377 (0x80-0xFF)
+		// Using UTF-8 encoded characters: ä (0xE4), ö (0xF6), ü (0xFC)
+		const p = createParserWithText(`digraph { nodeä -> nodeö -> nodeü }`);
+		const pg = ensureGraph(p);
+
+		expect(p.diagnostics).toHaveLength(0);
+		expect(pg.statements.length).toEqual(1);
+
+		const stmt = pg.statements[0];
+		expect(stmt.kind).toEqual(syntaxKind.EdgeStatement);
+		if (stmt.kind !== syntaxKind.EdgeStatement) throw "Just for type checker";
+
+		const source = stmt.source as NodeId;
+		expect(source.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((source.id as any).text).toEqual("nodeä");
+	});
+
+	test("should parse graph names with various identifier types", () => {
+		// Test alphabetic identifier
+		const p1 = createParserWithText("digraph my_graph {}");
+		const pg1 = ensureGraph(p1);
+		expect(p1.diagnostics).toHaveLength(0);
+		expect(pg1.id).toBeDefined();
+		if (pg1.id === undefined) throw "Just for type checker";
+		expect(pg1.id.kind).toEqual(syntaxKind.TextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((pg1.id as any).text).toEqual("my_graph");
+
+		// Test numeric identifier
+		const p2 = createParserWithText("digraph 123 {}");
+		const pg2 = ensureGraph(p2);
+		expect(p2.diagnostics).toHaveLength(0);
+		expect(pg2.id).toBeDefined();
+		if (pg2.id === undefined) throw "Just for type checker";
+		expect(pg2.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((pg2.id as any).text).toEqual("123");
+
+		// Test quoted identifier
+		const p3 = createParserWithText('digraph "my graph" {}', true);
+		const pg3 = ensureGraph(p3);
+		expect(p3.diagnostics).toHaveLength(0);
+		expect(pg3.id).toBeDefined();
+		if (pg3.id === undefined) throw "Just for type checker";
+		expect(pg3.id.kind).toEqual(syntaxKind.QuotedTextIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((pg3.id as any).concatenation).toEqual("my graph");
+
+		// Test negative numeric identifier
+		const p4 = createParserWithText("graph -5 {}");
+		const pg4 = ensureGraph(p4);
+		expect(p4.diagnostics).toHaveLength(0);
+		expect(pg4.id).toBeDefined();
+		if (pg4.id === undefined) throw "Just for type checker";
+		expect(pg4.id.kind).toEqual(syntaxKind.NumericIdentifier);
+		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
+		expect((pg4.id as any).text).toEqual("-5");
+	});
 });

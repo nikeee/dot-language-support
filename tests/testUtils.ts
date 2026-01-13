@@ -6,9 +6,13 @@ import type { SourceFile, Graph } from "../src/types.ts";
 import { bindSourceFile } from "../src/binder.ts";
 import { checkSourceFile } from "../src/checker.ts";
 
-export function createParserWithText(text: string) {
+export function createParserWithText(text: string, bind = false) {
 	const p = new Parser();
-	return p.parse(text);
+	const result = p.parse(text);
+	if (bind) {
+		bindSourceFile(result);
+	}
+	return result;
 }
 
 export function ensureGraph(sourceFile: SourceFile): Graph {
