@@ -89,11 +89,6 @@ export class Parser {
 		return this.currentToken;
 	}
 
-	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: TODO
-	#getLinesFromFile(sourceText: string): string[] {
-		return sourceText.split(/\r?\n/);
-	}
-
 	parse(sourceText: string): SourceFile {
 		this.sourceText = sourceText;
 		this.scanner.setText(this.sourceText);
