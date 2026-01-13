@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
+import { ensureDocAndSourceFile, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 import { shapes } from "../../src/service/languageFacts.ts";
 import { checkError, diagnosticCategory, errorSource } from "../../src/types.ts";
@@ -19,7 +19,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
@@ -37,7 +36,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
@@ -55,7 +53,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
@@ -71,7 +68,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
@@ -87,7 +83,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
@@ -106,7 +101,6 @@ describe("Shape completion", () => {
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
 		expect(completions).toBeDefined();
-		assertExists(completions);
 
 		expect(completions.length).toBeGreaterThan(0);
 		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
