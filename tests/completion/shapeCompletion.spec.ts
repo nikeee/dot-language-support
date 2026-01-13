@@ -18,11 +18,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should provide completion for shapes (leading attribute)", () => {
@@ -35,11 +32,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should provide completion for shapes (center attribute)", () => {
@@ -52,11 +46,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should provide completion for shapes (center attribute with spaces)", () => {
@@ -67,11 +58,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
@@ -82,11 +70,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
@@ -100,11 +85,8 @@ describe("Shape completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(shapes as any[] /* TODO: See PR to DT */);
-		expect(completions).toHaveLength(shapes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
 	});
 
 	test("should validate shapes (single node)", () => {
