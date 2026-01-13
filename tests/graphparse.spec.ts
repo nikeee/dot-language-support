@@ -235,7 +235,7 @@ describe("Graph Parsing", () => {
 		expect(s1).toBeDefined();
 		expect(s1.kind).toEqual(syntaxKind.IdEqualsIdStatement);
 		if (s1.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s1.terminator).toBeFalsy();
+		expect(s1.terminator).toBeUndefined();
 		expect(s1.leftId).toBeDefined();
 		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s1.leftId as any).text).toEqual("c");
@@ -248,7 +248,7 @@ describe("Graph Parsing", () => {
 		expect(s2).toBeDefined();
 		expect(s2.kind).toEqual(syntaxKind.IdEqualsIdStatement);
 		if (s2.kind !== syntaxKind.IdEqualsIdStatement) throw "Just for type checker";
-		expect(s2.terminator).toBeFalsy();
+		expect(s2.terminator).toBeUndefined();
 		expect(s2.leftId).toBeDefined();
 		// biome-ignore lint/suspicious/noExplicitAny: :shrug:
 		expect((s2.leftId as any).text).toEqual("e");
