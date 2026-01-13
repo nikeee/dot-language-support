@@ -18,13 +18,10 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 
 	test("should provide completion for colors (leading attribute)", () => {
@@ -36,13 +33,10 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 
 	test("should provide completion for colors (center attribute)", () => {
@@ -54,13 +48,10 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 
 	test("should provide completion for colors (center attribute with spaces)", () => {
@@ -72,13 +63,10 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 
 	test("should provide completion for colors (center attribute with spaces and semicolons)", () => {
@@ -90,13 +78,10 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 
 	test("should provide completion for colors (center attribute mixed spaces and separators)", () => {
@@ -109,12 +94,9 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).toEqual(allColors);
-		expect(completions).toHaveLength(allColors.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
 	});
 });
