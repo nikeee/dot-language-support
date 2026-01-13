@@ -10,11 +10,9 @@ describe("Reference Finding", () => {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
 			const refs = findReferences(doc, sf, doc.positionAt(offset), { includeDeclaration });
-
 			expect(refs).toBeDefined();
-			if (!refs) throw "Just for the type checker";
-
-			return refs;
+			// biome-ignore lint/style/noNonNullAssertion: :shrug:
+			return refs!;
 		};
 	}
 
@@ -22,46 +20,48 @@ describe("Reference Finding", () => {
 		const as = findReferencesSample(`graph {a a b a}`, true);
 
 		const refs = as(9);
-		expect(refs).toBeDefined();
 		expect(refs).toHaveLength(3);
 
-		expect(refs[0].range.start.character).toEqual(7);
-		expect(refs[0].range.end.character).toEqual(8);
-		expect(refs[0].range.start.line).toEqual(0);
-		expect(refs[0].range.end.line).toEqual(0);
+		expect(refs[0]).toMatchObject({
+			range: expect.objectContaining({
+				start: expect.objectContaining({ character: 7, line: 0 }),
+				end: expect.objectContaining({ character: 8, line: 0 }),
+			}),
+		});
 
-		expect(refs[1].range.start.character).toEqual(9);
-		expect(refs[1].range.end.character).toEqual(10);
-		expect(refs[1].range.start.line).toEqual(0);
-		expect(refs[1].range.end.line).toEqual(0);
+		expect(refs[1]).toMatchObject({
+			range: expect.objectContaining({
+				start: expect.objectContaining({ character: 9, line: 0 }),
+				end: expect.objectContaining({ character: 10, line: 0 }),
+			}),
+		});
 
-		expect(refs[2].range.start.character).toEqual(13);
-		expect(refs[2].range.end.character).toEqual(14);
-		expect(refs[2].range.start.line).toEqual(0);
-		expect(refs[2].range.end.line).toEqual(0);
+		expect(refs[2]).toMatchObject({
+			range: expect.objectContaining({
+				start: expect.objectContaining({ character: 13, line: 0 }),
+				end: expect.objectContaining({ character: 14, line: 0 }),
+			}),
+		});
 	});
 
 	test("should correctly return all references (excluding self)", () => {
 		const as = findReferencesSample(`graph {a a b a}`, false);
 
 		const refs = as(9);
-		expect(refs).toBeDefined();
 		expect(refs).toHaveLength(2);
 
-		expect(refs[0].range.start.character).toEqual(7);
-		expect(refs[0].range.end.character).toEqual(8);
-		expect(refs[0].range.start.line).toEqual(0);
-		expect(refs[0].range.end.line).toEqual(0);
+		expect(refs[0]).toMatchObject({
+			range: expect.objectContaining({
+				start: expect.objectContaining({ character: 7, line: 0 }),
+				end: expect.objectContaining({ character: 8, line: 0 }),
+			}),
+		});
 
-		// This one is excluded:
-		// expect(refs[1].range.start.character).to.equal(9);
-		// expect(refs[1].range.end.character).to.equal(10);
-		// expect(refs[1].range.start.line).to.equal(0);
-		// expect(refs[1].range.end.line).to.equal(0);
-
-		expect(refs[1].range.start.character).toEqual(13);
-		expect(refs[1].range.end.character).toEqual(14);
-		expect(refs[1].range.start.line).toEqual(0);
-		expect(refs[1].range.end.line).toEqual(0);
+		expect(refs[1]).toMatchObject({
+			range: expect.objectContaining({
+				start: expect.objectContaining({ character: 13, line: 0 }),
+				end: expect.objectContaining({ character: 14, line: 0 }),
+			}),
+		});
 	});
 });
