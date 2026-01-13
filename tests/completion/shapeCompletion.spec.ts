@@ -63,9 +63,7 @@ describe("Shape completion", () => {
 	});
 
 	test("should provide completion for shapes (center attribute with spaces)", () => {
-		const content = `graph {
-                a -- b [label="hi!" , shape=,  shape=box];
-            }`;
+		const content = `graph { a -- b [label="hi!" , shape=,  shape=box]; }`;
 		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -81,9 +79,7 @@ describe("Shape completion", () => {
 	});
 
 	test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
-		const content = `graph {
-                a -- b [label="hi!" ; shape=;  shape=box];
-            }`;
+		const content = `graph { a -- b [label="hi!" ; shape=;  shape=box];}`;
 		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -100,9 +96,9 @@ describe("Shape completion", () => {
 
 	test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
-                a -- b [label="hi!" ,shape=;
-                 shape=box];
-            }`;
+			a -- b [label="hi!" ,shape=;
+				shape=box];
+		}`;
 		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
