@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getRequestOffset, assertExists } from "../testUtils.ts";
+import { ensureDocAndSourceFile, getRequestOffset, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 
 describe("Node completion", () => {
@@ -14,10 +14,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(4); // green, blue, yellow, b
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["blue", "green", "yellow", "b"]);
 	});
 
 	test("should provide completion for nodes (between nodes)", () => {
@@ -28,10 +26,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(4); // green, blue, yellow, b
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["blue", "green", "b", "yellow"]);
 	});
 
 	test("should provide completion for nodes (trailing space)", () => {
@@ -42,10 +38,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(4); // green, blue, yellow, b
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["blue", "green", "yellow", "b"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes)", () => {
@@ -56,10 +50,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(4); // green, blue, yellow, b
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["blue", "green", "b", "yellow"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
@@ -70,10 +62,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // node_{0,1,2}
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
@@ -84,10 +74,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // node_{0,1,2}
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
@@ -98,10 +86,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // node_{0,1,2}
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
@@ -112,10 +98,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // node_{0,1,2}
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 1)", () => {
@@ -132,10 +116,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 2)", () => {
@@ -152,10 +134,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 3)", () => {
@@ -172,10 +152,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 4)", () => {
@@ -192,10 +170,7 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(170); // music_bus, breakfast, sell_game
+		expect(completions).toHaveLength(170); // attributes, not nodes
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 5)", () => {
@@ -212,10 +187,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 6)", () => {
@@ -232,11 +205,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		// console.log(completions)
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 7)", () => {
@@ -253,10 +223,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 8)", () => {
@@ -273,10 +241,8 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game (excluding sel)
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
 	test("should provide completion for nodes (trailing space; between nodes, issue #17 9)", () => {
@@ -295,9 +261,7 @@ describe("Node completion", () => {
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
 
-		expect(completions).toBeDefined();
-		assertExists(completions);
-
-		expect(completions).toHaveLength(3); // music_bus, breakfast, sell_game
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 });

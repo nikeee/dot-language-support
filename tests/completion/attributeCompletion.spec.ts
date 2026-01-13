@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
+import { ensureDocAndSourceFile, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 import { attributes } from "../../src/service/languageFacts.ts";
 
@@ -24,7 +24,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -42,7 +41,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -59,7 +57,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -76,7 +73,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -94,7 +90,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -112,7 +107,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -130,7 +124,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -147,7 +140,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -164,7 +156,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);
@@ -182,7 +173,6 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(attributes);

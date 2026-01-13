@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import { expect } from "expect";
 
-import { ensureDocAndSourceFile, getLabel, assertExists } from "../testUtils.ts";
+import { ensureDocAndSourceFile, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 import { colors } from "../../src/service/languageFacts.ts";
 
@@ -18,7 +18,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
@@ -33,7 +33,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
@@ -48,7 +48,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
@@ -63,7 +63,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
@@ -78,7 +78,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
@@ -94,7 +94,7 @@ describe("Color completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-		assertExists(completions);
+		expect(completions).toBeTruthy();
 
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
