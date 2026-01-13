@@ -7,7 +7,6 @@ import { shapes } from "../../src/service/languageFacts.ts";
 import { checkError, diagnosticCategory, errorSource } from "../../src/types.ts";
 
 describe("Shape completion", () => {
-
 	test("should provide completion for shapes (trailing attribute)", () => {
 		const content = `graph {
 			a -- b [shape=];

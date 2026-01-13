@@ -56,8 +56,8 @@ describe("Color completion", () => {
 
 	test("should provide completion for colors (center attribute with spaces)", () => {
 		const content = `graph {
-                a -- b [label="hi!" , color=,  shape=box];
-            }`;
+			a -- b [label="hi!" , color=,  shape=box];
+		}`;
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -71,8 +71,8 @@ describe("Color completion", () => {
 
 	test("should provide completion for colors (center attribute with spaces and semicolons)", () => {
 		const content = `graph {
-                a -- b [label="hi!" ; color=;  shape=box];
-            }`;
+			a -- b [label="hi!" ; color=;  shape=box];
+		}`;
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -86,9 +86,9 @@ describe("Color completion", () => {
 
 	test("should provide completion for colors (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
-                a -- b [label="hi!" ,color=;
-                 shape=box];
-            }`;
+			a -- b [label="hi!" ,color=;
+				shape=box];
+		}`;
 		const requestOffset = content.indexOf("color=") + "color=".length;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);

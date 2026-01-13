@@ -99,20 +99,20 @@ describe("Remove semicolon command execution", () => {
 		expect(firstAction.command).toEqual(commandIds.RemoveSemicolons);
 		expect(firstAction.arguments).toBeUndefined();
 		expect(firstAction.title).toBeDefined();
-/*
-		range.start = doc.positionAt(end);
-		range.end = doc.positionAt(end);
-		actions = getCodeActions(doc, sf, range, undefined);
-		expect(actions).to.exist;
-		if (!actions) throw "Just for the type checker";
+		/*
+				range.start = doc.positionAt(end);
+				range.end = doc.positionAt(end);
+				actions = getCodeActions(doc, sf, range, undefined);
+				expect(actions).to.exist;
+				if (!actions) throw "Just for the type checker";
 
-		firstAction = actions[0];
-		expect(firstAction).to.exist;
-		if (!firstAction) throw "Just for the type checker";
+				firstAction = actions[0];
+				expect(firstAction).to.exist;
+				if (!firstAction) throw "Just for the type checker";
 
-		expect(firstAction.command).to.equal(commandIds.RemoveSemicolons);
-		expect(firstAction.arguments).to.be.undefined;
-		expect(firstAction.title).to.exist;
-*/
+				expect(firstAction.command).to.equal(commandIds.RemoveSemicolons);
+				expect(firstAction.arguments).to.be.undefined;
+				expect(firstAction.title).to.exist;
+		*/
 	});
 });
