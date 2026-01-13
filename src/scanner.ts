@@ -659,25 +659,28 @@ function getIdentifierStart(ch: number): Identifier | undefined {
 }
 
 export function isIdentifierStart(ch: number): boolean {
-	// TODO: Check Identifiers
+	// Ref ID spec: https://www.graphviz.org/doc/info/lang.html
 	return (
 		(ch >= characterCodes.A && ch <= characterCodes.Z) ||
 		(ch >= characterCodes.a && ch <= characterCodes.z) ||
-		(ch >= characterCodes._0 && ch <= characterCodes._9) ||
+		(ch >= 0x80 && ch <= 0xff) ||
 		ch === characterCodes._ ||
-		ch === characterCodes.lessThan ||
-		ch === characterCodes.doubleQuote
+		(ch >= characterCodes._0 && ch <= characterCodes._9) || // Numerals
+		ch === characterCodes.minus ||
+		ch === characterCodes.dot ||
+		ch === characterCodes.doubleQuote ||
+		ch === characterCodes.lessThan
 	);
 }
 
 function isIdentifierPart(ch: number): boolean {
+	// Ref ID spec: https://www.graphviz.org/doc/info/lang.html
 	return (
 		(ch >= characterCodes.A && ch <= characterCodes.Z) ||
 		(ch >= characterCodes.a && ch <= characterCodes.z) ||
 		(ch >= characterCodes._0 && ch <= characterCodes._9) ||
-		ch === characterCodes.$ ||
 		ch === characterCodes._ ||
-		ch > characterCodes.maxAsciiCharacter
+		(ch >= 0x80 && ch <= 0xff) // Extended ASCII (\200-\377)
 	);
 }
 
