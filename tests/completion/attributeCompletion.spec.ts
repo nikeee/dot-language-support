@@ -24,15 +24,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (empty list, a lot of whitespace)", () => {
@@ -45,15 +42,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item)", () => {
@@ -65,15 +59,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item, leading whitespace)", () => {
@@ -85,15 +76,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item, leading whitespace, line break)", () => {
@@ -106,15 +94,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 
@@ -127,15 +112,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (empty list, a lot of whitespace, first container)", () => {
@@ -148,15 +130,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item, first container)", () => {
@@ -168,15 +147,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item, leading whitespace, first container)", () => {
@@ -188,15 +164,12 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 
 	test("should provide completion for attributes (preceding item, leading whitespace, line break, first container)", () => {
@@ -209,14 +182,11 @@ describe("Attribute completion", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 
 		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
-
-		expect(completions).toBeDefined();
 		assertExists(completions);
 
-		expect(completions.length).toBeGreaterThan(0);
-		expect(completions.map(getLabel)).not.toContain("node_name_a");
-		expect(completions.map(getLabel)).not.toContain("node_name_b");
-		expect(completions.map(getLabel)).toEqual(attributes);
-		expect(completions).toHaveLength(attributes.length);
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(attributes);
+		expect(labels).not.toContain("node_name_a");
+		expect(labels).not.toContain("node_name_b");
 	});
 });
