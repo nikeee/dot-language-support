@@ -58,7 +58,6 @@ const textToToken = createMapFromTemplate({
 	"]": syntaxKind.CloseBracketToken,
 	";": syntaxKind.SemicolonToken,
 	":": syntaxKind.ColonToken,
-	_: syntaxKind.UnderscoreToken,
 	",": syntaxKind.CommaToken,
 	"<": syntaxKind.LessThan,
 	">": syntaxKind.GreaterThan,
@@ -274,10 +273,6 @@ export class DefaultScanner implements Scanner {
 					// debugger;
 					//return this.token = syntaxKind.Unknown;
 				}
-				// TODO: Remove UnderscoreToken
-				case characterCodes._:
-					this.pos++;
-					return (this.token = syntaxKind.UnderscoreToken);
 				case characterCodes.semicolon:
 					this.pos++;
 					return (this.token = syntaxKind.SemicolonToken);

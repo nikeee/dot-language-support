@@ -228,8 +228,7 @@ export type CompassPort =
 	| Token<typeof syntaxKind.CompassSouthWestToken>
 	| Token<typeof syntaxKind.CompassWestToken>
 	| Token<typeof syntaxKind.CompassNorthWestToken>
-	| Token<typeof syntaxKind.CompassCenterToken>
-	| Token<typeof syntaxKind.UnderscoreToken>;
+	| Token<typeof syntaxKind.CompassCenterToken>;
 
 export type EdgeOp =
 	| Token<typeof syntaxKind.DirectedEdgeOp>
@@ -272,47 +271,46 @@ export const syntaxKind = {
 	CompassWestToken: 24,
 	CompassNorthWestToken: 25,
 	CompassCenterToken: 26,
-	UnderscoreToken: 27,
 
-	StringLiteral: 28,
+	StringLiteral: 27,
 
-	HtmlIdentifier: 29,
-	TextIdentifier: 30,
-	QuotedTextIdentifier: 31, // Contains multiple "QuotedTextIdentifier" for concatenation with +
-	NumericIdentifier: 32,
+	HtmlIdentifier: 28,
+	TextIdentifier: 29,
+	QuotedTextIdentifier: 30, // Contains multiple "QuotedTextIdentifier" for concatenation with +
+	NumericIdentifier: 31,
 
-	GraphKeyword: 33,
-	DigraphKeyword: 34,
-	NodeKeyword: 35,
-	EdgeKeyword: 36,
-	SubgraphKeyword: 37,
-	StrictKeyword: 38,
+	GraphKeyword: 32,
+	DigraphKeyword: 33,
+	NodeKeyword: 34,
+	EdgeKeyword: 35,
+	SubgraphKeyword: 36,
+	StrictKeyword: 37,
 
-	DirectedEdgeOp: 39,
-	UndirectedEdgeOp: 40,
+	DirectedEdgeOp: 38,
+	UndirectedEdgeOp: 39,
 
-	DirectedGraph: 41,
-	UndirectedGraph: 42,
-	NodeStatement: 43,
-	EdgeStatement: 44,
-	AttributeStatement: 45,
-	IdEqualsIdStatement: 46,
-	SubGraph: 47,
-	SubGraphStatement: 48,
-	EdgeRhs: 49,
-	AttributeContainer: 50,
-	Assignment: 51,
-	NormalPortDeclaration: 52,
-	CompassPortDeclaration: 53,
-	NodeId: 54,
+	DirectedGraph: 40,
+	UndirectedGraph: 41,
+	NodeStatement: 42,
+	EdgeStatement: 43,
+	AttributeStatement: 44,
+	IdEqualsIdStatement: 45,
+	SubGraph: 46,
+	SubGraphStatement: 47,
+	EdgeRhs: 48,
+	AttributeContainer: 49,
+	Assignment: 50,
+	NormalPortDeclaration: 51,
+	CompassPortDeclaration: 52,
+	NodeId: 53,
 
-	Count: 55, // Number of items in this enum
+	Count: 54, // Number of items in this enum
 
-	FirstNode: 41, // DirectedGraph
+	FirstNode: 40, // DirectedGraph
 	CompassBegin: 18, // CompassNorthToken,
-	CompassEnd: 27, // UnderscoreToken,
+	CompassEnd: 26, // CompassCenterToken,
 
-	LastKeyword: 38, // StrictKeyword,
+	LastKeyword: 37, // StrictKeyword,
 
 	// Identifier: QuotedTextIdentifier | HtmlIdentifier | TextIdentifier | NumericIdentifier,
 } as const;
@@ -349,41 +347,40 @@ export const syntaxKindNames = {
 	24: "CompassWestToken",
 	25: "CompassNorthWestToken",
 	26: "CompassCenterToken",
-	27: "UnderscoreToken",
 
-	28: "StringLiteral",
+	27: "StringLiteral",
 
-	29: "HtmlIdentifier",
-	30: "TextIdentifier",
-	31: "QuotedTextIdentifier", // Contains multiple "QuotedTextIdentifier" for concatenation with +
-	32: "NumericIdentifier",
+	28: "HtmlIdentifier",
+	29: "TextIdentifier",
+	30: "QuotedTextIdentifier", // Contains multiple "QuotedTextIdentifier" for concatenation with +
+	31: "NumericIdentifier",
 
-	33: "GraphKeyword",
-	34: "DigraphKeyword",
-	35: "NodeKeyword",
-	36: "EdgeKeyword",
-	37: "SubgraphKeyword",
-	38: "StrictKeyword",
+	32: "GraphKeyword",
+	33: "DigraphKeyword",
+	34: "NodeKeyword",
+	35: "EdgeKeyword",
+	36: "SubgraphKeyword",
+	37: "StrictKeyword",
 
-	39: "DirectedEdgeOp",
-	40: "UndirectedEdgeOp",
+	38: "DirectedEdgeOp",
+	39: "UndirectedEdgeOp",
 
-	41: "DirectedGraph",
-	42: "UndirectedGraph",
-	43: "NodeStatement",
-	44: "EdgeStatement",
-	45: "AttributeStatement",
-	46: "IdEqualsIdStatement",
-	47: "SubGraph",
-	48: "SubGraphStatement",
-	49: "EdgeRhs",
-	50: "AttributeContainer",
-	51: "Assignment",
-	52: "NormalPortDeclaration",
-	53: "CompassPortDeclaration",
-	54: "NodeId",
+	40: "DirectedGraph",
+	41: "UndirectedGraph",
+	42: "NodeStatement",
+	43: "EdgeStatement",
+	44: "AttributeStatement",
+	45: "IdEqualsIdStatement",
+	46: "SubGraph",
+	47: "SubGraphStatement",
+	48: "EdgeRhs",
+	49: "AttributeContainer",
+	50: "Assignment",
+	51: "NormalPortDeclaration",
+	52: "CompassPortDeclaration",
+	53: "NodeId",
 
-	55: "Count", // Number of items in this enum
+	54: "Count", // Number of items in this enum
 } as const;
 
 export interface SyntaxNode extends TextRange {
