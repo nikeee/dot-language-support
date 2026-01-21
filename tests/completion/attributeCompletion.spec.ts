@@ -48,6 +48,47 @@ describe("Attribute completion", () => {
 		expect(labels).not.toContain("node_name_b");
 	});
 
+	// FIXME: currently failing
+	test("should provide completion for attributes (partial input)", () => {
+		const content = `graph {
+			node_name_a -- node_name_b [no];
+		}`;
+		const requestOffset = invokeIndex(content)("[no");
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		expect(completions).toBeDefined();
+		assertExists(completions);
+
+		expect(completions.length).toBeGreaterThan(0);
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
+		expect(completions.map(getLabel)).toEqual(attributes);
+		expect(completions).toHaveLength(attributes.length);
+	});
+
+	test("should provide completion for attributes (partial input, preceding item)", () => {
+		const content = `graph {
+			node_name_a -- node_name_b [color=blue, no];
+		}`;
+		const requestOffset = invokeIndex(content)(", no");
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		expect(completions).toBeDefined();
+		assertExists(completions);
+
+		expect(completions.length).toBeGreaterThan(0);
+		expect(completions.map(getLabel)).not.toContain("node_name_a");
+		expect(completions.map(getLabel)).not.toContain("node_name_b");
+		expect(completions.map(getLabel)).toEqual(attributes);
+		expect(completions).toHaveLength(attributes.length);
+	});
+
 	test("should provide completion for attributes (preceding item)", () => {
 		const content = `graph {
 			node_name_a -- node_name_b [color=blue,];
