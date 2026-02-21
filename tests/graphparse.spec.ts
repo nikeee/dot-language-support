@@ -246,7 +246,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse graph with Mdiamond and Msquare shapes", () => {
+	void test("should parse graph with Mdiamond and Msquare shapes", () => {
 		const p = createParserWithText(`digraph G {
 			start -> end;
 			start [shape=Mdiamond];
@@ -262,7 +262,7 @@ void describe("Graph Parsing", () => {
 		expect(pg.statements).toHaveLength(3);
 	});
 
-	test("should parse alphabetic identifiers with underscores", () => {
+	void test("should parse alphabetic identifiers with underscores", () => {
 		const p = createParserWithText(`digraph { _start -> end_node -> node_123 }`);
 		const pg = ensureGraph(p);
 
@@ -281,7 +281,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse positive integer numerals", () => {
+	void test("should parse positive integer numerals", () => {
 		const p = createParserWithText(`digraph { 123 -> 456 }`);
 		const pg = ensureGraph(p);
 
@@ -300,7 +300,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse negative integer numerals", () => {
+	void test("should parse negative integer numerals", () => {
 		const p = createParserWithText(`digraph { -123 -> -456 }`);
 		const pg = ensureGraph(p);
 
@@ -319,7 +319,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse decimal numerals", () => {
+	void test("should parse decimal numerals", () => {
 		const p = createParserWithText(`digraph { 3.14 -> 2.71 }`);
 		const pg = ensureGraph(p);
 
@@ -338,7 +338,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse decimal numerals starting with dot", () => {
+	void test("should parse decimal numerals starting with dot", () => {
 		const p = createParserWithText(`digraph { .5 -> .75 }`);
 		const pg = ensureGraph(p);
 
@@ -357,7 +357,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse negative decimal numerals", () => {
+	void test("should parse negative decimal numerals", () => {
 		const p = createParserWithText(`digraph { -3.14 -> -.5 }`);
 		const pg = ensureGraph(p);
 
@@ -376,7 +376,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse quoted string identifiers", () => {
+	void test("should parse quoted string identifiers", () => {
 		const p = createParserWithText(`digraph { "node 1" -> "node 2" }`, true);
 		const pg = ensureGraph(p);
 
@@ -395,7 +395,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse quoted strings with special characters", () => {
+	void test("should parse quoted strings with special characters", () => {
 		const p = createParserWithText(
 			`digraph { "node-with-dashes" -> "node:with:colons" }`,
 			true,
@@ -417,7 +417,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse HTML string identifiers", () => {
+	void test("should parse HTML string identifiers", () => {
 		const p = createParserWithText(`digraph { <<B>bold</B>> -> <<I>italic</I>> }`);
 		const pg = ensureGraph(p);
 
@@ -426,7 +426,7 @@ void describe("Graph Parsing", () => {
 		expect(pg.statements.length).toBeGreaterThan(0);
 	});
 
-	test("should parse mixed identifier types in same graph", () => {
+	void test("should parse mixed identifier types in same graph", () => {
 		const p = createParserWithText(
 			`digraph {
 			node1 -> 123;
@@ -474,7 +474,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse identifiers with extended ASCII characters", () => {
+	void test("should parse identifiers with extended ASCII characters", () => {
 		const p = createParserWithText(`digraph { nodeä -> nodeö -> nodeü }`);
 		const pg = ensureGraph(p);
 
@@ -493,7 +493,7 @@ void describe("Graph Parsing", () => {
 		});
 	});
 
-	test("should parse graph names with various identifier types", () => {
+	void test("should parse graph names with various identifier types", () => {
 		const p1 = createParserWithText("digraph my_graph {}");
 		const pg1 = ensureGraph(p1);
 		expect(p1.diagnostics).toHaveLength(0);
