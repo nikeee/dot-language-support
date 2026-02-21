@@ -2,7 +2,12 @@ import { describe, test } from "node:test";
 import { expect } from "expect";
 
 import { createParserWithText, ensureGraph } from "./testUtils.ts";
-import { type SubGraphStatement, syntaxKind, type EdgeStatement, type AttributeStatement } from "../src/types.ts";
+import {
+	type SubGraphStatement,
+	syntaxKind,
+	type EdgeStatement,
+	type AttributeStatement,
+} from "../src/types.ts";
 
 void describe("Graph Parsing", () => {
 	void test("should parse a simple graph", () => {
@@ -391,7 +396,10 @@ void describe("Graph Parsing", () => {
 	});
 
 	test("should parse quoted strings with special characters", () => {
-		const p = createParserWithText(`digraph { "node-with-dashes" -> "node:with:colons" }`, true);
+		const p = createParserWithText(
+			`digraph { "node-with-dashes" -> "node:with:colons" }`,
+			true,
+		);
 		const pg = ensureGraph(p);
 
 		expect(p.diagnostics).toHaveLength(0);
@@ -419,11 +427,14 @@ void describe("Graph Parsing", () => {
 	});
 
 	test("should parse mixed identifier types in same graph", () => {
-		const p = createParserWithText(`digraph {
+		const p = createParserWithText(
+			`digraph {
 			node1 -> 123;
 			"quoted node" -> -45.6;
 			_underscore -> .5;
-		}`, true);
+		}`,
+			true,
+		);
 		const pg = ensureGraph(p);
 
 		expect(p.diagnostics).toHaveLength(0);

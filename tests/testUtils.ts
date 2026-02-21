@@ -41,6 +41,5 @@ export function getRequestOffset(content: string, uniqueNeedle: string): number 
 }
 
 export function assertExists(a: unknown): asserts a is object | string | number | boolean | symbol {
-	if (!a)
-		throw new Error("Just for the type checker, chai lacks the ability to type this.");
+	if (!a) throw new Error("Just for the type checker, chai lacks the ability to type this.");
 }
