@@ -6,7 +6,7 @@
 *.js.map
 
 tsconfig.json
-biome.json
+.oxfmtrc.json
 
 !*.js
 
