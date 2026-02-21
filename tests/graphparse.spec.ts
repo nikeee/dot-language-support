@@ -5,7 +5,6 @@ import { createParserWithText, ensureGraph } from "./testUtils.ts";
 import { type SubGraphStatement, syntaxKind, type EdgeStatement, type AttributeStatement } from "../src/types.ts";
 
 describe("Graph Parsing", () => {
-
 	test("should parse a simple graph", () => {
 		const p = createParserWithText(`strict digraph lol {}`);
 		const pg = ensureGraph(p);
@@ -51,7 +50,8 @@ describe("Graph Parsing", () => {
 			`strict digraph lol { graph [ size = lel, other=lal; pi= 3]
 		node [fontsize = 36,shape = polygon,][]
 		[e=2] }
-		`);
+		`,
+		);
 		const pg = ensureGraph(p);
 
 		expect(pg).toMatchObject({
@@ -103,7 +103,6 @@ describe("Graph Parsing", () => {
 				kind: syntaxKind.NodeKeyword,
 			}),
 		});
-
 		const s1Attributes = (statements[1] as AttributeStatement).attributes;
 		expect(s1Attributes).toHaveLength(3);
 		expect(s1Attributes[0].assignments).toHaveLength(2);
@@ -129,7 +128,6 @@ describe("Graph Parsing", () => {
 	});
 
 	test("should parse sub graphs", () => {
-
 		const p = createParserWithText(`digraph G {
 			subgraph cluster_0 { }
 			subgraph cluster_1 { }

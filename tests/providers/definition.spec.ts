@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { findDefinition } from "../../src/service/reference.ts";
 
 describe("Definition Finding", () => {
-
 	function findDefinitionSample(content: string) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);

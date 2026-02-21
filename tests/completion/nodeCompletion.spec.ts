@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile, getRequestOffset, getLabel } from "../testUtils
 import { getCompletions } from "../../src/service/completion.ts";
 
 describe("Node completion", () => {
-
 	test("should provide completion for nodes", () => {
 		const content = `digraph{green->blue;green->yellow;b-> ;}`;
 		const requestOffset = content.indexOf("b-> ") + "b-> ".length - 1; // the space between > and ;

@@ -94,13 +94,15 @@ describe("Shape completion", () => {
 
 		[_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
-		expect(sf.diagnostics).toStrictEqual([{
-			message: `Unknown shape "test".`,
-			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
-			category: diagnosticCategory.Warning,
-			start: 17,
-			end: 21,
-		}]);
+		expect(sf.diagnostics).toStrictEqual([
+			{
+				message: `Unknown shape "test".`,
+				code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+				category: diagnosticCategory.Warning,
+				start: 17,
+				end: 21,
+			},
+		]);
 	});
 
 	test("should validate shapes (all nodes)", () => {
@@ -109,13 +111,15 @@ describe("Shape completion", () => {
 
 		[_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=test]; }`);
 		expect(sf.diagnostics).toHaveLength(1);
-		expect(sf.diagnostics).toStrictEqual([{
-			message: `Unknown shape "test".`,
-			code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
-			category: diagnosticCategory.Warning,
-			start: 20,
-			end: 24,
-		}]);
+		expect(sf.diagnostics).toStrictEqual([
+			{
+				message: `Unknown shape "test".`,
+				code: { source: errorSource.Check, sub: checkError.InvalidShapeName },
+				category: diagnosticCategory.Warning,
+				start: 20,
+				end: 24,
+			},
+		]);
 	});
 
 	test("should validate graph with Mdiamond and Msquare shapes", () => {

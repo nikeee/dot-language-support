@@ -3,9 +3,9 @@ name: CD
 on:
   push:
     branches:
-    - "!*"
+      - "!*"
     tags:
-    - "v*"
+      - "v*"
 
 jobs:
   build:
@@ -16,20 +16,20 @@ jobs:
       id-token: write
 
     steps:
-    - uses: actions/checkout@v6
-      with:
-        show-progress: false
+      - uses: actions/checkout@v6
+        with:
+          show-progress: false
 
-    - uses: actions/setup-node@v6
-      with:
-        node-version: 25
-        cache: npm
-        registry-url: https://registry.npmjs.org
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: npm
+          registry-url: https://registry.npmjs.org
 
-    - run: npm ci
-    - run: npm run ci
-    - run: npm run build
-    - run: npm test
-      env:
-        CI: true
-    - run: npm publish --provenance --access public
+      - run: npm ci
+      - run: npm run ci
+      - run: npm run build
+      - run: npm test
+        env:
+          CI: true
+      - run: npm publish --provenance --access public

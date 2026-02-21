@@ -35,10 +35,6 @@
     "allowUnreachableCode": false,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "tests/**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["tests/**/*.spec.ts"]
 }

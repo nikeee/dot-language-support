@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { findReferences } from "../../src/service/reference.ts";
 
 describe("Reference Finding", () => {
-
 	function findReferencesSample(content: string, includeDeclaration: boolean) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);

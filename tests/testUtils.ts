@@ -1,7 +1,7 @@
 import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { Parser } from "../src/index.ts"
+import { Parser } from "../src/index.ts";
 import type { SourceFile, Graph } from "../src/types.ts";
 import { bindSourceFile } from "../src/binder.ts";
 import { checkSourceFile } from "../src/checker.ts";
@@ -20,8 +20,7 @@ export function ensureGraph(sourceFile: SourceFile): Graph {
 	expect(sourceFile.graph).toBeDefined();
 
 	const g = sourceFile.graph;
-	if (g === undefined)
-		throw "Graph was undefined";
+	if (g === undefined) throw "Graph was undefined";
 	return g;
 }
 
@@ -39,4 +38,9 @@ export function getLabel(c: { label: string }): string {
 
 export function getRequestOffset(content: string, uniqueNeedle: string): number {
 	return content.indexOf(uniqueNeedle) + uniqueNeedle.length;
+}
+
+export function assertExists(a: unknown): asserts a is object | string | number | boolean | symbol {
+	if (!a)
+		throw new Error("Just for the type checker, chai lacks the ability to type this.");
 }

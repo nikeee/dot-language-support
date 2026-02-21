@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 import { attributes } from "../../src/service/languageFacts.ts";
 
-
 describe("Attribute completion", () => {
 	function invokeIndex(content: string) {
 		return (location: string) => {
@@ -96,7 +95,6 @@ describe("Attribute completion", () => {
 		expect(labels).not.toContain("node_name_a");
 		expect(labels).not.toContain("node_name_b");
 	});
-
 
 	test("should provide completion for attributes (empty list, first container)", () => {
 		const content = `graph {

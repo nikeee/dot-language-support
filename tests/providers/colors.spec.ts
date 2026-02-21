@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { getDocumentColors } from "../../src/service/colorProvider.ts";
 
 describe("Reference Finding", () => {
-
 	function getColorsSample(content: string) {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 		const refs = getDocumentColors(doc, sf);

@@ -8,7 +8,6 @@ import { colors } from "../../src/service/languageFacts.ts";
 const allColors = Object.keys(colors);
 
 describe("Color completion", () => {
-
 	test("should provide completion for colors (trailing attribute)", () => {
 		const content = `graph {
 			a -- b [color=];

@@ -5,7 +5,6 @@ import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { hover } from "../../src/service/hover.ts";
 
 describe("Hover Handling", () => {
-
 	function hoverSample(content: string) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
@@ -25,14 +24,16 @@ describe("Hover Handling", () => {
 			a = b;
 			/* aha! */
 			c = d e; = f g=3; # some other comment
-		}`);
+		}`,
+	);
 
 	const hoverAtStrictSampleAtOffset = hoverSample(
 		`strict digraph GraphName { // funny comment
 				a = b;
 				/* aha! */
 				c = d e = f g=3; # some other comment
-		}`);
+		}`,
+	);
 
 	test("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
@@ -54,14 +55,12 @@ describe("Hover Handling", () => {
 	test(`should correctly return graph info (offset ${"digraph".length})`, () => {
 		const h = hoverAtSampleAtOffset("digraph".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
-	}
-	);
+	});
 
 	test(`should correctly return graph info (offset ${"digraph Gra".length})`, () => {
 		const h = hoverAtSampleAtOffset("digraph Gra".length);
 		expect(h.contents).toEqual("(directed graph) GraphName");
-	}
-	);
+	});
 
 	test("should correctly return graph info, strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(0);
@@ -81,13 +80,11 @@ describe("Hover Handling", () => {
 	test("should correctly return graph info, unnamed strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
-	}
-	);
-
+	});
 
 	test("should correctly return edge info (undirected graph)", () => {
 		const hoverAtEdgeSampleAtOffsetUndirected = hoverSample(`graph { a -- b }`);
-		const expected = "(edge) a -- b"
+		const expected = "(edge) a -- b";
 
 		let h = hoverAtEdgeSampleAtOffsetUndirected(9);
 		expect(h.contents).toEqual(expected);
@@ -101,7 +98,7 @@ describe("Hover Handling", () => {
 
 	test("should correctly return edge info (directed graph)", () => {
 		const hoverAtEdgeSampleAtOffsetDirected = hoverSample(`graph { a -> b }`);
-		const expected = "(edge) a -> b"
+		const expected = "(edge) a -> b";
 
 		let h = hoverAtEdgeSampleAtOffsetDirected(9);
 		expect(h.contents).toEqual(expected);
@@ -112,7 +109,6 @@ describe("Hover Handling", () => {
 		h = hoverAtEdgeSampleAtOffsetDirected(11);
 		expect(h.contents).toEqual(expected);
 	});
-
 
 	test("should correctly hover on sub graphs", () => {
 		const hoverSubGraph = hoverSample("graph{subgraph{c--a;c--b}}");

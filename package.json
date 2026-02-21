@@ -2,12 +2,24 @@
   "name": "dot-language-support",
   "version": "4.1.1",
   "description": "Parser and language service for graphviz (dot) files",
-  "author": "Niklas Mollenhauer",
+  "keywords": [
+    "dot",
+    "graphviz",
+    "gv",
+    "language",
+    "parser",
+    "service"
+  ],
   "license": "MIT",
+  "author": "Niklas Mollenhauer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikeee/dot-language-support.git"
+  },
+  "type": "module",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
-  "type": "module",
   "scripts": {
     "ci": "oxlint --type-aware --deny-warnings -f github",
     "test": "tsc && node --test '**/*.spec.ts'",
@@ -17,18 +29,6 @@
     "lint:fix": "oxlint --type-aware --fix",
     "build": "tsdown",
     "prepare": "npm run build"
-  },
-  "keywords": [
-    "graphviz",
-    "dot",
-    "gv",
-    "parser",
-    "language",
-    "service"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nikeee/dot-language-support.git"
   },
   "dependencies": {
     "vscode-languageserver-textdocument": "^1.0.12",

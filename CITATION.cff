@@ -5,7 +5,7 @@ type: software
 authors:
   - given-names: Niklas
     family-names: Mollenhauer
-repository-code: 'https://github.com/nikeee/dot-language-support'
+repository-code: "https://github.com/nikeee/dot-language-support"
 abstract: A language service library for the DOT language (graphviz). Used by dot-language-server and edotor.net.
 keywords:
   - dot

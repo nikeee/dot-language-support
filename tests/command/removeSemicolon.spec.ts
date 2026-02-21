@@ -2,14 +2,12 @@ import { describe, test } from "node:test";
 import { expect } from "expect";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-
 import { ensureDocAndSourceFile, ensureGraph } from "../testUtils.ts";
 
 import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons.ts";
 import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
 
 describe("Remove semicolon command execution", () => {
-
 	test("should get correct semicolon edits", () => {
 		const content = `strict digraph {
 			a -> b;
@@ -45,7 +43,6 @@ describe("Remove semicolon command execution", () => {
 
 		expect(execution).toBeDefined();
 		if (!execution) throw "Just for the type checker";
-
 
 		expect(execution.edit.changes).toBeDefined();
 		if (!execution.edit.changes) throw "Just for the type checker";
@@ -100,19 +97,19 @@ describe("Remove semicolon command execution", () => {
 		expect(firstAction.arguments).toBeUndefined();
 		expect(firstAction.title).toBeDefined();
 		/*
-				range.start = doc.positionAt(end);
-				range.end = doc.positionAt(end);
-				actions = getCodeActions(doc, sf, range, undefined);
-				expect(actions).to.exist;
-				if (!actions) throw "Just for the type checker";
+		range.start = doc.positionAt(end);
+		range.end = doc.positionAt(end);
+		actions = getCodeActions(doc, sf, range, undefined);
+		expect(actions).to.exist;
+		if (!actions) throw "Just for the type checker";
 
-				firstAction = actions[0];
-				expect(firstAction).to.exist;
-				if (!firstAction) throw "Just for the type checker";
+		firstAction = actions[0];
+		expect(firstAction).to.exist;
+		if (!firstAction) throw "Just for the type checker";
 
-				expect(firstAction.command).to.equal(commandIds.RemoveSemicolons);
-				expect(firstAction.arguments).to.be.undefined;
-				expect(firstAction.title).to.exist;
+		expect(firstAction.command).to.equal(commandIds.RemoveSemicolons);
+		expect(firstAction.arguments).to.be.undefined;
+		expect(firstAction.title).to.exist;
 		*/
 	});
 });
