@@ -4,7 +4,7 @@ import { expect } from "expect";
 import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { hover } from "../../src/service/hover.ts";
 
-describe("Hover Handling", () => {
+void describe("Hover Handling", () => {
 	function hoverSample(content: string) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
@@ -35,19 +35,19 @@ describe("Hover Handling", () => {
 		}`,
 	);
 
-	test("should correctly return graph info (offset 0)", () => {
+	void test("should correctly return graph info (offset 0)", () => {
 		const h = hoverAtSampleAtOffset(0);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	test("Issue #21", () => {
+	void test("Issue #21", () => {
 		const h = hoverSample(`digraph{ graph [] }`)("digraph{ g".length);
 		expect(h).not.toBeNull();
 		expect(h).toBeDefined();
 		expect(h.contents).toEqual("(undirected graph)");
 	});
 
-	test("should correctly return graph info (offset 3)", () => {
+	void test("should correctly return graph info (offset 3)", () => {
 		const h = hoverAtSampleAtOffset(3);
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
@@ -62,27 +62,27 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual("(directed graph) GraphName");
 	});
 
-	test("should correctly return graph info, strict graph (offset 0)", () => {
+	void test("should correctly return graph info, strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(0);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	test("should correctly return graph info, strict graph (offset 12)", () => {
+	void test("should correctly return graph info, strict graph (offset 12)", () => {
 		const h = hoverAtStrictSampleAtOffset(12);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	test("should correctly return graph info, strict graph (offset 21)", () => {
+	void test("should correctly return graph info, strict graph (offset 21)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	test("should correctly return graph info, unnamed strict graph (offset 0)", () => {
+	void test("should correctly return graph info, unnamed strict graph (offset 0)", () => {
 		const h = hoverAtStrictSampleAtOffset(21);
 		expect(h.contents).toEqual("(strict directed graph) GraphName");
 	});
 
-	test("should correctly return edge info (undirected graph)", () => {
+	void test("should correctly return edge info (undirected graph)", () => {
 		const hoverAtEdgeSampleAtOffsetUndirected = hoverSample(`graph { a -- b }`);
 		const expected = "(edge) a -- b";
 
@@ -96,7 +96,7 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual(expected);
 	});
 
-	test("should correctly return edge info (directed graph)", () => {
+	void test("should correctly return edge info (directed graph)", () => {
 		const hoverAtEdgeSampleAtOffsetDirected = hoverSample(`graph { a -> b }`);
 		const expected = "(edge) a -> b";
 
@@ -110,7 +110,7 @@ describe("Hover Handling", () => {
 		expect(h.contents).toEqual(expected);
 	});
 
-	test("should correctly hover on sub graphs", () => {
+	void test("should correctly hover on sub graphs", () => {
 		const hoverSubGraph = hoverSample("graph{subgraph{c--a;c--b}}");
 
 		let h = hoverSubGraph(15);
@@ -135,7 +135,7 @@ describe("Hover Handling", () => {
 	/**
 	 * See https://github.com/nikeee/dot-language-support/issues/83
 	 */
-	test("should correctly show node labels on hover (source node)", () => {
+	void test("should correctly show node labels on hover (source node)", () => {
 		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
 
 		const h = hoverOnCode(7);
@@ -145,7 +145,7 @@ describe("Hover Handling", () => {
 	/**
 	 * See https://github.com/nikeee/dot-language-support/issues/83
 	 */
-	test("should correctly show node labels on hover (other node)", () => {
+	void test("should correctly show node labels on hover (other node)", () => {
 		const hoverOnCode = hoverSample(`graph{ c[label="xd"]; c -- a; c -- b}}`);
 		const h = hoverOnCode(22);
 		expect(h.contents).toEqual("(node) c: xd");
@@ -154,7 +154,7 @@ describe("Hover Handling", () => {
 	/**
 	 * See https://github.com/nikeee/dot-language-support/issues/83
 	 */
-	test("should correctly show node labels on hover (other node)", () => {
+	void test("should correctly show node labels on hover (other node)", () => {
 		const hoverOnCode = hoverSample(`digraph G {
 			vp [label="View Profile"];
 			vf [label="View Friends"];
@@ -168,7 +168,7 @@ describe("Hover Handling", () => {
 	/**
 	 * See https://github.com/nikeee/dot-language-support/issues/83
 	 */
-	test("should correctly show node labels on hover (other node)", () => {
+	void test("should correctly show node labels on hover (other node)", () => {
 		const hoverOnCode = hoverSample(`digraph G {
 			vp [label="View Profile"];
 			vf [label="View Friends"];

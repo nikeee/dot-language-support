@@ -7,8 +7,8 @@ import { ensureDocAndSourceFile, ensureGraph } from "../testUtils.ts";
 import * as RemoveSemicolons from "../../src/service/command/RemoveSemicolons.ts";
 import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
 
-describe("Remove semicolon command execution", () => {
-	test("should get correct semicolon edits", () => {
+void describe("Remove semicolon command execution", () => {
+	void test("should get correct semicolon edits", () => {
 		const content = `strict digraph {
 			a -> b;
 			a -> C
@@ -58,7 +58,7 @@ describe("Remove semicolon command execution", () => {
 		expect(actual).toEqual(expected);
 	});
 
-	test("should offer code action", () => {
+	void test("should offer code action", () => {
 		const content = `strict digraph {
 			a -> b;
 			a -> C

@@ -4,8 +4,8 @@ import { expect } from "expect";
 import { createParserWithText, ensureGraph } from "./testUtils.ts";
 import { syntaxKind } from "../src/types.ts";
 
-describe("Comment Handling", () => {
-	test("should skip comments while parsing", () => {
+void describe("Comment Handling", () => {
+	void test("should skip comments while parsing", () => {
 		const p = createParserWithText(`digraph G { // funny comment
 			a = b;
 			/* aha! */

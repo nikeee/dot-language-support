@@ -4,8 +4,8 @@ import { expect } from "expect";
 import { ensureDocAndSourceFile, getRequestOffset, getLabel } from "../testUtils.ts";
 import { getCompletions } from "../../src/service/completion.ts";
 
-describe("Node completion", () => {
-	test("should provide completion for nodes", () => {
+void describe("Node completion", () => {
+	void test("should provide completion for nodes", () => {
 		const content = `digraph{green->blue;green->yellow;b-> ;}`;
 		const requestOffset = content.indexOf("b-> ") + "b-> ".length - 1; // the space between > and ;
 
@@ -17,7 +17,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["blue", "green", "yellow", "b"]);
 	});
 
-	test("should provide completion for nodes (between nodes)", () => {
+	void test("should provide completion for nodes (between nodes)", () => {
 		const content = `digraph{green->blue;b-> ;green->yellow}`;
 		const requestOffset = content.indexOf("b-> ") + "b-> ".length - 1; // the space between > and ;
 
@@ -29,7 +29,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["blue", "green", "b", "yellow"]);
 	});
 
-	test("should provide completion for nodes (trailing space)", () => {
+	void test("should provide completion for nodes (trailing space)", () => {
 		const content = `digraph{green->blue;green->yellow;b->  }`;
 		const requestOffset = getRequestOffset(content, "b-> "); // latter space between > and ;
 
@@ -41,7 +41,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["blue", "green", "yellow", "b"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes)", () => {
 		const content = `digraph{green->blue;b->  ;green->yellow}`;
 		const requestOffset = getRequestOffset(content, "b-> "); // latter space between > and ;
 
@@ -53,7 +53,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["blue", "green", "b", "yellow"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
 		const content = `graph{node_0;node_1;node_2;node_0 -- node_1 -- [color=gray]; }`;
 		const requestOffset = content.indexOf("node_1 --") + "node_1 --".length;
 
@@ -65,7 +65,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
 		const content = `digraph{node_0;node_1;node_2;node_0 -> node_1 -> [color=gray]; }`;
 		const requestOffset = content.indexOf("node_1 ->") + "node_1 ->".length;
 
@@ -77,7 +77,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, undirected)", () => {
 		const content = `graph{node_0;node_1;node_2;node_0 -- node_1 -- [color=gray]; }`;
 		const requestOffset = content.indexOf("node_1 -- ") + "node_1 -".length;
 
@@ -89,7 +89,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, directed)", () => {
 		const content = `digraph{node_0;node_1;node_2;node_0 -> node_1 -> [color=gray]; }`;
 		const requestOffset = content.indexOf("node_1 -> ") + "node_1 -".length;
 
@@ -101,7 +101,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["node_0", "node_1", "node_2"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 1)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 1)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -119,7 +119,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 2)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 2)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -137,7 +137,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 3)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 3)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -155,7 +155,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 4)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 4)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -172,7 +172,7 @@ describe("Node completion", () => {
 		expect(completions).toHaveLength(170); // attributes, not nodes
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 5)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 5)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -190,7 +190,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 6)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 6)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -208,7 +208,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 7)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 7)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -226,7 +226,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 8)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 8)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]
@@ -244,7 +244,7 @@ describe("Node completion", () => {
 		expect(labels).toEqual(["music_bus", "breakfast", "sell_game"]);
 	});
 
-	test("should provide completion for nodes (trailing space; between nodes, issue #17 9)", () => {
+	void test("should provide completion for nodes (trailing space; between nodes, issue #17 9)", () => {
 		const content = `digraph {
 			music_bus [label="Which music would you like to listen to on the bus?"]
 			breakfast [label="What breakfast do you want to eat?"]

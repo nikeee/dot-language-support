@@ -6,8 +6,8 @@ import { getCompletions } from "../../src/service/completion.ts";
 import { shapes } from "../../src/service/languageFacts.ts";
 import { checkError, diagnosticCategory, errorSource } from "../../src/types.ts";
 
-describe("Shape completion", () => {
-	test("should provide completion for shapes (trailing attribute)", () => {
+void describe("Shape completion", () => {
+	void test("should provide completion for shapes (trailing attribute)", () => {
 		const content = `graph {
 			a -- b [shape=];
 		}`;
@@ -21,7 +21,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should provide completion for shapes (leading attribute)", () => {
+	void test("should provide completion for shapes (leading attribute)", () => {
 		const content = `graph {
 			a -- b [shape=,shape=box];
 		}`;
@@ -35,7 +35,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should provide completion for shapes (center attribute)", () => {
+	void test("should provide completion for shapes (center attribute)", () => {
 		const content = `graph {
 			a -- b [label="hi!",shape=,shape=box];
 		}`;
@@ -49,7 +49,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should provide completion for shapes (center attribute with spaces)", () => {
+	void test("should provide completion for shapes (center attribute with spaces)", () => {
 		const content = `graph { a -- b [label="hi!" , shape=,  shape=box]; }`;
 		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
@@ -61,7 +61,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
+	void test("should provide completion for shapes (center attribute with spaces and semicolons)", () => {
 		const content = `graph { a -- b [label="hi!" ; shape=;  shape=box];}`;
 		const requestOffset = content.indexOf("shape=") + "shape=".length;
 
@@ -73,7 +73,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
+	void test("should provide completion for shapes (center attribute mixed spaces and separators)", () => {
 		const content = `graph {
 			a -- b [label="hi!" ,shape=;
 				shape=box];
@@ -88,7 +88,7 @@ describe("Shape completion", () => {
 		expect(labels).toEqual(shapes);
 	});
 
-	test("should validate shapes (single node)", () => {
+	void test("should validate shapes (single node)", () => {
 		let [_doc, sf] = ensureDocAndSourceFile(`graph { b [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 
@@ -105,7 +105,7 @@ describe("Shape completion", () => {
 		]);
 	});
 
-	test("should validate shapes (all nodes)", () => {
+	void test("should validate shapes (all nodes)", () => {
 		let [_doc, sf] = ensureDocAndSourceFile(`graph { node [shape=box]; }`);
 		expect(sf.diagnostics).toHaveLength(0);
 

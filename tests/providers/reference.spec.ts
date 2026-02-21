@@ -4,7 +4,7 @@ import { expect } from "expect";
 import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { findReferences } from "../../src/service/reference.ts";
 
-describe("Reference Finding", () => {
+void describe("Reference Finding", () => {
 	function findReferencesSample(content: string, includeDeclaration: boolean) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
@@ -15,7 +15,7 @@ describe("Reference Finding", () => {
 		};
 	}
 
-	test("should correctly return all references (including self)", () => {
+	void test("should correctly return all references (including self)", () => {
 		const as = findReferencesSample(`graph {a a b a}`, true);
 
 		const refs = as(9);
@@ -43,7 +43,7 @@ describe("Reference Finding", () => {
 		});
 	});
 
-	test("should correctly return all references (excluding self)", () => {
+	void test("should correctly return all references (excluding self)", () => {
 		const as = findReferencesSample(`graph {a a b a}`, false);
 
 		const refs = as(9);

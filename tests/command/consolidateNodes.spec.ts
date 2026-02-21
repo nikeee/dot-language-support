@@ -7,8 +7,8 @@ import * as ConsolidateDescendantsCommand from "../../src/service/command/Consol
 import { commandIds, getCodeActions } from "../../src/service/codeAction.ts";
 import type { ExecutableCommand } from "../../src/service/command/common.ts";
 
-describe("Consolidate graph command execution", () => {
-	test("should correclty consolidate descendents", () => {
+void describe("Consolidate graph command execution", () => {
+	void test("should correclty consolidate descendents", () => {
 		const content = `graph{a -- b;a -- c;}`;
 		const expected = `graph{a -- { b c };}`;
 
@@ -49,7 +49,7 @@ describe("Consolidate graph command execution", () => {
 		expect(actual).toEqual(expected);
 	});
 
-	test("should correclty consolidate descendents (leading assigment statement)", () => {
+	void test("should correclty consolidate descendents (leading assigment statement)", () => {
 		const content = `graph{node[shape=box];a -- b;a -- c;}`;
 		const expected = `graph{node[shape=box];a -- { b c };}`;
 
@@ -90,7 +90,7 @@ describe("Consolidate graph command execution", () => {
 		expect(actual).toEqual(expected);
 	});
 
-	test("should offer code action", () => {
+	void test("should offer code action", () => {
 		const content = `graph{a -- b;a -- c;}`;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);
@@ -118,7 +118,7 @@ describe("Consolidate graph command execution", () => {
 		expect(firstAction.title).toBeDefined();
 	});
 
-	test("should offer code action (leading assigment statement)", () => {
+	void test("should offer code action (leading assigment statement)", () => {
 		const content = `graph{node[shape=box];a -- b;a -- c;}`;
 
 		const [doc, sf] = ensureDocAndSourceFile(content);

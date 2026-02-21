@@ -4,7 +4,7 @@ import { expect } from "expect";
 import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { getDocumentColors } from "../../src/service/colorProvider.ts";
 
-describe("Reference Finding", () => {
+void describe("Reference Finding", () => {
 	function getColorsSample(content: string) {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 		const refs = getDocumentColors(doc, sf);
@@ -13,7 +13,7 @@ describe("Reference Finding", () => {
 		return refs!;
 	}
 
-	test("should correctly return all colors ", () => {
+	void test("should correctly return all colors ", () => {
 		const refs = getColorsSample(`graph {a [color=red] b [color="#00ff00"] c [color="blue"]}`);
 		expect(refs).toHaveLength(3);
 

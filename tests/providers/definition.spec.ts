@@ -4,7 +4,7 @@ import { expect } from "expect";
 import { ensureDocAndSourceFile } from "../testUtils.ts";
 import { findDefinition } from "../../src/service/reference.ts";
 
-describe("Definition Finding", () => {
+void describe("Definition Finding", () => {
 	function findDefinitionSample(content: string) {
 		return (offset: number) => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
@@ -15,7 +15,7 @@ describe("Definition Finding", () => {
 		};
 	}
 
-	test("should correctly find reference (referring other)", () => {
+	void test("should correctly find reference (referring other)", () => {
 		const as = findDefinitionSample(`graph {a a b a}`);
 
 		const def = as(9);
@@ -27,7 +27,7 @@ describe("Definition Finding", () => {
 		});
 	});
 
-	test("should correctly find reference (referring other)", () => {
+	void test("should correctly find reference (referring other)", () => {
 		const as = findDefinitionSample(`graph {a a b a}`);
 
 		const def = as(7);
