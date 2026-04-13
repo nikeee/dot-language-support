@@ -36,10 +36,10 @@
   },
   "devDependencies": {
     "expect": "^30.3.0",
-    "oxfmt": "^0.44.0",
-    "oxlint": "^1.58.0",
+    "oxfmt": "^0.45.0",
+    "oxlint": "^1.60.0",
     "oxlint-tsgolint": "^0.20.0",
-    "tsdown": "^0.21.7",
+    "tsdown": "^0.21.8",
     "typescript": "^6.0.2"
   },
   "engines": {
