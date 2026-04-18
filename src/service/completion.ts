@@ -5,6 +5,7 @@ import { type DocumentLike, isIdentifierNode } from "../index.ts";
 import {
 	type Assignment,
 	type AttributeContainer,
+	type IdEqualsIdStatement,
 	type SourceFile,
 	type SymbolTable,
 	syntaxKind,
@@ -83,6 +84,8 @@ export function getCompletions(
 					return getNodeCompletions(symbols);
 				case syntaxKind.Assignment:
 					return getAssignmentCompletion(p as Assignment);
+				case syntaxKind.IdEqualsIdStatement:
+					return getAssignmentCompletion(p as IdEqualsIdStatement);
 			}
 		}
 	}
@@ -97,12 +100,17 @@ export function getCompletions(
 		if (parent.kind === syntaxKind.Assignment) {
 			return getAssignmentCompletion(parent as Assignment);
 		}
+		if (parent.kind === syntaxKind.IdEqualsIdStatement) {
+			return getAssignmentCompletion(parent as IdEqualsIdStatement);
+		}
 	}
 
 	return [];
 }
 
-function getAssignmentCompletion(assignment: Assignment): lst.CompletionItem[] {
+function getAssignmentCompletion(
+	assignment: Assignment | IdEqualsIdStatement,
+): lst.CompletionItem[] {
 	const property = getIdentifierText(assignment.leftId);
 	if (!property) return [];
 

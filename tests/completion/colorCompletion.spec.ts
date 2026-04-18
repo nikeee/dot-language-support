@@ -98,4 +98,37 @@ void describe("Color completion", () => {
 		const labels = completions.map(getLabel);
 		expect(labels).toEqual(allColors);
 	});
+
+	void test("should provide completion for colors (graph-level attribute)", () => {
+		const content = `graph {
+			color=
+		}`;
+		const requestOffset = content.indexOf("color=") + "color=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+		expect(completions).toBeTruthy();
+
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
+	});
+
+	void test("should provide completion for colors (subgraph-level attribute)", () => {
+		const content = `graph {
+			subgraph cluster_1 {
+				a -- b
+				color=
+			}
+		}`;
+		const requestOffset = content.indexOf("color=") + "color=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+		expect(completions).toBeTruthy();
+
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(allColors);
+	});
 });

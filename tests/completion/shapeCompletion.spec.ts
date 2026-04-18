@@ -138,4 +138,36 @@ void describe("Shape completion", () => {
 		const [_doc, sf] = ensureDocAndSourceFile(`digraph {_a->b}`);
 		expect(sf.diagnostics).toHaveLength(0);
 	});
+
+	void test("should provide completion for shapes (graph-level attribute)", () => {
+		const content = `graph {
+			node [label="hi!"]
+			shape=
+		}`;
+		const requestOffset = content.indexOf("shape=") + "shape=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
+	});
+
+	void test("should provide completion for shapes (subgraph-level attribute)", () => {
+		const content = `graph {
+			subgraph cluster_1 {
+				a -- b
+				shape=
+			}
+		}`;
+		const requestOffset = content.indexOf("shape=") + "shape=".length;
+
+		const [doc, sf] = ensureDocAndSourceFile(content);
+
+		const completions = getCompletions(doc, sf, doc.positionAt(requestOffset));
+
+		const labels = completions.map(getLabel);
+		expect(labels).toEqual(shapes);
+	});
 });
