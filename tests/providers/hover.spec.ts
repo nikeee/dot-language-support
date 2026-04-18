@@ -244,7 +244,9 @@ void describe("Hover Handling", () => {
 		void test("assignment hover highlights whole assignment", () => {
 			const content = `graph { n [color=red] }`;
 			const r = hoverRangeSample(content)(content.indexOf("color") + 1);
-			expect(r.hover.contents).toEqual("(assignment) `color` = `red`");
+			expect(r.hover.contents).toEqual(
+				"(assignment) `color` = `red`\n\nNode shape/edge/cluster color",
+			);
 			expect(r.text).toEqual("color=red");
 		});
 

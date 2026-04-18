@@ -18,6 +18,7 @@ import {
 	syntaxKindNames,
 } from "../types.ts";
 import { getEdgeStr } from "./command/common.ts";
+import { attributeDescriptions } from "./languageFacts.ts";
 import { posRangeToRange } from "./util.ts";
 
 interface HoverResult {
@@ -101,8 +102,10 @@ function getHoverContents(n: SyntaxNode): HoverResult | undefined {
 					const assignment = parent as Assignment;
 					const left = getIdentifierText(assignment.leftId);
 					const right = getIdentifierText(assignment.rightId);
+					const desc = attributeDescriptions[left.toLowerCase()];
+					const base = `(assignment) \`${left}\` = \`${right}\``;
 					return {
-						contents: `(assignment) \`${left}\` = \`${right}\``,
+						contents: desc ? `${base}\n\n${desc}` : base,
 						range: { pos: assignment.pos, end: assignment.end },
 					};
 				}
@@ -129,8 +132,10 @@ function getHoverContents(n: SyntaxNode): HoverResult | undefined {
 					const idEqId = parent as IdEqualsIdStatement;
 					const left = getIdentifierText(idEqId.leftId);
 					const right = getIdentifierText(idEqId.rightId);
+					const desc = attributeDescriptions[left.toLowerCase()];
+					const base = `(graph property) \`${left}\` = \`${right}\``;
 					return {
-						contents: `(graph property) \`${left}\` = \`${right}\``,
+						contents: desc ? `${base}\n\n${desc}` : base,
 						range: { pos: idEqId.pos, end: idEqId.end },
 					};
 				}

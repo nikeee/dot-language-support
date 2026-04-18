@@ -155,6 +155,7 @@ function getAttributeCompletions(posistion: lst.Position): lst.CompletionItem[] 
 	return languageFacts.attributes.map(label => ({
 		kind,
 		label,
+		documentation: languageFacts.attributeDescriptions[label.toLowerCase()],
 		textEdit: {
 			range,
 			newText: `${escapeIdentifierText(label)}=`,

@@ -320,6 +320,57 @@ export const attributes = Array.from(
 	new Set([...nodeAttributes, ...edgeAttributes, ...graphAttributes, ...clusterAttributes]),
 ).sort();
 
+// Descriptions taken from:
+// https://github.com/liuchengxu/graphviz.vim/blob/5f62877d6f842238678325faf91d63f70a7d4991/autoload/graphviz/data.vim
+export const attributeDescriptions: Readonly<Record<string, string>> = Object.freeze({
+	arrowhead: "Style of arrowhead at head end",
+	arrowsize: "Scaling factor for arrowheads",
+	arrowtail: "Style of arrowhead at tail end",
+	bgcolor: "Background color",
+	color: "Node shape/edge/cluster color",
+	comment: "Any string",
+	compound: "Allow edges between clusters",
+	concentrate: "Enables edge concentrators",
+	constraint: "Use edge to affect node ranking",
+	decorate: "If set, line between label and edge",
+	dir: "Direction of edge",
+	distortion: "Node distortion",
+	fillcolor: "Node/cluster fill color",
+	fixedsize: "Label text has no effect on node size",
+	fontcolor: "Font face color",
+	fontname: "Font family",
+	fontsize: "Point size of label",
+	group: "Name of node group",
+	headlabel: "Label placed near head of edge",
+	headport: "Where on the node to attach head of edge",
+	height: "Height in inches",
+	label: "Any string",
+	labelangle: "Angle in degrees",
+	labeldistance: "Scaling factor for distance for head or tail label",
+	labelfontcolor: "Type face color for head and tail labels",
+	labelfontname: "Font family for head and tail labels",
+	labelfontsize: "Point size for head and tail labels",
+	labeljust: "Label justification",
+	labelloc: "Label vertical justification",
+	layer: "Overlay range",
+	nodesep: "Separation between nodes, in inches",
+	orientation: "Node rotation angle",
+	peripheries: "Number of node boundaries",
+	ranksep: "Separation between ranks, in inches",
+	ratio: "Aspect ratio",
+	regular: "Force polygon to be regular",
+	rotate: "If 90, set orientation to landscape",
+	shape: "Node shape",
+	shapefile: "External custom shape file",
+	sides: "Number of sides for shape=polygon",
+	skew: "Skewing node for shape=polygon",
+	style: "Graphics options",
+	taillabel: "Label placed near tail of edge",
+	tailport: "Where on the node to attach tail of edge",
+	weight: "Integer cost of stretching an edge",
+	width: "Width in inches",
+});
+
 /*
 export function getDocsUrl(attribute: string) {
 	return "https://www.graphviz.org/doc/info/attrs.html#d:" + encodeURIComponent(attribute);
