@@ -10,7 +10,7 @@ import { executeCommand, getAvailableCommands, getCodeActions } from "./codeActi
 import { getColorRepresentations, getDocumentColors } from "./colorProvider.ts";
 import { getCompletions } from "./completion.ts";
 import { hover } from "./hover.ts";
-import { findDefinition, findReferences } from "./reference.ts";
+import { findDeclaration, findDefinition, findReferences } from "./reference.ts";
 import { renameSymbol } from "./rename.ts";
 import { getSelectionRanges } from "./selectionRange.ts";
 import { validateDocument } from "./validation.ts";
@@ -38,6 +38,11 @@ export interface LanguageService {
 		context: lst.ReferenceContext,
 	): lst.Location[];
 	findDefinition(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		position: lst.Position,
+	): lst.Location | undefined;
+	findDeclaration(
 		doc: DocumentLike,
 		sourceFile: SourceFile,
 		position: lst.Position,
@@ -102,6 +107,7 @@ export function createService(): LanguageService {
 		hover,
 		findReferences,
 		findDefinition,
+		findDeclaration,
 		renameSymbol,
 		getCompletions,
 		getSelectionRanges,

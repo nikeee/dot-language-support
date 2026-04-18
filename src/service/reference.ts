@@ -90,3 +90,5 @@ export function findDefinition(
 	debugger;
 	return undefined;
 }
+
+export const findDeclaration = findDefinition;
