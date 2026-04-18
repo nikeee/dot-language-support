@@ -12,6 +12,7 @@ import { getCompletions } from "./completion.ts";
 import { hover } from "./hover.ts";
 import { findDefinition, findReferences } from "./reference.ts";
 import { renameSymbol } from "./rename.ts";
+import { getSelectionRanges } from "./selectionRange.ts";
 import { validateDocument } from "./validation.ts";
 
 export interface DocumentLike {
@@ -53,6 +54,12 @@ export interface LanguageService {
 		sourceFile: SourceFile,
 		position: lst.Position,
 	): lst.CompletionItem[];
+
+	getSelectionRanges(
+		doc: DocumentLike,
+		sourceFile: SourceFile,
+		positions: lst.Position[],
+	): lst.SelectionRange[];
 
 	getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): ColorInformation[] | undefined;
 	getColorRepresentations(
@@ -97,6 +104,7 @@ export function createService(): LanguageService {
 		findDefinition,
 		renameSymbol,
 		getCompletions,
+		getSelectionRanges,
 		getDocumentColors,
 		getColorRepresentations,
 		getCodeActions,
