@@ -178,4 +178,88 @@ void describe("Hover Handling", () => {
 		const h = hoverOnCode(81);
 		expect(h.contents).toEqual("(node) vf: View Friends");
 	});
+
+	void describe("Hover range", () => {
+		function hoverRangeSample(content: string) {
+			return (offset: number) => {
+				const [doc, sf] = ensureDocAndSourceFile(content);
+				const h = hover(doc, sf, doc.positionAt(offset));
+				expect(h).toBeDefined();
+				if (!h || !h.range) throw "Just for the type checker";
+				return {
+					hover: h,
+					start: doc.offsetAt(h.range.start),
+					end: doc.offsetAt(h.range.end),
+					text: content.substring(doc.offsetAt(h.range.start), doc.offsetAt(h.range.end)),
+				};
+			};
+		}
+
+		void test("graph keyword hover highlights whole graph", () => {
+			const content = "digraph G { a -> b }";
+			const r = hoverRangeSample(content)(0);
+			expect(r.hover.contents).toEqual("(directed graph) G");
+			expect(r.start).toEqual(0);
+			expect(r.end).toEqual(content.length);
+		});
+
+		void test("strict keyword hover highlights whole graph", () => {
+			const content = "strict digraph G { a -> b }";
+			const r = hoverRangeSample(content)(0);
+			expect(r.hover.contents).toEqual("(strict directed graph) G");
+			expect(r.start).toEqual(0);
+			expect(r.end).toEqual(content.length);
+		});
+
+		void test("graph id hover highlights whole graph", () => {
+			const content = "digraph GraphName { a -> b }";
+			const r = hoverRangeSample(content)("digraph Gra".length);
+			expect(r.hover.contents).toEqual("(directed graph) GraphName");
+			expect(r.start).toEqual(0);
+			expect(r.end).toEqual(content.length);
+		});
+
+		void test("edge op hover highlights source..target", () => {
+			const content = "graph { aaa -- bbb }";
+			const r = hoverRangeSample(content)(content.indexOf("--") + 1);
+			expect(r.hover.contents).toEqual("(edge) aaa -- bbb");
+			expect(r.text).toEqual("aaa -- bbb");
+		});
+
+		void test("edge op hover in chain highlights source..target for that segment", () => {
+			const content = "digraph { a -> b -> c }";
+			const firstOp = content.indexOf("->");
+			const r = hoverRangeSample(content)(firstOp + 1);
+			expect(r.hover.contents).toEqual("(edge) a -> b");
+			expect(r.text).toEqual("a -> b");
+		});
+
+		void test("node id hover highlights only the identifier", () => {
+			const content = "graph { aaa -- bbb }";
+			const r = hoverRangeSample(content)(content.indexOf("aaa") + 1);
+			expect(r.hover.contents).toEqual("(node) aaa");
+			expect(r.text).toEqual("aaa");
+		});
+
+		void test("assignment hover highlights whole assignment", () => {
+			const content = `graph { n [color=red] }`;
+			const r = hoverRangeSample(content)(content.indexOf("color") + 1);
+			expect(r.hover.contents).toEqual("(assignment) `color` = `red`");
+			expect(r.text).toEqual("color=red");
+		});
+
+		void test("graph property hover highlights whole statement", () => {
+			const content = `digraph { rankdir = LR; a -> b }`;
+			const r = hoverRangeSample(content)(content.indexOf("rankdir") + 1);
+			expect(r.hover.contents).toEqual("(graph property) `rankdir` = `LR`");
+			expect(r.text).toEqual("rankdir = LR;");
+		});
+
+		void test("subgraph hover highlights whole subgraph", () => {
+			const content = `graph { subgraph cluster_0 { a -- b } }`;
+			const r = hoverRangeSample(content)(content.indexOf("cluster_0") + 1);
+			expect(r.hover.contents).toEqual("(sub graph) cluster_0");
+			expect(r.text).toEqual("subgraph cluster_0 { a -- b }");
+		});
+	});
 });

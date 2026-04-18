@@ -18,7 +18,12 @@ import {
 	syntaxKindNames,
 } from "../types.ts";
 import { getEdgeStr } from "./command/common.ts";
-import { syntaxNodeToRange } from "./util.ts";
+import { posRangeToRange } from "./util.ts";
+
+interface HoverResult {
+	contents: string;
+	range?: { pos: number; end: number };
+}
 
 export function hover(
 	doc: DocumentLike,
@@ -37,12 +42,13 @@ export function hover(
 }
 
 function getNodeHover(doc: DocumentLike, sf: SourceFile, n: SyntaxNode): lst.Hover | undefined {
-	const contents = getHoverContents(n);
+	const result = getHoverContents(n);
 
-	if (contents) {
+	if (result) {
+		const { pos, end } = result.range ?? { pos: n.pos, end: n.end };
 		return {
-			contents,
-			range: syntaxNodeToRange(doc, sf, n),
+			contents: result.contents,
+			range: posRangeToRange(doc, sf, pos, end),
 		};
 	}
 	return undefined;
@@ -57,7 +63,7 @@ function getAssignedLabel(statement: NodeStatement) {
 // TODO: Maybe improve this to use something like
 // type HoverHandler = (node: SyntaxNode, parent?: SyntaxNode) => undefined | string;
 // TODO: Handle all leafs of the syntax tree
-function getHoverContents(n: SyntaxNode): string | undefined {
+function getHoverContents(n: SyntaxNode): HoverResult | undefined {
 	if (isIdentifierNode(n)) {
 		const parent = n.parent;
 		if (parent) {
@@ -76,24 +82,29 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 						for (let i = labelMentions.length; i >= 0; i--) {
 							const s = labelMentions[i];
 							if (s?.rightId) {
-								return `(node) ${getIdentifierText(n)}: ${getIdentifierText(
-									s.rightId,
-								)}`;
+								return {
+									contents: `(node) ${getIdentifierText(n)}: ${getIdentifierText(
+										s.rightId,
+									)}`,
+								};
 							}
 						}
 					} else if (parent.parent?.kind === syntaxKind.NodeStatement) {
 						const label = getAssignedLabel(parent.parent as NodeStatement);
 						if (label) {
-							return `(node) ${getIdentifierText(n)}: ${label}`;
+							return { contents: `(node) ${getIdentifierText(n)}: ${label}` };
 						}
 					}
-					return `(node) ${getIdentifierText(n)}`;
+					return { contents: `(node) ${getIdentifierText(n)}` };
 				}
 				case syntaxKind.Assignment: {
 					const assignment = parent as Assignment;
 					const left = getIdentifierText(assignment.leftId);
 					const right = getIdentifierText(assignment.rightId);
-					return `(assignment) \`${left}\` = \`${right}\``;
+					return {
+						contents: `(assignment) \`${left}\` = \`${right}\``,
+						range: { pos: assignment.pos, end: assignment.end },
+					};
 				}
 				case syntaxKind.DirectedGraph:
 					return getGraphHover(parent as Graph);
@@ -102,26 +113,36 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 				case syntaxKind.SubGraphStatement: {
 					const sgs = parent as SubGraphStatement;
 					const sg = sgs.subgraph;
-					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
+					return {
+						contents: sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)",
+						range: { pos: sgs.pos, end: sgs.end },
+					};
 				}
 				case syntaxKind.SubGraph: {
 					const sg = parent as SubGraph;
-					return sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)";
+					return {
+						contents: sg.id ? `(sub graph) ${getIdentifierText(sg.id)}` : "(sub graph)",
+						range: { pos: sg.pos, end: sg.end },
+					};
 				}
 				case syntaxKind.IdEqualsIdStatement: {
 					const idEqId = parent as IdEqualsIdStatement;
 					const left = getIdentifierText(idEqId.leftId);
 					const right = getIdentifierText(idEqId.rightId);
-					return `(graph property) \`${left}\` = \`${right}\``;
+					return {
+						contents: `(graph property) \`${left}\` = \`${right}\``,
+						range: { pos: idEqId.pos, end: idEqId.end },
+					};
 				}
 				case syntaxKind.EdgeRhs:
 					return getEdgeHover(parent as EdgeRhs);
 			}
-			return syntaxKindNames[parent.kind];
+			const fallbackParent = syntaxKindNames[parent.kind];
+			return fallbackParent ? { contents: fallbackParent } : undefined;
 		}
 
 		const fallback = syntaxKindNames[n.kind];
-		return fallback ? `(${fallback.toLowerCase()})` : undefined;
+		return fallback ? { contents: `(${fallback.toLowerCase()})` } : undefined;
 	}
 
 	switch (n.kind) {
@@ -145,16 +166,17 @@ function getHoverContents(n: SyntaxNode): string | undefined {
 	}
 }
 
-function getGraphHover(g: Graph): string {
+function getGraphHover(g: Graph): HoverResult {
 	const direction = g.kind === syntaxKind.DirectedGraph ? "directed" : "undirected";
 	const graphId = g.id;
 	const strict = g.strict ? "strict " : "";
-	return graphId
+	const contents = graphId
 		? `(${strict}${direction} graph) ${getIdentifierText(graphId)}`
 		: `(${strict}${direction} graph)`;
+	return { contents, range: { pos: g.pos, end: g.end } };
 }
 
-function getEdgeHover(n: EdgeRhs) {
+function getEdgeHover(n: EdgeRhs): HoverResult | undefined {
 	const p = n.parent as EdgeStatement;
 	if (!p || p.rhs.length === 0) return undefined;
 
@@ -166,13 +188,16 @@ function getEdgeHover(n: EdgeRhs) {
 
 	if (source === undefined) source = p.source;
 
+	if (source === undefined) return undefined;
+
 	const edgeOpStr = getEdgeStr(n.operation.kind);
 
-	return source === undefined
-		? undefined
-		: `(edge) ${getEdgeSourceOrTargetText(source)} ${edgeOpStr} ${getEdgeSourceOrTargetText(
-				n.target,
-			)}`;
+	return {
+		contents: `(edge) ${getEdgeSourceOrTargetText(source)} ${edgeOpStr} ${getEdgeSourceOrTargetText(
+			n.target,
+		)}`,
+		range: { pos: source.pos, end: n.target.end },
+	};
 }
 
 function getEdgeSourceOrTargetText(n: EdgeSourceOrTarget): string {

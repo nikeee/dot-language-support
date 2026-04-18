@@ -4,6 +4,19 @@ import type { DocumentLike } from "../index.ts";
 import { isIdentifierStart, skipTrivia } from "../scanner.ts";
 import { type SourceFile, type SyntaxNode, syntaxKind } from "../types.ts";
 
+export function posRangeToRange(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	pos: number,
+	end: number,
+): Range {
+	const start = pos === end ? pos : skipTrivia(sourceFile.content, pos);
+	return {
+		start: doc.positionAt(start),
+		end: doc.positionAt(end),
+	};
+}
+
 export function getStart(sourceFile: SourceFile, node: SyntaxNode) {
 	return getTokenPosOfNode(sourceFile, node);
 }
