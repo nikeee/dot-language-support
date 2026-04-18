@@ -87,8 +87,42 @@ export function findDefinition(
 		return { uri: doc.uri, range };
 	}
 
-	debugger;
 	return undefined;
 }
 
-export const findDeclaration = findDefinition;
+export function findDeclaration(
+	doc: DocumentLike,
+	sourceFile: SourceFile,
+	position: Position,
+): Location | undefined {
+	if (!sourceFile.symbols) {
+		throw "sourceFile is not bound";
+	}
+
+	const g = sourceFile.graph;
+	if (!g) {
+		return undefined;
+	}
+
+	const offset = doc.offsetAt(position);
+	const node = findNodeAtOffset(g, offset);
+	if (!node) {
+		return undefined;
+	}
+
+	if (!isIdentifierNode(node)) {
+		return undefined;
+	}
+
+	const nodeSymbol = node.symbol;
+	if (!nodeSymbol) {
+		throw "node.symbol is not bound";
+	}
+
+	const firstUse = nodeSymbol.firstMention;
+	if (!firstUse) {
+		return undefined;
+	}
+
+	return { uri: doc.uri, range: syntaxNodeToRange(doc, sourceFile, firstUse) };
+}
