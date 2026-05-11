@@ -195,7 +195,7 @@ export class Parser {
 		const text = this.scanner.tokenValue;
 		this.#nextToken();
 
-		if (text === undefined) throw "Satisfy type checker";
+		if (text === undefined) throw new Error("Token value is undefined");
 
 		node.text = text;
 		return this.#finishNode(node);
@@ -222,7 +222,7 @@ export class Parser {
 		const text = this.scanner.tokenValue;
 		this.#nextToken();
 
-		if (text === undefined) throw "Satisfy type checker";
+		if (text === undefined) throw new Error("Token value is undefined");
 		node.text = text;
 		return this.#finishNode(node);
 	}
@@ -236,7 +236,7 @@ export class Parser {
 		const text = this.scanner.tokenValue;
 		this.#nextToken();
 
-		if (text === undefined) throw "Satisfy type checker";
+		if (text === undefined) throw new Error("Token value is undefined");
 
 		node.htmlContent = text;
 		return this.#finishNode(node);
@@ -246,7 +246,7 @@ export class Parser {
 		const text = this.scanner.tokenValue;
 		this.#nextToken();
 
-		if (text === undefined) throw "Satisfy type checker";
+		if (text === undefined) throw new Error("Token value is undefined");
 
 		node.text = text;
 		node.value = Number(text);
@@ -349,7 +349,7 @@ export class Parser {
 				return this.#finishNode(node);
 			}
 			default:
-				throw "This should never happen";
+				throw new Error("This should never happen");
 		}
 	}
 
@@ -729,7 +729,7 @@ export class Parser {
 					this.#token() === syntaxKind.NodeKeyword
 				);
 			default:
-				throw "This should never happen";
+				throw new Error("This should never happen");
 		}
 	}
 
