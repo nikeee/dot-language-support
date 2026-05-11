@@ -988,7 +988,7 @@ export class Parser {
 		}
 	}
 	#isCompassPortKind(kind: SyntaxKind): boolean {
-		return kind >= syntaxKind.CompassCenterToken && kind <= syntaxKind.CompassEnd;
+		return kind >= syntaxKind.CompassBegin && kind <= syntaxKind.CompassEnd;
 	}
 
 	#speculationHelper(
