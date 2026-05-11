@@ -24,7 +24,6 @@ import {
 	type SyntaxNodeArray,
 	syntaxKind,
 	syntaxNodeFlags,
-	type TextIdentifier,
 	type TextRange,
 	type Token,
 } from "./types.ts";
@@ -123,20 +122,13 @@ function checkShapeLabelValues(root: SyntaxNode): DiagnosticMessage[] {
 
 	forEachAssignmentTransitive(root, assignment => {
 		const { leftId, rightId } = assignment;
-		if (
-			leftId.kind !== syntaxKind.TextIdentifier ||
-			rightId.kind !== syntaxKind.TextIdentifier
-		) {
+
+		const leftText = getIdentifierText(leftId).trim();
+		if (leftText.toLowerCase() !== "shape") {
 			return;
 		}
 
-		const leftText = (leftId as TextIdentifier).text.trim();
-
-		if (leftText.toLocaleLowerCase() !== "shape") {
-			return;
-		}
-
-		const rightText = (rightId as TextIdentifier).text.trim();
+		const rightText = getIdentifierText(rightId).trim();
 		const shapeCandidate = rightText.toLowerCase();
 		if (validShapesLowerCase.has(shapeCandidate)) {
 			return;
