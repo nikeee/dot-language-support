@@ -294,9 +294,7 @@ export class Parser {
 				return this.#finishNode(subgraphStatement);
 			}
 			default: {
-				if (!this.#isIdentifier) debugger;
-
-				// if (this.isIdentifier()) {
+				if (!this.#isIdentifier()) debugger;
 
 				// Check if it's an "ID '=' ID" using look-ahead
 				if (this.#lookAhead(() => this.#isIdEqualsIdStatement())) {
@@ -377,14 +375,14 @@ export class Parser {
 	}
 
 	#isAssignmentStart(): boolean {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		this.#nextToken();
 		return this.#token() === syntaxKind.EqualsToken;
 	}
 
 	#parseIdEqualsIdStatement(): IdEqualsIdStatement {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		const leftIdentifier = this.#parseIdentifier();
 
@@ -406,7 +404,7 @@ export class Parser {
 	}
 
 	#isIdEqualsIdStatement(): boolean {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		// TODO: May re-use isAssignmentStart
 		this.#nextToken();
@@ -414,7 +412,7 @@ export class Parser {
 	}
 
 	#parseNodeStatement(): NodeStatement {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.#createNode(syntaxKind.NodeStatement) as NodeStatement;
 
@@ -524,7 +522,7 @@ export class Parser {
 	}
 
 	#parseAssignment(): Assignment {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.#createNode(syntaxKind.Assignment) as Assignment;
 
@@ -573,7 +571,7 @@ export class Parser {
 	}
 
 	#parseNodeId(): NodeId {
-		if (!this.#isIdentifier) debugger; // console.assert(this.isIdentifier());
+		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
 
 		const node = this.#createNode(syntaxKind.NodeId) as NodeId;
 
