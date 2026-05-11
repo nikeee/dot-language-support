@@ -900,7 +900,6 @@ export class Parser {
 	#parseExpectedOneOf<T extends SyntaxKind>(...kinds: T[]): boolean {
 		if (kinds.length < 2) {
 			console.assert(false);
-			debugger;
 		}
 		for (const kind of kinds) {
 			if (this.#token() === kind) {
@@ -917,7 +916,6 @@ export class Parser {
 	#parseExpectedTokenOneOf<T extends SyntaxKind>(fallback: T, kinds: T[]): Token<T> {
 		if (kinds.length < 2) {
 			console.assert(false);
-			debugger;
 		}
 
 		for (const kind of kinds) {
