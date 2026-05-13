@@ -35,10 +35,10 @@
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
-    "expect": "^30.3.0",
-    "oxfmt": "^0.48.0",
-    "oxlint": "^1.60.0",
-    "oxlint-tsgolint": "^0.22.0",
+    "expect": "^30.4.1",
+    "oxfmt": "^0.49.0",
+    "oxlint": "^1.64.0",
+    "oxlint-tsgolint": "^0.22.1",
     "tsdown": "^0.22.0",
     "typescript": "^6.0.3"
   },
