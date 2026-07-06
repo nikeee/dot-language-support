@@ -38,7 +38,7 @@
     "expect": "^30.4.1",
     "oxfmt": "^0.56.0",
     "oxlint": "^1.67.0",
-    "oxlint-tsgolint": "^0.23.0",
+    "oxlint-tsgolint": "^0.24.0",
     "tsdown": "^0.22.1",
     "typescript": "^6.0.3"
   },
