@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "vscode-languageserver-textdocument": "^1.0.12",
-    "vscode-languageserver-types": "^3.17.5"
+    "vscode-languageserver-types": "^3.18.0"
   },
   "devDependencies": {
     "expect": "^30.4.1",
-    "oxfmt": "^0.56.0",
-    "oxlint": "^1.67.0",
-    "oxlint-tsgolint": "^0.23.0",
-    "tsdown": "^0.22.1",
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0",
+    "oxlint-tsgolint": "^0.24.0",
+    "tsdown": "^0.22.3",
     "typescript": "^6.0.3"
   },
   "engines": {
