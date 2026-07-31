@@ -294,8 +294,6 @@ export class Parser {
 				return this.#finishNode(subgraphStatement);
 			}
 			default: {
-				if (!this.#isIdentifier()) debugger;
-
 				// Check if it's an "ID '=' ID" using look-ahead
 				if (this.#lookAhead(() => this.#isIdEqualsIdStatement())) {
 					return this.#parseIdEqualsIdStatement();
@@ -346,7 +344,7 @@ export class Parser {
 	}
 
 	#parseAttributeContainer(): AttributeContainer {
-		if (this.#token() !== syntaxKind.OpenBracketToken) debugger; //console.assert(this.token() === syntaxKind.OpenBracketToken);
+		console.assert(this.#token() === syntaxKind.OpenBracketToken);
 
 		const node = this.#createNode(syntaxKind.AttributeContainer) as AttributeContainer;
 
@@ -367,14 +365,14 @@ export class Parser {
 	}
 
 	#isAssignmentStart(): boolean {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		this.#nextToken();
 		return this.#token() === syntaxKind.EqualsToken;
 	}
 
 	#parseIdEqualsIdStatement(): IdEqualsIdStatement {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		const leftIdentifier = this.#parseIdentifier();
 
@@ -384,7 +382,7 @@ export class Parser {
 		) as IdEqualsIdStatement;
 		node.leftId = leftIdentifier;
 
-		if (this.#token() !== syntaxKind.EqualsToken) debugger; //console.assert(this.token() === syntaxKind.EqualsToken);
+		console.assert(this.#token() === syntaxKind.EqualsToken);
 
 		/* node.equalsToken = */ this.#parseExpectedToken(syntaxKind.EqualsToken);
 
@@ -396,7 +394,7 @@ export class Parser {
 	}
 
 	#isIdEqualsIdStatement(): boolean {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		// TODO: May re-use isAssignmentStart
 		this.#nextToken();
@@ -404,7 +402,7 @@ export class Parser {
 	}
 
 	#parseNodeStatement(): NodeStatement {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		const node = this.#createNode(syntaxKind.NodeStatement) as NodeStatement;
 
@@ -430,7 +428,7 @@ export class Parser {
 		);
 		console.assert(precedingItem.pos !== undefined);
 
-		if (!this.#isEdgeOp()) debugger; // console.assert(this.isEdgeOp());
+		console.assert(this.#isEdgeOp());
 
 		const node = this.#createNode(syntaxKind.EdgeStatement, precedingItem.pos) as EdgeStatement;
 		node.source = precedingItem;
@@ -514,7 +512,7 @@ export class Parser {
 	}
 
 	#parseAssignment(): Assignment {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		const node = this.#createNode(syntaxKind.Assignment) as Assignment;
 
@@ -563,7 +561,7 @@ export class Parser {
 	}
 
 	#parseNodeId(): NodeId {
-		if (!this.#isIdentifier()) debugger; // console.assert(this.isIdentifier());
+		console.assert(this.#isIdentifier());
 
 		const node = this.#createNode(syntaxKind.NodeId) as NodeId;
 
