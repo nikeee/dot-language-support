@@ -10,7 +10,6 @@ void describe("Reference Finding", () => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
 			const refs = findReferences(doc, sf, doc.positionAt(offset), { includeDeclaration });
 			expect(refs).toBeDefined();
-			// biome-ignore lint/style/noNonNullAssertion: :shrug:
 			return refs!;
 		};
 	}

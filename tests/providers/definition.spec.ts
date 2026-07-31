@@ -10,7 +10,6 @@ void describe("Definition Finding", () => {
 			const [doc, sf] = ensureDocAndSourceFile(content);
 			const refs = findDefinition(doc, sf, doc.positionAt(offset));
 			expect(refs).toBeDefined();
-			// biome-ignore lint/style/noNonNullAssertion: :shrug:
 			return refs!;
 		};
 	}

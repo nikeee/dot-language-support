@@ -43,7 +43,6 @@ export function checkSourceFile(file: SourceFile): void {
 	}
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: todo
 function getNarrowerNode(offset: number, prev: SyntaxNode, toCheck: SyntaxNode): SyntaxNode {
 	const prevRange = prev.end - prev.pos;
 
@@ -278,7 +277,6 @@ function createEdgeViolationDiagnostics(
 	});
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: todo
 function getInvalidEdgeRhs(allowedOp: EdgeOp["kind"], edges: SyntaxNodeArray<EdgeRhs>): EdgeRhs[] {
 	const res = [];
 	for (const e of edges) {

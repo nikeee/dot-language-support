@@ -9,7 +9,6 @@ void describe("Reference Finding", () => {
 		const [doc, sf] = ensureDocAndSourceFile(content);
 		const refs = getDocumentColors(doc, sf);
 		expect(refs).toBeDefined();
-		// biome-ignore lint/style/noNonNullAssertion: :shrug:
 		return refs!;
 	}
 
