@@ -689,9 +689,9 @@ export function skipTrivia(text: string, pos: number /* stopAtComments = false *
 	while (true) {
 		const ch = text.charCodeAt(pos);
 		switch (ch) {
+			// CR, LF and CRLF are all skipped one character at a time,
+			// so a lone CR does not have to be special-cased.
 			case characterCodes.carriageReturn:
-				if (text.charCodeAt(pos + 1) === characterCodes.lineFeed) ++pos;
-				continue;
 			case characterCodes.lineFeed:
 			case characterCodes.tab:
 			case characterCodes.verticalTab:
