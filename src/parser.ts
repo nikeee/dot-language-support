@@ -560,7 +560,8 @@ export class Parser {
 	}
 
 	#parseNodeId(): NodeId {
-		console.assert(this.#isIdentifier());
+		// No identifier assertion here: #parseEdgeRhs calls this for incomplete input like
+		// `a -> ;`. #parseIdentifier reports the error and yields a missing node.
 
 		const node = this.#createNode(syntaxKind.NodeId) as NodeId;
 
