@@ -270,7 +270,6 @@ export class DefaultScanner implements Scanner {
 					}
 					this.pos++;
 					break;
-					// debugger;
 					//return this.token = syntaxKind.Unknown;
 				}
 				case characterCodes.semicolon:
@@ -311,7 +310,6 @@ export class DefaultScanner implements Scanner {
 						`Unexpected "${chr}". Did you mean to start an identifier? Node names cannot start with "${chr}".`,
 						scanError.ExpectationFailed,
 					);
-					// debugger;
 					this.pos++;
 					break;
 					// return this.token = syntaxKind.Unknown;

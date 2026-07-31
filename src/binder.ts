@@ -280,7 +280,6 @@ function createBinder(): Binder {
 			return;
 		}
 		console.warn("ensureSymbol called on non-identifier node");
-		debugger;
 	}
 
 	function ensureGlobalSymbol(node: SyntaxNode) {
@@ -295,7 +294,6 @@ function createBinder(): Binder {
 			return;
 		}
 		console.warn("ensureSymbol called on non-identifier node");
-		debugger;
 	}
 
 	function ensureSymbolOnTable(name: string, node: SyntaxNode, symbols: SymbolTable) {
@@ -325,7 +323,6 @@ function createBinder(): Binder {
 			return;
 		}
 		console.warn("ensureSymbol called on non-identifier node");
-		debugger;
 	}
 
 	function createSymbol(name: string, node: SyntaxNode): TypeSymbol {

@@ -48,7 +48,6 @@ export function renameSymbol(
 		return res;
 	}
 
-	debugger;
 	return undefined;
 }
 

@@ -49,7 +49,6 @@ export function findReferences(
 		});
 	}
 
-	debugger;
 	return [];
 }
 
