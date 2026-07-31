@@ -9,6 +9,8 @@ import type { Omit, SourceFile } from "../types.ts";
 import { executeCommand, getAvailableCommands, getCodeActions } from "./codeAction.ts";
 import { getColorRepresentations, getDocumentColors } from "./colorProvider.ts";
 import { getCompletions } from "./completion.ts";
+import { getDocumentSymbols } from "./documentSymbol.ts";
+import { getFoldingRanges } from "./foldingRange.ts";
 import { hover } from "./hover.ts";
 import { findDeclaration, findDefinition, findReferences } from "./reference.ts";
 import { renameSymbol } from "./rename.ts";
@@ -66,6 +68,10 @@ export interface LanguageService {
 		positions: lst.Position[],
 	): lst.SelectionRange[];
 
+	getFoldingRanges(doc: DocumentLike, sourceFile: SourceFile): lst.FoldingRange[];
+
+	getDocumentSymbols(doc: DocumentLike, sourceFile: SourceFile): lst.DocumentSymbol[];
+
 	getDocumentColors(doc: DocumentLike, sourceFile: SourceFile): ColorInformation[] | undefined;
 	getColorRepresentations(
 		doc: DocumentLike,
@@ -111,6 +117,8 @@ export function createService(): LanguageService {
 		renameSymbol,
 		getCompletions,
 		getSelectionRanges,
+		getFoldingRanges,
+		getDocumentSymbols,
 		getDocumentColors,
 		getColorRepresentations,
 		getCodeActions,
