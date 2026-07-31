@@ -330,19 +330,11 @@ export class Parser {
 						this.#parseAttributeContainer(),
 					);
 				} else {
-					// TODO: Is this correct?
-
 					this.#reportExpectedError([syntaxKind.OpenBracketToken]);
 
-					// TODO: Set error flag
-					const missingStatement = this.#createMissingNode<AttributeStatement>(
-						syntaxKind.AttributeStatement,
-					);
-					missingStatement.attributes = this.#createNodeArray(
-						[this.#createMissingNode(syntaxKind.AttributeContainer)],
-						this.scanner.tokenPos,
-						this.scanner.tokenPos,
-					);
+					// Keep the statement usable for binding/checking; the missing bracket is
+					// already reported as a diagnostic and flagged via currentNodeHasError.
+					node.attributes = this.#createEmptyArray();
 				}
 
 				node.terminator = this.#parseOptionalToken(syntaxKind.SemicolonToken);
