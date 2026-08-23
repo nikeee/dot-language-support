@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "expect": "^30.4.1",
-    "oxfmt": "^0.63.0",
-    "oxlint": "^1.76.0",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
     "oxlint-tsgolint": "^7.0.2001",
     "tsdown": "^0.22.14",
     "typescript": "^7.0.2"
